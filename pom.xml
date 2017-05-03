@@ -12,9 +12,10 @@
   <packaging>pom</packaging>
   <name>Java EE Sample App</name>
   <description>A sample Java EE application that tries to use as many Java EE techology standards as possible.</description>
-  <url>http://site.trajano.net/doxdb/</url>
   <inceptionYear>2017</inceptionYear>
-  <modules/>
+  <modules>
+    <module>jee-ear</module>
+  </modules>
   <scm>
     <connection>scm:git:https://github.com/trajano/${project.artifactId}</connection>
     <developerConnection>scm:git:ssh://git@github.com/trajano/${project.artifactId}.git</developerConnection>
