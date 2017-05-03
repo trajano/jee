@@ -14,6 +14,7 @@
   <description>A sample Java EE application that tries to use as many Java EE techology standards as possible.</description>
   <inceptionYear>2017</inceptionYear>
   <modules>
+    <module>jee-domain</module>
     <module>jee-ear</module>
     <module>jee-web</module>
   </modules>
