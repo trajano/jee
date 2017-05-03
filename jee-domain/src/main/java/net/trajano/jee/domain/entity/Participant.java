@@ -3,7 +3,8 @@ package net.trajano.jee.domain.entity;
 import javax.persistence.*;
 
 @Entity
-public class Participant {
+public class Participant implements
+    Auditable {
 
     @Id
     @GeneratedValue
@@ -11,4 +12,13 @@ public class Participant {
 
     @Embedded
     private Audit audit;
+
+    @Version
+    private int versionNo;
+
+    @Override
+    public Audit getAudit() {
+
+        return audit;
+    }
 }
