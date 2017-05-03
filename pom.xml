@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>net.trajano</groupId>
+    <artifactId>trajano</artifactId>
+    <version>14</version>
+  </parent>
+  <groupId>net.trajano.jee</groupId>
+  <artifactId>jee</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>Java EE Sample App</name>
+  <description>A sample Java EE application that tries to use as many Java EE techology standards as possible.</description>
+  <url>http://site.trajano.net/doxdb/</url>
+  <inceptionYear>2017</inceptionYear>
+  <modules/>
+  <scm>
+    <connection>scm:git:https://github.com/trajano/${project.artifactId}</connection>
+    <developerConnection>scm:git:ssh://git@github.com/trajano/${project.artifactId}.git</developerConnection>
+    <tag>HEAD</tag>
+    <url>http://github.com/trajano/${project.artifactId}</url>
+  </scm>
+  <distributionManagement>
+    <site>
+      <id>gh-pages</id>
+      <name>Trajano Github Pages</name>
+      <url>github:http://site.trajano.net/doxdb/</url>
+    </site>
+  </distributionManagement>
+  <properties>
+    <jdk.version>1.7</jdk.version>
+    <repo.id>jee</repo.id>
+  </properties>
+  <dependencyManagement>
+    <dependencies/>
+  </dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>javax</groupId>
+      <artifactId>javaee-api</artifactId>
+      <version>7.0</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+  <build/>
+</project>
