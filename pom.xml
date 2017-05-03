@@ -15,12 +15,13 @@
   <inceptionYear>2017</inceptionYear>
   <modules>
     <module>jee-ear</module>
+    <module>jee-web</module>
   </modules>
   <scm>
-    <connection>scm:git:https://github.com/trajano/${project.artifactId}</connection>
-    <developerConnection>scm:git:ssh://git@github.com/trajano/${project.artifactId}.git</developerConnection>
+    <connection>scm:git:https://github.com/trajano/${repo.id}</connection>
+    <developerConnection>scm:git:ssh://git@github.com/trajano/${repo.id}.git</developerConnection>
     <tag>HEAD</tag>
-    <url>http://github.com/trajano/${project.artifactId}</url>
+    <url>http://github.com/trajano/${repo.id}</url>
   </scm>
   <distributionManagement>
     <site>
