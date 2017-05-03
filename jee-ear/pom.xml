@@ -14,10 +14,10 @@
   </dependencyManagement>
   <dependencies>
     <dependency>
-      <groupId>javax</groupId>
-      <artifactId>javaee-api</artifactId>
-      <version>7.0</version>
-      <scope>provided</scope>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>jee-web</artifactId>
+      <version>${project.version}</version>
+      <type>war</type>
     </dependency>
   </dependencies>
   <build/>
