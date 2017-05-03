@@ -46,7 +46,18 @@
       <scope>provided</scope>
     </dependency>
   </dependencies>
-  <build/>
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <artifactId>maven-ejb-plugin</artifactId>
+          <configuration>
+            <ejbVersion>3.2</ejbVersion>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
   <profiles>
     <profile>
       <id>m2e</id>
