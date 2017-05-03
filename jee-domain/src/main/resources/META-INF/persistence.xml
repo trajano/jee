@@ -3,5 +3,5 @@
   <persistence-unit name="default">
    <jta-data-source>java:comp/env/jdbc/jee</jta-data-source>     
       <mapping-file>META-INF/orm.xml</mapping-file>
-  </persistence>
+  </persistence-unit>
 </persistence>

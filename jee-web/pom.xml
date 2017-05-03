@@ -13,5 +13,15 @@
     <dependencies/>
   </dependencyManagement>
   <dependencies/>
-  <build/>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>net.trajano.mojo</groupId>
+        <artifactId>m2e-codestyle-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
 </project>

@@ -1,8 +1,5 @@
 package net.trajano.jee.domain.entity;
 
-import javax.persistence.*;
-import java.util.*;
-
 public final class ColumnLengths {
 
     /**
