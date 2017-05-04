@@ -39,13 +39,22 @@ public class AuthModuleConfigProvider implements
      * being used anywhere at the moment.
      */
     @SuppressWarnings("unused")
-    private final AuthConfigFactory authConfigFactory;
+    private AuthConfigFactory authConfigFactory;
 
     /**
-     * Options.
+     * This is called by
+     * {@link AuthConfigFactory#registerConfigProvider(String, Map, String, String, String)}
+     * when registering the provider.
+     *
+     * @param options
+     *            options to pass to the modules and the name of the module
+     *            classes
+     * @param authConfigFactory
+     *            configuration factory
      */
-    @SuppressWarnings("unused")
-    private final Map<String, String> options;
+    public AuthModuleConfigProvider() {
+        System.out.println("PROVIDER CTOR2");
+    }
 
     /**
      * This is called by
@@ -63,7 +72,11 @@ public class AuthModuleConfigProvider implements
         System.out.println("PROVIDER CTOR");
         System.out.println(options);
         this.authConfigFactory = authConfigFactory;
-        this.options = options;
+        if (authConfigFactory != null) {
+            System.out.println(authConfigFactory);
+            final String registrationID = authConfigFactory.registerConfigProvider(this, null, null, "self registration");
+            System.out.println(registrationID);
+        }
     }
 
     @Override
@@ -71,6 +84,7 @@ public class AuthModuleConfigProvider implements
         final String appContext,
         final CallbackHandler handler) throws AuthException {
 
+        System.out.println("PROVIDER getClientAuthConfig");
         return null;
     }
 
@@ -89,6 +103,7 @@ public class AuthModuleConfigProvider implements
     @Override
     public void refresh() {
 
+        System.out.println("PROVIDER refresh");
         // does nothing
     }
 
