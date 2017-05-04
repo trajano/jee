@@ -1,4 +1,4 @@
-package net.trajano.jee.domain.dao.internal;
+package net.trajano.jee.domain.dao.impl;
 
 public final class NamedQueries {
 

@@ -15,6 +15,12 @@
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
+      <artifactId>jee-domain</artifactId>
+      <version>${project.version}</version>
+      <type>ejb</type>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
       <artifactId>jee-web</artifactId>
       <version>${project.version}</version>
       <type>war</type>
@@ -27,6 +33,12 @@
         <artifactId>maven-ear-plugin</artifactId>
         <version>2.10.1</version>
         <configuration>
+          <archive>
+            <manifest>
+              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+            </manifest>
+          </archive>
           <version>7</version>
           <modules>
             <webModule>
@@ -35,7 +47,17 @@
               <contextRoot>/jee</contextRoot>
               <uri>jee-web.war</uri>
             </webModule>
+            <ejbModule>
+              <groupId>${project.groupId}</groupId>
+              <artifactId>jee-domain</artifactId>
+              <uri>jee-domain.jar</uri>
+            </ejbModule>
           </modules>
+          <security>
+            <security-role>
+              <role-name>users</role-name>
+            </security-role>
+          </security>
           <generateApplicationXml>false</generateApplicationXml>
         </configuration>
       </plugin>

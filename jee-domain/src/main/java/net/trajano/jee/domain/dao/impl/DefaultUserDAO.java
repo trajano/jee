@@ -1,13 +1,15 @@
-package net.trajano.jee.domain.dao.internal;
+package net.trajano.jee.domain.dao.impl;
 
 import java.security.Principal;
 
+import javax.annotation.Resource;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.enterprise.context.Dependent;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.sql.DataSource;
 
 import net.trajano.jee.domain.dao.UserDAO;
 import net.trajano.jee.domain.entity.User;
@@ -17,6 +19,9 @@ import net.trajano.jee.domain.entity.User;
 @Dependent
 public class DefaultUserDAO implements
     UserDAO {
+
+    @Resource(name = "java:comp/env/jdbc/jee")
+    private DataSource ds;
 
     private EntityManager em;
 

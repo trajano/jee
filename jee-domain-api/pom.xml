@@ -6,7 +6,7 @@
     <artifactId>jee</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
-  <artifactId>jee-domain</artifactId>
+  <artifactId>jee-domain-api</artifactId>
   <name>Domain objects API</name>
   <dependencyManagement>
     <dependencies/>

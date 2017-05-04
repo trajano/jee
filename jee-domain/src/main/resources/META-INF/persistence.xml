@@ -3,6 +3,10 @@
   <persistence-unit name="default">
    	<jta-data-source>java:comp/env/jdbc/jee</jta-data-source>     
       <mapping-file>META-INF/orm.xml</mapping-file>
+      <class>net.trajano.jee.domain.entity.Audit</class>
+      <class>net.trajano.jee.domain.entity.Participant</class>
+      <class>net.trajano.jee.domain.entity.User</class>
+      <exclude-unlisted-classes>true</exclude-unlisted-classes>
       <validation-mode>AUTO</validation-mode>
       <properties>
         <property name="javax.persistence.schema-generation.database.action"

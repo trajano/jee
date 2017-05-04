@@ -9,16 +9,17 @@
   <artifactId>jee-domain</artifactId>
   <packaging>ejb</packaging>
   <name>Domain objects implementation</name>
+  <description>This is an EJB that contains the implementation for the domain objects.</description>
   <dependencyManagement>
     <dependencies/>
   </dependencyManagement>
   <dependencies>
-  <dependency>
+    <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>jee-domain-api</artifactId>
       <version>${project.version}</version>
     </dependency>
-    </dependencies>
+  </dependencies>
   <build>
     <plugins>
       <plugin>
@@ -58,5 +59,4 @@
       </build>
     </profile>
   </profiles>
-  <description>This is an EJB that contains the implementation for the domain objects.</description>
 </project>
