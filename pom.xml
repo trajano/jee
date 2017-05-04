@@ -16,6 +16,7 @@
   <modules>
     <module>jee-domain</module>
     <module>jee-ear</module>
+    <module>jee-jaspic</module>
     <module>jee-web</module>
   </modules>
   <scm>

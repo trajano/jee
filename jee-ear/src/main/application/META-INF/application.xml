@@ -8,8 +8,11 @@
       <context-root>/jee</context-root>
     </web>
   </module>
-  <resource-ref>
+  <security-role>
+    <role-name>user</role-name>
+</security-role>    <resource-ref>
   <res-ref-name>jdbc/jee</res-ref-name>
       <res-type>javax.sql.DataSource</res-type>
     <res-auth>Container</res-auth><res-sharing-scope>Shareable</res-sharing-scope></resource-ref>
+
 </application>
