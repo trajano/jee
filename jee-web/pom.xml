@@ -17,6 +17,7 @@
       <groupId>${project.groupId}</groupId>
       <artifactId>jee-domain</artifactId>
       <version>${project.version}</version>
+      <type>ejb</type>
     </dependency>
     <dependency>
       <groupId>jstl</groupId>
@@ -26,6 +27,7 @@
     </dependency>
   </dependencies>
   <build>
+    <finalName>jee-web</finalName>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
