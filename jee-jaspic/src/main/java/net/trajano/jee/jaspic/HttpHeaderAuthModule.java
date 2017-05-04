@@ -91,6 +91,7 @@ public class HttpHeaderAuthModule implements
 
         final HttpServletRequest req = (HttpServletRequest) messageInfo.getRequestMessage();
         final HttpServletResponse resp = (HttpServletResponse) messageInfo.getResponseMessage();
+        System.out.println("HERE!!!!!");
         try {
             if (!mandatory && !req.isSecure()) {
                 return AuthStatus.SUCCESS;
@@ -99,18 +100,18 @@ public class HttpHeaderAuthModule implements
                 resp.sendError(HttpURLConnection.HTTP_FORBIDDEN, "SSL Required");
                 return AuthStatus.SEND_FAILURE;
             }
-            final String userName = req.getHeader("X-Forwarded-User");
-            if (userName == null && mandatory) {
+            final String username = req.getHeader("X-Forwarded-User");
+            if (username == null && mandatory) {
+                System.out.println("username " + username);
                 return AuthStatus.FAILURE;
-            } else if (userName == null && !mandatory) {
+            } else if (username == null && !mandatory) {
                 return AuthStatus.SUCCESS;
             }
 
             final String uniqueid = "test";
-            final String username = "test";
             final String password = "test";
 
-            final Hashtable<String, String> hashtable = new Hashtable();
+            final Hashtable<String, String> hashtable = new Hashtable<>();
             hashtable.put(WSCREDENTIAL_UNIQUEID, uniqueid);
             hashtable.put(WSCREDENTIAL_SECURITYNAME, username);
             hashtable.put(WSCREDENTIAL_PASSWORD, password);
@@ -118,7 +119,7 @@ public class HttpHeaderAuthModule implements
             client.getPrivateCredentials().add(hashtable);
 
             handler.handle(new Callback[] {
-                new CallerPrincipalCallback(client, userName),
+                new CallerPrincipalCallback(client, username),
                 new GroupPrincipalCallback(client, new String[] {
                     "users"
                 })

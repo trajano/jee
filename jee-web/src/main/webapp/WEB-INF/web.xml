@@ -13,11 +13,26 @@
   <servlet-mapping>
     <servlet-name>Faces Servlet</servlet-name>
     <url-pattern>*.jsf</url-pattern>
-  </servlet-mapping><resource-ref>
-  <res-ref-name>jdbc/jee</res-ref-name>
-      <res-type>javax.sql.DataSource</res-type>
-    <res-auth>Container</res-auth><res-sharing-scope>Shareable</res-sharing-scope></resource-ref>
-    <security-role>
+  </servlet-mapping>
+  <resource-ref>
+    <res-ref-name>jdbc/jee</res-ref-name>
+    <res-type>javax.sql.DataSource</res-type>
+    <res-auth>Container</res-auth>
+    <res-sharing-scope>Shareable</res-sharing-scope>
+  </resource-ref>
+  <security-role>
     <role-name>users</role-name>
-</security-role>
+  </security-role>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>everything</web-resource-name>
+      <url-pattern>/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>users</role-name>
+    </auth-constraint>
+    <user-data-constraint>
+      <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint><login-config><auth-method>FORM</auth-method><form-login-config><form-login-page>/login.jsp</form-login-page><form-error-page>/login-error.jsp</form-error-page></form-login-config></login-config>
 </web-app>

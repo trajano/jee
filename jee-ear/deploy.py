@@ -4,7 +4,7 @@ import sys
 from com.ibm.ws.scripting import ScriptingException
 
 apps = AdminApp.list()
-if "jee-jar" in apps:
+if "jee-ear" in apps:
   AdminApp.uninstall("jee-ear")
 
 options = "-usedefaultbindings"

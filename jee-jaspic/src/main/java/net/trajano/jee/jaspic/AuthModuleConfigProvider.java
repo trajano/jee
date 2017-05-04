@@ -8,8 +8,6 @@ import javax.security.auth.message.config.AuthConfigFactory;
 import javax.security.auth.message.config.AuthConfigProvider;
 import javax.security.auth.message.config.ClientAuthConfig;
 import javax.security.auth.message.config.ServerAuthConfig;
-import javax.security.auth.message.module.ClientAuthModule;
-import javax.security.auth.message.module.ServerAuthModule;
 
 /**
  * This is used to provide the server auth module on the application rather than
@@ -37,16 +35,6 @@ public class AuthModuleConfigProvider implements
     AuthConfigProvider {
 
     /**
-     * Client auth module class option key.
-     */
-    public static final String CLIENT_AUTH_MODULE_CLASS = ClientAuthModule.class.getName();
-
-    /**
-     * Server auth module class option key.
-     */
-    public static final String SERVER_AUTH_MODULE_CLASS = ServerAuthModule.class.getName();
-
-    /**
      * {@link AuthConfigFactory} passed in through the constructor. This is not
      * being used anywhere at the moment.
      */
@@ -56,6 +44,7 @@ public class AuthModuleConfigProvider implements
     /**
      * Options.
      */
+    @SuppressWarnings("unused")
     private final Map<String, String> options;
 
     /**
@@ -71,7 +60,8 @@ public class AuthModuleConfigProvider implements
      */
     public AuthModuleConfigProvider(final Map<String, String> options,
         final AuthConfigFactory authConfigFactory) {
-
+        System.out.println("PROVIDER CTOR");
+        System.out.println(options);
         this.authConfigFactory = authConfigFactory;
         this.options = options;
     }
@@ -89,6 +79,7 @@ public class AuthModuleConfigProvider implements
         final String appContext,
         final CallbackHandler handler) throws AuthException {
 
+        System.out.println("PROVIDER getServerAuthConfig");
         return new ServerAuthModuleAuthConfig(layer, appContext, handler);
     }
 
