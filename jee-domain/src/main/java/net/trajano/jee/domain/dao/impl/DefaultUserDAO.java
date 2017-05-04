@@ -41,6 +41,14 @@ public class DefaultUserDAO implements
         return q.getSingleResult();
     }
 
+    @Override
+    public boolean isUsernameExist(final String username) {
+
+        final TypedQuery<Long> q = em.createNamedQuery(NamedQueries.USER_COUNT_BY_USERNAME, Long.class);
+        q.setParameter("username", username);
+        return q.getSingleResult().longValue() == 1L;
+    }
+
     @PersistenceContext
     public void setEntityManager(final EntityManager em) {
 

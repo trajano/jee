@@ -12,6 +12,8 @@ import javax.security.auth.message.config.ServerAuthConfig;
 import javax.security.auth.message.config.ServerAuthContext;
 import javax.security.auth.message.module.ServerAuthModule;
 
+import net.trajano.jee.domain.dao.UserDAO;
+
 public class ServerAuthModuleAuthConfig implements
     ServerAuthConfig {
 
@@ -59,13 +61,17 @@ public class ServerAuthModuleAuthConfig implements
 
     private final String layer;
 
+    private final UserDAO userDAO;
+
     public ServerAuthModuleAuthConfig(
         final String layer,
         final String appContext,
-        final CallbackHandler handler) {
+        final CallbackHandler handler,
+        final UserDAO userDAO) {
         this.appContext = appContext;
         this.layer = layer;
         this.handler = handler;
+        this.userDAO = userDAO;
     }
 
     @Override
@@ -80,15 +86,13 @@ public class ServerAuthModuleAuthConfig implements
         final Subject serviceSubject,
         final Map properties) throws AuthException {
 
-        final ServerAuthContext context = new HttpHeaderAuthModule();
-        if (context instanceof ServerAuthModule) {
+        final ServerAuthContext context = new HttpHeaderAuthModule(userDAO);
 
-            final ServerAuthModule module = (ServerAuthModule) context;
-            if (authContextID == null) {
-                module.initialize(NON_MANDATORY, NON_MANDATORY, handler, properties);
-            } else {
-                module.initialize(MANDATORY, MANDATORY, handler, properties);
-            }
+        final ServerAuthModule module = (ServerAuthModule) context;
+        if (authContextID == null) {
+            module.initialize(NON_MANDATORY, NON_MANDATORY, handler, properties);
+        } else {
+            module.initialize(MANDATORY, MANDATORY, handler, properties);
         }
         return context;
     }

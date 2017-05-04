@@ -2,15 +2,12 @@ package net.trajano.jee.jaspic;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Map;
 
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
+import javax.enterprise.context.ApplicationScoped;
 import javax.security.auth.Subject;
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
@@ -28,20 +25,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.trajano.jee.domain.dao.UserDAO;
 
-@Dependent
+@ApplicationScoped
 public class HttpHeaderAuthModule implements
     ServerAuthModule,
     ServerAuthContext {
 
-    public static final String WSCREDENTIAL_GROUPS = "com.ibm.wsspi.security.cred.groups";
+    private static final String WSCREDENTIAL_SECURITYNAME = "com.ibm.wsspi.security.cred.securityName";
 
-    public static final String WSCREDENTIAL_PASSWORD = "com.ibm.wsspi.security.cred.password";
-
-    public static final String WSCREDENTIAL_SECURITYNAME = "com.ibm.wsspi.security.cred.securityName";
-
-    public static final String WSCREDENTIAL_UNIQUEID = "com.ibm.wsspi.security.cred.uniqueId";
-
-    public static final String WSCREDENTIAL_USERID = "com.ibm.wsspi.security.cred.userId";
+    private static final String WSCREDENTIAL_UNIQUEID = "com.ibm.wsspi.security.cred.uniqueId";
 
     /**
      * Callback handler that is passed in initialize by the container. This
@@ -54,8 +45,16 @@ public class HttpHeaderAuthModule implements
      */
     private boolean mandatory;
 
-    @Inject
-    private UserDAO usersDAO;
+    /**
+     * I am using UserDAO here for illustrative purposes, in reality there
+     * should be no user information within this application as that should be
+     * managed by a directory.
+     */
+    private final UserDAO userDAO;
+
+    public HttpHeaderAuthModule(final UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
 
     @Override
     public void cleanSubject(final MessageInfo messageInfo,
@@ -82,7 +81,6 @@ public class HttpHeaderAuthModule implements
 
         handler = h;
         mandatory = requestPolicy.isMandatory();
-        System.out.println("HERE" + usersDAO);
     }
 
     @Override
@@ -99,7 +97,6 @@ public class HttpHeaderAuthModule implements
 
         final HttpServletRequest req = (HttpServletRequest) messageInfo.getRequestMessage();
         final HttpServletResponse resp = (HttpServletResponse) messageInfo.getResponseMessage();
-        System.out.println("HERE!!!!!");
         try {
             if (!mandatory && !req.isSecure()) {
                 return AuthStatus.SUCCESS;
@@ -108,41 +105,37 @@ public class HttpHeaderAuthModule implements
                 resp.sendError(HttpURLConnection.HTTP_FORBIDDEN, "SSL Required");
                 return AuthStatus.SEND_FAILURE;
             }
+            Collections.list(req.getHeaderNames());
             final String username = req.getHeader("X-Forwarded-User");
             if (username == null && mandatory) {
+                // return with a not found to hide the fact that a protected resource was requested.
                 return AuthStatus.FAILURE;
             } else if (username == null && !mandatory) {
                 return AuthStatus.SUCCESS;
             }
 
-            try {
-                // WebSphere workarounds
-                System.out.println("WebSphere Workaround");
-                final Method method = Class.forName("com.ibm.wsspi.security.registry.RegistryHelper").getMethod("getUserRegistry", String.class);
-                System.out.println(method);
-                final Object userRegistry = method.invoke(null, new Object[] {
-                    null
-                });
-                System.out.println("WebSphere Workaround..." + userRegistry);
-                final Method method2 = Class.forName("com.ibm.websphere.security.UserRegistry").getMethod("getUniqueUserId", String.class);
-                System.out.println(method2);
-                final String uniqueid = (String) method2.invoke(userRegistry, "websphere");
-                //            final String password = "websphere";
+            if (!userDAO.isUsernameExist(username)) {
+                return AuthStatus.FAILURE;
+            }
+            if (System.getProperty("was.install.root") != null) {
+                try {
+                    final Object userRegistry = Class.forName("com.ibm.wsspi.security.registry.RegistryHelper").getMethod("getUserRegistry", String.class).invoke(null, new Object[] {
+                        null
+                    });
+                    final String uniqueid = (String) userRegistry.getClass().getMethod("getUniqueUserId", String.class).invoke(userRegistry, "websphere");
 
-                final Hashtable<String, Object> hashtable = new Hashtable<>();
-                hashtable.put(WSCREDENTIAL_UNIQUEID, uniqueid);
-                hashtable.put(WSCREDENTIAL_SECURITYNAME, username);
-                //          hashtable.put(WSCREDENTIAL_PASSWORD, password);
-                hashtable.put(WSCREDENTIAL_GROUPS, new ArrayList(Collections.singletonList("appusers")));
+                    final Hashtable<String, Object> hashtable = new Hashtable<>();
+                    hashtable.put(WSCREDENTIAL_UNIQUEID, uniqueid);
+                    hashtable.put(WSCREDENTIAL_SECURITYNAME, username);
 
-                System.out.println(hashtable);
-                client.getPrivateCredentials().add(hashtable);
-            } catch (IllegalAccessException
-                | InvocationTargetException
-                | NoSuchMethodException
-                | ClassNotFoundException e) {
-                e.printStackTrace();
-                throw new AuthException(e.getMessage());
+                    client.getPrivateCredentials().add(hashtable);
+                } catch (IllegalAccessException
+                    | InvocationTargetException
+                    | NoSuchMethodException
+                    | ClassNotFoundException e) {
+                    e.printStackTrace();
+                    throw new AuthException(e.getMessage());
+                }
             }
 
             handler.handle(new Callback[] {

@@ -13,4 +13,6 @@ public interface UserDAO {
 
     User getByUsername(String username);
 
+    boolean isUsernameExist(String username);
+
 }
