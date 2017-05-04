@@ -29,7 +29,10 @@ public class HelloServlet extends HttpServlet {
         IOException {
 
         resp.setContentType("text/plain");
-        resp.getWriter().println("Hello world at " + new Date());
+        resp.getWriter().println("Hello " + req.getUserPrincipal().getName() + " at " + new Date());
         resp.getWriter().println("userDAO is " + userDAO.getByUsername("trajano"));
+        resp.getWriter().println(req.isUserInRole("users"));
+        resp.getWriter().println(req.isUserInRole("appuser"));
+        resp.getWriter().println(req.isUserInRole("appusers"));
     }
 }
