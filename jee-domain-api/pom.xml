@@ -7,18 +7,11 @@
     <version>1.0.0-SNAPSHOT</version>
   </parent>
   <artifactId>jee-domain</artifactId>
-  <packaging>ejb</packaging>
-  <name>Domain objects implementation</name>
+  <name>Domain objects API</name>
   <dependencyManagement>
     <dependencies/>
   </dependencyManagement>
-  <dependencies>
-  <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>jee-domain-api</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    </dependencies>
+  <dependencies/>
   <build>
     <plugins>
       <plugin>
@@ -58,5 +51,4 @@
       </build>
     </profile>
   </profiles>
-  <description>This is an EJB that contains the implementation for the domain objects.</description>
 </project>

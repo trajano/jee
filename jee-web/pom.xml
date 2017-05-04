@@ -15,9 +15,8 @@
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>jee-domain</artifactId>
+      <artifactId>jee-domain-api</artifactId>
       <version>${project.version}</version>
-      <type>ejb</type>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>

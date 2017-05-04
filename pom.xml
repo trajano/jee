@@ -15,6 +15,7 @@
   <inceptionYear>2017</inceptionYear>
   <modules>
     <module>jee-domain</module>
+    <module>jee-domain-api</module>
     <module>jee-ear</module>
     <module>jee-jaspic</module>
     <module>jee-web</module>
