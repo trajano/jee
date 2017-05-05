@@ -24,6 +24,22 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.primefaces</groupId>
+      <artifactId>primefaces</artifactId>
+      <version>6.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.primefaces.themes</groupId>
+      <artifactId>bootstrap</artifactId>
+      <version>1.0.10</version>
+    </dependency>
+    <dependency>
+     <groupId>com.sun.faces</groupId>
+    <artifactId>jsf-impl</artifactId>
+    <version>2.2.14</version>
+    <scope>provided</scope>
+</dependency>
+    <dependency>
       <groupId>jstl</groupId>
       <artifactId>jstl</artifactId>
       <version>1.2</version>
@@ -59,6 +75,35 @@
       </activation>
       <build>
         <plugins>
+          <plugin>
+            <groupId>net.trajano.mojo</groupId>
+            <artifactId>cleanpom-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>clean-xml</goal>
+                </goals>
+                <configuration>
+                  <xmlFileSets>
+                    <xmlFileSet>
+                      <directory>src/main</directory>
+                      <includes>
+                        <include>**/*.xml</include>
+                        <include>**/*.xhtml</include>
+                      </includes>
+                    </xmlFileSet>
+                  </xmlFileSets>
+                </configuration>
+              </execution>
+            </executions>
+            <dependencies>
+              <dependency>
+                <groupId>net.trajano</groupId>
+                <artifactId>coding-standards</artifactId>
+                <version>${coding-standards.version}</version>
+              </dependency>
+            </dependencies>
+          </plugin>
           <plugin>
             <groupId>net.trajano.mojo</groupId>
             <artifactId>m2e-codestyle-maven-plugin</artifactId>
