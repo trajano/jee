@@ -15,13 +15,9 @@
 		<servlet-name>Faces Servlet</servlet-name>
 		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
-	</servlet>
-	<servlet-mapping>
+	</servlet><servlet-mapping>
 		<servlet-name>Faces Servlet</servlet-name>
-		<url-pattern>/faces/*</url-pattern>
-	</servlet-mapping>	<servlet-mapping>
-		<servlet-name>Faces Servlet</servlet-name>
-		<url-pattern>*.jsf</url-pattern>
+		<url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
 	<security-constraint>
 		<web-resource-collection>
@@ -34,13 +30,7 @@
 		<user-data-constraint>
 			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
 		</user-data-constraint>
-	</security-constraint><login-config>
-		<auth-method>FORM</auth-method>
-		<form-login-config>
-			<form-login-page>/login.jsp</form-login-page>
-			<form-error-page>/login-error.jsp</form-error-page>
-		</form-login-config>
-	</login-config>
+	</security-constraint>
 <welcome-file-list><welcome-file>index.jsp</welcome-file></welcome-file-list>
 	<security-role>
 		<role-name>users</role-name>
