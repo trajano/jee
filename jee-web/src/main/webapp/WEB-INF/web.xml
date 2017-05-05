@@ -7,13 +7,19 @@
 		<param-name>javax.faces.PROJECT_STAGE</param-name>
 		<param-value>Development</param-value>
 	</context-param>
-	<context-param><param-name>org.apache.myfaces.LOG_WEB_CONTEXT_PARAMS</param-name><param-value>false</param-value></context-param>
+<context-param>
+    <param-name>primefaces.THEME</param-name>
+    <param-value>bootstrap</param-value>
+</context-param>	<context-param><param-name>org.apache.myfaces.LOG_WEB_CONTEXT_PARAMS</param-name><param-value>false</param-value></context-param>
 	<servlet>
 		<servlet-name>Faces Servlet</servlet-name>
 		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>/faces/*</url-pattern>
+	</servlet-mapping>	<servlet-mapping>
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>*.jsf</url-pattern>
 	</servlet-mapping>
@@ -28,14 +34,14 @@
 		<user-data-constraint>
 			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
 		</user-data-constraint>
-	</security-constraint>
-	<login-config>
+	</security-constraint><login-config>
 		<auth-method>FORM</auth-method>
 		<form-login-config>
 			<form-login-page>/login.jsp</form-login-page>
 			<form-error-page>/login-error.jsp</form-error-page>
 		</form-login-config>
 	</login-config>
+<welcome-file-list><welcome-file>index.jsp</welcome-file></welcome-file-list>
 	<security-role>
 		<role-name>users</role-name>
 	</security-role>

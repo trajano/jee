@@ -28,7 +28,6 @@ public class JaspicInitializer implements
     @Override
     public void contextInitialized(final ServletContextEvent sce) {
 
-        System.out.println("userdao in listener " + userDAO);
         final ServletContext context = sce.getServletContext();
         registrationID = AuthConfigFactory.getFactory()
             .registerConfigProvider(new AuthModuleConfigProvider(userDAO), "HttpServlet",
