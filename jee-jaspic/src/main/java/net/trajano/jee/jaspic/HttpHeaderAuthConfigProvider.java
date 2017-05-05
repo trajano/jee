@@ -33,7 +33,7 @@ import net.trajano.jee.domain.dao.UserDAO;
  * }
  * </pre>
  */
-public class AuthModuleConfigProvider implements
+public class HttpHeaderAuthConfigProvider implements
     AuthConfigProvider {
 
     private final UserDAO userDAO;
@@ -49,10 +49,15 @@ public class AuthModuleConfigProvider implements
      * @param authConfigFactory
      *            configuration factory
      */
-    public AuthModuleConfigProvider(final UserDAO userDAO) {
+    public HttpHeaderAuthConfigProvider(final UserDAO userDAO) {
         this.userDAO = userDAO;
     }
 
+    /**
+     * {@inheritDoc}
+     * 
+     * @return {@code null}
+     */
     @Override
     public ClientAuthConfig getClientAuthConfig(final String layer,
         final String appContext,

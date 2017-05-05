@@ -118,24 +118,7 @@ public class HttpHeaderAuthModule implements
                 return AuthStatus.FAILURE;
             }
             if (System.getProperty("was.install.root") != null) {
-                try {
-                    final Object userRegistry = Class.forName("com.ibm.wsspi.security.registry.RegistryHelper").getMethod("getUserRegistry", String.class).invoke(null, new Object[] {
-                        null
-                    });
-                    final String uniqueid = (String) userRegistry.getClass().getMethod("getUniqueUserId", String.class).invoke(userRegistry, "websphere");
-
-                    final Hashtable<String, Object> hashtable = new Hashtable<>();
-                    hashtable.put(WSCREDENTIAL_UNIQUEID, uniqueid);
-                    hashtable.put(WSCREDENTIAL_SECURITYNAME, username);
-
-                    client.getPrivateCredentials().add(hashtable);
-                } catch (IllegalAccessException
-                    | InvocationTargetException
-                    | NoSuchMethodException
-                    | ClassNotFoundException e) {
-                    e.printStackTrace();
-                    throw new AuthException(e.getMessage());
-                }
+                websphereWorkaround(client, "websphere", username);
             }
 
             handler.handle(new Callback[] {
@@ -148,6 +131,41 @@ public class HttpHeaderAuthModule implements
         } catch (final IOException
             | UnsupportedCallbackException e) {
             e.printStackTrace();
+            throw new AuthException(e.getMessage());
+        }
+    }
+
+    /**
+     * Implements the WebSphere workaround. This requires the
+     * {@code webspehereUser} to exist in the user registry of WebSphere.
+     *
+     * @param client
+     *            client subject
+     * @param websphereUser
+     *            existing WebSphere user name.
+     * @param principalName
+     *            name that is going to be part of the principal.
+     * @throws AuthException
+     */
+    private void websphereWorkaround(final Subject client,
+        final String websphereUser,
+        final String principalName) throws AuthException {
+
+        try {
+            final Object userRegistry = Class.forName("com.ibm.wsspi.security.registry.RegistryHelper").getMethod("getUserRegistry", String.class).invoke(null, new Object[] {
+                null
+            });
+            final String uniqueid = (String) userRegistry.getClass().getMethod("getUniqueUserId", String.class).invoke(userRegistry, websphereUser);
+
+            final Hashtable<String, Object> hashtable = new Hashtable<>();
+            hashtable.put(WSCREDENTIAL_UNIQUEID, uniqueid);
+            hashtable.put(WSCREDENTIAL_SECURITYNAME, principalName);
+
+            client.getPrivateCredentials().add(hashtable);
+        } catch (IllegalAccessException
+            | InvocationTargetException
+            | NoSuchMethodException
+            | ClassNotFoundException e) {
             throw new AuthException(e.getMessage());
         }
     }
