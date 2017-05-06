@@ -96,13 +96,6 @@
                 </configuration>
               </execution>
             </executions>
-            <dependencies>
-              <dependency>
-                <groupId>net.trajano</groupId>
-                <artifactId>coding-standards</artifactId>
-                <version>${coding-standards.version}</version>
-              </dependency>
-            </dependencies>
           </plugin>
           <plugin>
             <groupId>net.trajano.mojo</groupId>

@@ -2,7 +2,7 @@
 <glassfish-ejb-jar>
 	<display-name>First Module</display-name>
 	<enterprise-beans>
-		<ejb>
+		<session>
 			<ejb-name>DefaultUserDAO</ejb-name>
 			<resource-ref>
 				<res-ref-name>java:comp/env/jdbc/jee</res-ref-name>
@@ -12,6 +12,6 @@
 				<res-ref-name>jdbc/jee</res-ref-name>
 				<jndi-name>jdbc/jee</jndi-name>
 			</resource-ref>
-		</ejb>
+		</session>
 	</enterprise-beans>
 </glassfish-ejb-jar>

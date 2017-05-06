@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.view.ViewScoped;
+import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 
 import net.trajano.jee.domain.dao.ParticipantDAO;
@@ -32,7 +32,6 @@ public class ParticipantBean implements
 
     public void add() {
 
-        System.out.println("Calling add");
         participantDAO.save(participant);
         init();
     }
@@ -64,7 +63,8 @@ public class ParticipantBean implements
     public void init() {
 
         list = participantDAO.getAll();
-        participant = new Participant(); // Reset placeholder.
+        // Reset placeholder.
+        participant = new Participant();
     }
 
     public boolean isInEdit() {
@@ -74,9 +74,7 @@ public class ParticipantBean implements
 
     public void saveParticipant() {
 
-        System.out.println("Calling save");
         participantDAO.save(participant);
-        System.out.println("Done Calling save");
         init();
         edit = false;
     }

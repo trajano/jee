@@ -1,38 +1,57 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html"
-      	xmlns:p="http://primefaces.org/ui">
-    <h:head>
-        <title>Really simple CRUD</title>
-    </h:head>
-    <h:body>
-        <h3>List items</h3>
-        <h:form rendered="#{not empty participantBean.list}">
-            <h:dataTable value="#{participantBean.list}" var="item">
-                <h:column><f:facet name="header">ID</f:facet>#{item.id}</h:column>
-                <h:column><f:facet name="header">Name</f:facet>#{item.name}</h:column>
-                <h:column><h:commandButton value="edit" action="#{participantBean.edit(item)}" /></h:column>
-                <h:column><h:commandButton value="delete" action="#{participantBean.delete(item)}" /></h:column>
-            </h:dataTable>
-        </h:form>
-        <h:panelGroup rendered="#{empty participantBean.list}">
-            <p>Table is empty! Please add new items.</p>
-        </h:panelGroup>
-        <h:panelGroup rendered="#{!participantBean.inEdit}">
-            <h3>Add item</h3>
-            <h:form>
-                <p>Name: <h:inputText value="#{participantBean.participant.name}" /></p>
-                <p><h:commandButton value="add" action="#{participantBean.add}" /></p>
-            </h:form>
-        </h:panelGroup>
-        <h:panelGroup rendered="#{participantBean.inEdit}">
-            <h3>Edit item #{participantBean.participant.id}</h3>
-            <h:form>
-                <p>Name: <p:inputText value="#{participantBean.participant.name}" /></p>
-                <p><h:commandButton value="save" action="#{participantBean.saveParticipant}" /></p>
-                <p><h:commandButton value="add" action="#{participantBean.add}" /></p>
-            </h:form>
-        </h:panelGroup>
-    </h:body>
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+  <h:head>
+    <title>Really simple CRUD</title>
+  </h:head>
+  <h:body>
+    <h3>List items</h3>
+    <h:form rendered="#{not empty participantBean.list}">
+      <h:dataTable value="#{participantBean.list}" var="item">
+        <h:column>
+          <f:facet name="header">ID</f:facet>#{item.id}</h:column>
+        <h:column>
+          <f:facet name="header">Name</f:facet>#{item.name}</h:column>
+        <h:column>
+          <h:commandButton value="edit" action="#{participantBean.edit(item)}"/>
+        </h:column>
+        <h:column>
+          <h:commandButton value="delete" action="#{participantBean.delete(item)}"/>
+        </h:column>
+        <h:column>
+          <h:commandButton value="fire" action="#{participantBean.fire}"/>
+        </h:column>
+      </h:dataTable>
+      <h:panelGroup rendered="#{participantBean.inEdit}"/>
+    </h:form>
+    <h:panelGroup rendered="#{empty participantBean.list}">
+      <p>Table is empty! Please add new items.</p>
+    </h:panelGroup>
+    <h:panelGroup rendered="#{!participantBean.inEdit}">
+      <h3>Add item</h3>
+      <h:form>
+        <p>Name: <h:inputText value="#{participantBean.participant.name}"/>
+        </p>
+        <p>
+          <h:commandButton value="add" action="#{participantBean.add}"/>
+        </p>
+        <p>
+          <h:commandButton value="fire" action="#{participantBean.fire}"/>
+        </p>
+      </h:form>
+    </h:panelGroup>
+    <h:form>
+      <h3>Edit item #{participantBean.participant.id}</h3>
+      <p>Name: <h:inputText value="#{participantBean.participant.name}"/>
+      </p>
+      <p>
+        <h:commandButton value="save" action="#{participantBean.saveParticipant}"/>
+      </p>
+      <p>
+        <h:commandButton value="add" action="#{participantBean.add}"/>
+      </p>
+      <p>
+        <h:commandButton value="fire" action="#{participantBean.fire}"/>
+      </p>
+    </h:form>
+  </h:body>
 </html>
