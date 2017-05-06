@@ -23,7 +23,7 @@ addons:
       secure: ibixZFEwZdGaHbD3/ZTrmu6HMJ0tCr5v+JrF/FElkR183rgvAwXVtYZKp3sdo9IBb3mJuDHU6P0ggyxHeESZPHPyRoko6EAn/9kOWdXc1MFqvx0XkEBgY5VdKC6wgDwjhcKaDMX4CzkCsA/+VPgS4w9rnX0ynauYdFD8juBLvZPtkHpRl1v8XNuSnSTfKBk8dPANWcTH0yVgT1xPdYZO2yYKFS9FIA7yvBQ3vT5haGUNsUB7ALQ5eEU1GtVoX1Y+XjHYmCzWK0hMY5CZg123oula1jbJwOIuOL/+zFfknH9ret4VMMAUZBLKnWv6cAAyLi1/AIHvlaX2Zj3J2IF3Ag827vtQWxgdUuy3ebPwIhT7Lzn/djZTgCk6fegWj1BcWhhnrEWSVpUDyLdMyQrH1zY1us0VCOGEBmRI3a6E/x4+IK7YSa5oY50hwma8qxbreNlLqr61cu8LnP2o4qI4sSKWWo8MBqwBMvczqq1lOXg+CLojeKUZouBxzRVFP8znqLv6lZIlemBbruqwJw0Y3Uwe68GUZA48Kg4MtvWxoi6Nj/aUmzAXqmcQ6Zs+KvjxKblkX5xiIkETwBq0tqAgGLGOio3UeQWljsYM8tnjosYWok9Ewyuo0nQ3RJ04cteg9XdPHdyJk2G8BJUMGk+njF30wuSWkzvaLW7ba3Q++8g=
 install:
 - tar xf deploy-keys.tar -C $HOME && chmod go-rwx -R $HOME/.m2 $HOME/.ssh
-- mvn dependency:go-offline
+- mvn dependency:go-offline -DexcludeGroupIds=net.trajano.jee
 before_script:
 - mvn clean
 script:
