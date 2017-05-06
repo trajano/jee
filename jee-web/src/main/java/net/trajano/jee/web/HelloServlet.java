@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.trajano.jee.domain.dao.ParticipantDAO;
 import net.trajano.jee.domain.dao.UserDAO;
 
 @WebServlet(urlPatterns = "/hello")
@@ -21,7 +22,10 @@ public class HelloServlet extends HttpServlet {
     private static final long serialVersionUID = 2314763538891384789L;
 
     @Inject
-    private UserDAO userDAO;
+    private transient ParticipantDAO participantDAO;
+
+    @Inject
+    private transient UserDAO userDAO;
 
     @Override
     protected void doGet(final HttpServletRequest req,
@@ -30,7 +34,8 @@ public class HelloServlet extends HttpServlet {
 
         resp.setContentType("text/plain");
         resp.getWriter().println("Hello " + req.getUserPrincipal().getName() + " at " + new Date());
-        resp.getWriter().println("userDAO is " + userDAO.getByUsername("trajano"));
+        resp.getWriter().println("user is " + userDAO.getByUsername("trajano"));
+        resp.getWriter().println(participantDAO.getAll());
         resp.getWriter().println(req.isUserInRole("users"));
         resp.getWriter().println(req.isUserInRole("appuser"));
         resp.getWriter().println(req.isUserInRole("appusers"));

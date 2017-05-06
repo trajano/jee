@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
@@ -19,11 +20,13 @@ public class User implements
     Auditable {
 
     @Embedded
-    private Audit audit;
+    private final Audit audit = new Audit();
 
     @Id
-    @GeneratedValue
-    private long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(nullable = false,
+        updatable = false)
+    private Long id;
 
     @Column(length = ColumnLengths.PRINCIPAL_LENGTH,
         unique = true)

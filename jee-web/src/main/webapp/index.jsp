@@ -1,1 +1,1 @@
-<% response.sendRedirect("app.jsf"); %>
+<% response.sendRedirect("crud.xhtml"); %>

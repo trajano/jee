@@ -2,14 +2,10 @@ package net.trajano.jee.domain.dao.impl;
 
 import java.security.Principal;
 
-import javax.annotation.Resource;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.enterprise.context.Dependent;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.sql.DataSource;
 
 import net.trajano.jee.domain.dao.UserDAO;
 import net.trajano.jee.domain.entity.User;
@@ -17,13 +13,8 @@ import net.trajano.jee.domain.entity.User;
 @Local
 @Stateless
 @Dependent
-public class DefaultUserDAO implements
+public class DefaultUserDAO extends BaseDAO implements
     UserDAO {
-
-    @Resource(name = "java:comp/env/jdbc/jee")
-    private DataSource ds;
-
-    private EntityManager em;
 
     @Override
     public User getByPrincipal(final Principal p) {
@@ -49,9 +40,4 @@ public class DefaultUserDAO implements
         return q.getSingleResult().longValue() == 1L;
     }
 
-    @PersistenceContext
-    public void setEntityManager(final EntityManager em) {
-
-        this.em = em;
-    }
 }
