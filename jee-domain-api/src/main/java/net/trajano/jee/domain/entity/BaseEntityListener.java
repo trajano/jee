@@ -9,12 +9,32 @@ import javax.persistence.PreUpdate;
 @Dependent
 public class BaseEntityListener {
 
-    @Resource
+    /**
+     * Injected session context.
+     */
     private transient SessionContext sessionContext;
 
+    /**
+     * Sets/injects the session context.
+     *
+     * @param sessionContext
+     *            session context.
+     */
+    @Resource
+    public void setSessionContext(final SessionContext sessionContext) {
+
+        this.sessionContext = sessionContext;
+    }
+
+    /**
+     * Updates the audit data for the entity.
+     *
+     * @param e
+     *            entity
+     */
     @PrePersist
     @PreUpdate
-    public void updateAudit(final BaseEntity e) {
+    void updateAudit(final BaseEntity e) {
 
         e.updateAudit(sessionContext.getCallerPrincipal());
     }

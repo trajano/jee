@@ -40,6 +40,7 @@
             </manifest>
           </archive>
           <version>7</version>
+          <defaultLibBundleDir>lib</defaultLibBundleDir>
           <modules>
             <webModule>
               <groupId>${project.groupId}</groupId>
@@ -53,12 +54,13 @@
               <uri>jee-domain.jar</uri>
             </ejbModule>
           </modules>
+          <skinnyWars>true</skinnyWars>
           <security>
             <security-role>
               <role-name>users</role-name>
             </security-role>
           </security>
-          <generateApplicationXml>false</generateApplicationXml>
+          <generateApplicationXml>true</generateApplicationXml>
         </configuration>
       </plugin>
     </plugins>

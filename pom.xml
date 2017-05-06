@@ -67,6 +67,7 @@
         <plugin>
           <artifactId>maven-war-plugin</artifactId>
           <configuration>
+            <filteringDeploymentDescriptors>true</filteringDeploymentDescriptors>
             <archive>
               <manifest>
                 <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>

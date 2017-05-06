@@ -9,6 +9,9 @@
   <artifactId>jee-web</artifactId>
   <packaging>war</packaging>
   <name>Web Application Archive</name>
+  <properties>
+    <javax.faces.PROJECT_STAGE>Production</javax.faces.PROJECT_STAGE>
+  </properties>
   <dependencyManagement>
     <dependencies/>
   </dependencyManagement>
@@ -73,6 +76,9 @@
           <name>m2e.version</name>
         </property>
       </activation>
+      <properties>
+        <javax.faces.PROJECT_STAGE>Development</javax.faces.PROJECT_STAGE>
+      </properties>
       <build>
         <plugins>
           <plugin>
