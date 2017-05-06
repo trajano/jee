@@ -66,27 +66,6 @@
           </configuration>
         </plugin>
         <plugin>
-            <groupId>net.trajano.mojo</groupId>
-            <artifactId>cleanpom-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>clean-xml</goal>
-                </goals>
-                <configuration>
-                  <xmlFileSets>
-                    <xmlFileSet>
-                      <includes>
-                        <include>**/src/**/*.xml</include>
-                        <include>**/src/**/*.xhtml</include>
-                      </includes>
-                    </xmlFileSet>
-                  </xmlFileSets>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        <plugin>
           <artifactId>maven-war-plugin</artifactId>
           <configuration>
             <filteringDeploymentDescriptors>true</filteringDeploymentDescriptors>
@@ -97,6 +76,28 @@
               </manifest>
             </archive>
           </configuration>
+        </plugin>
+        <plugin>
+          <groupId>net.trajano.mojo</groupId>
+          <artifactId>cleanpom-maven-plugin</artifactId>
+          <executions>
+            <execution>
+              <goals>
+                <goal>clean-xml</goal>
+              </goals>
+              <configuration>
+                <xmlFileSets>
+                  <xmlFileSet>
+                    <directory>${basedir}</directory>
+                    <includes>
+                      <include>**/src/**/*.xml</include>
+                      <include>**/src/**/*.xhtml</include>
+                    </includes>
+                  </xmlFileSet>
+                </xmlFileSets>
+              </configuration>
+            </execution>
+          </executions>
         </plugin>
       </plugins>
     </pluginManagement>
