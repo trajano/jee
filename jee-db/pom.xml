@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>net.trajano.jee</groupId>
+    <artifactId>jee</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>jee-db</artifactId>
+  <name>Database Administration</name>
+  <build>
+    <plugins>
+    <plugin>
+      <groupId>org.liquibase</groupId>
+    <artifactId>liquibase-maven-plugin</artifactId>
+    <version>3.5.3</version>
+    <configuration><url>jdbc:mariadb://localhost/pac</url><server>jee-sample</server>
+    <changeLogFile>${basedir}/src/main/resources/db-changelog.xml</changeLogFile>
+    <outputChangeLogFile>${basedir}/src/main/resources/db-changelog.xml</outputChangeLogFile>
+    </configuration>
+    <dependencies><dependency>
+    <groupId>org.mariadb.jdbc</groupId>
+    <artifactId>mariadb-java-client</artifactId>
+    <version>1.5.9</version>
+</dependency></dependencies>
+    </plugin>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+  <description>Provides the database administration tooling to manage the schema used by the sample application.  This is not used directly as of yet but the liquibase driver is set up here.</description>
+</project>
