@@ -17,9 +17,6 @@
         <h:column>
           <h:commandButton value="delete" action="#{participantBean.delete(item)}"/>
         </h:column>
-        <h:column>
-          <h:commandButton value="fire" action="#{participantBean.fire}"/>
-        </h:column>
       </h:dataTable>
       <h:panelGroup rendered="#{participantBean.inEdit}"/>
     </h:form>
@@ -27,31 +24,24 @@
       <p>Table is empty! Please add new items.</p>
     </h:panelGroup>
     <h:panelGroup rendered="#{!participantBean.inEdit}">
-      <h3>Add item</h3>
+      <h3>Add Participant</h3>
       <h:form>
         <p>Name: <h:inputText value="#{participantBean.participant.name}"/>
         </p>
         <p>
           <h:commandButton value="add" action="#{participantBean.add}"/>
         </p>
-        <p>
-          <h:commandButton value="fire" action="#{participantBean.fire}"/>
-        </p>
       </h:form>
     </h:panelGroup>
-    <h:form>
-      <h3>Edit item #{participantBean.participant.id}</h3>
-      <p>Name: <h:inputText value="#{participantBean.participant.name}"/>
-      </p>
-      <p>
-        <h:commandButton value="save" action="#{participantBean.saveParticipant}"/>
-      </p>
-      <p>
-        <h:commandButton value="add" action="#{participantBean.add}"/>
-      </p>
-      <p>
-        <h:commandButton value="fire" action="#{participantBean.fire}"/>
-      </p>
+    <h:panelGroup rendered="#{participantBean.inEdit}">
+      <h:form>
+        <h3>Edit Participant #{participantBean.participant.id}</h3>
+        <p>Name: <h:inputText value="#{participantBean.participant.name}"/>
+        </p>
+        <p>
+          <h:commandButton value="save" action="#{participantBean.saveParticipant}"/>
+        </p>
     </h:form>
+    </h:panelGroup>
   </h:body>
 </html>

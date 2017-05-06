@@ -48,8 +48,8 @@
     contextUrl += "&securityCredentials=" + securityCredentials;
 
     Object o = ctx.lookup(name);
-    Class clazz = o.getClass();
-    Class[] interfaces = clazz.getInterfaces();
+    Class<?> clazz = o.getClass();
+    Class<?>[] interfaces = clazz.getInterfaces();
     if (o instanceof Context) {
         NamingEnumeration<NameClassPair> namingEnumeration = ctx
                 .list(name);
