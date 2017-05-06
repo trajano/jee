@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<application xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/application_7.xsd" version="7">
+<application xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/application_7.xsd" version="7">
   <description>A sample Java EE application that tries to use as many Java EE techology standards as possible.</description>
   <display-name>jee-ear</display-name>
   <module>
@@ -12,6 +12,12 @@
     <ejb>jee-domain.jar</ejb>
   </module>
   <security-role>
-              <role-name>users</role-name>
-            </security-role>
+    <role-name>users</role-name>
+  </security-role>
+  <library-directory>lib</library-directory>
+  <resource-ref>
+    <res-ref-name>java:app/ds</res-ref-name>
+    <res-type>javax.sql.DataSource</res-type>
+    <res-auth>Container</res-auth><res-sharing-scope>Shareable</res-sharing-scope>
+  </resource-ref>
 </application>

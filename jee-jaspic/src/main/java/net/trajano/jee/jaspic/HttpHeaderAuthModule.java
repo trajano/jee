@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Map;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.security.auth.Subject;
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
@@ -25,7 +24,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.trajano.jee.domain.dao.UserDAO;
 
-@ApplicationScoped
 public class HttpHeaderAuthModule implements
     ServerAuthModule,
     ServerAuthContext {

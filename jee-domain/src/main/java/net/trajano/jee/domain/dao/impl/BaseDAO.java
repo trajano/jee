@@ -6,12 +6,8 @@ import javax.annotation.Resource;
 import javax.ejb.SessionContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.sql.DataSource;
 
 public class BaseDAO {
-
-    @Resource(name = "java:comp/env/jdbc/jee")
-    private DataSource ds;
 
     protected EntityManager em;
 
