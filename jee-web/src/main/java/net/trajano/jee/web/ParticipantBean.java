@@ -67,7 +67,7 @@ public class ParticipantBean implements
         participant = new Participant(); // Reset placeholder.
     }
 
-    public boolean isEdit() {
+    public boolean isInEdit() {
 
         return edit;
     }
