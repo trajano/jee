@@ -28,8 +28,12 @@ before_script:
 script:
 - mkdir -p target/classes
 - mkdir -p target/test-classes
+- mkdir -p jee-db/target/test-classes
+- mkdir -p jee-domain-api/target/test-classes
 - mkdir -p jee-ear/target/classes
 - mkdir -p jee-ear/target/test-classes
+- mkdir -p jee-jaspic/target/test-classes
+- mkdir -p jee-web/target/test-classes
 - mvn verify site sonar:sonar
 deploy:
 - provider: script
