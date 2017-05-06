@@ -53,6 +53,11 @@
               <artifactId>jee-domain</artifactId>
               <uri>jee-domain.jar</uri>
             </ejbModule>
+            <jarModule>
+              <groupId>${project.groupId}</groupId>
+              <artifactId>jee-domain-api</artifactId>
+              <uri>lib/jee-domain-api.jar</uri>
+            </jarModule>
           </modules>
           <skinnyWars>true</skinnyWars>
           <security>
