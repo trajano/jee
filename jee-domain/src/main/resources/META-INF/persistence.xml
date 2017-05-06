@@ -3,7 +3,8 @@
   <persistence-unit name="default">
    	<jta-data-source>java:app/ds</jta-data-source>     
       <mapping-file>META-INF/orm.xml</mapping-file>
-      <class>net.trajano.jee.domain.entity.Audit</class>
+      <class>net.trajano.jee.domain.entity.BaseEntity</class>
+      <class>net.trajano.jee.domain.entity.BaseEntityListener</class>
       <class>net.trajano.jee.domain.entity.Participant</class>
       <class>net.trajano.jee.domain.entity.User</class>
       <exclude-unlisted-classes>true</exclude-unlisted-classes>

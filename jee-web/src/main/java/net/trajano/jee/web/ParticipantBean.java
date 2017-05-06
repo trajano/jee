@@ -4,14 +4,14 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import net.trajano.jee.domain.dao.ParticipantDAO;
 import net.trajano.jee.domain.entity.Participant;
 
-@ManagedBean
+@Named
 @ViewScoped
 public class ParticipantBean implements
     Serializable {
@@ -38,7 +38,7 @@ public class ParticipantBean implements
 
     public void delete(final Participant participant) {
 
-        participant.getAudit().cancel();
+        participant.cancel();
         participantDAO.save(participant);
         init();
     }

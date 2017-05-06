@@ -2,5 +2,6 @@
 <ejb-jar xmlns="http://xmlns.jcp.org/xml/ns/javaee"
          version="3.2"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/ejb-jar_3_2.xsd">
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/ejb-jar_3_2.xsd"
+         metadata-complete="false">
 </ejb-jar>

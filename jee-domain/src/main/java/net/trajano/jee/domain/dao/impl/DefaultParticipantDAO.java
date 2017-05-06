@@ -30,14 +30,10 @@ public class DefaultParticipantDAO extends BaseDAO implements
     @Override
     public Participant save(final Participant participant) {
 
-        System.out.println("saving " + participant);
-        participant.getAudit().updateAudit(getPrincipal());
         if (participant.getId() == null) {
-            System.out.println("persisting" + participant);
             em.persist(participant);
             return participant;
         } else {
-            System.out.println("merging" + participant);
             return em.merge(participant);
         }
     }
