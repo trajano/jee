@@ -4,9 +4,9 @@
     <query>from Participant p where not p.cancelled</query>
   </named-query>
   <named-query name="User.getByUserName">
-    <query>from User u where u.username = :username</query>
+    <query>from User u where u.username = :username and not u.cancelled</query>
   </named-query>
   <named-query name="User.countByUserName">
-    <query>select count(u) from User u where u.username = :username</query>
+    <query>select count(u) from User u where u.username = :username and not u.cancelled</query>
   </named-query>
 </entity-mappings>

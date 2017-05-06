@@ -2,8 +2,12 @@ package net.trajano.jee.domain.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Index;
+import javax.persistence.Table;
 
 @Entity
+@Table(indexes = @Index(columnList = "cancelled",
+    unique = false))
 public class Participant extends BaseEntity {
 
     /**
