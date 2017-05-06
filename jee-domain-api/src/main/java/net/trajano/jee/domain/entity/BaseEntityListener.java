@@ -27,7 +27,9 @@ public class BaseEntityListener {
     }
 
     /**
-     * Updates the audit data for the entity.
+     * Updates the audit data for the entity. If the principal is not set (i.e.
+     * during unit tests or through another means then it will use SYSTEM as the
+     * user name.
      *
      * @param e
      *            entity
@@ -36,6 +38,10 @@ public class BaseEntityListener {
     @PreUpdate
     void updateAudit(final BaseEntity e) {
 
-        e.updateAudit(sessionContext.getCallerPrincipal());
+        if (sessionContext == null) {
+            e.updateAudit("SYSTEM");
+        } else {
+            e.updateAudit(sessionContext.getCallerPrincipal().getName());
+        }
     }
 }

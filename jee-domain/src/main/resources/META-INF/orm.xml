@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<entity-mappings xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm
-      http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd"
-	version="2.1">
-	<named-query name="Participant.getAll">
-		<query>from Participant p where not p.cancelled</query>
-	</named-query>
-	<named-query name="User.getByUserName">
-		<query>from User u where u.username = :username</query>
-	</named-query>
-	<named-query name="User.countByUserName">
-		<query>select count(u) from User u where u.username = :username</query>
-	</named-query>
+<entity-mappings xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm       http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd" version="2.1">
+  <named-query name="Participant.getAll">
+    <query>from Participant p where not p.cancelled</query>
+  </named-query>
+  <named-query name="User.getByUserName">
+    <query>from User u where u.username = :username</query>
+  </named-query>
+  <named-query name="User.countByUserName">
+    <query>select count(u) from User u where u.username = :username</query>
+  </named-query>
 </entity-mappings>

@@ -83,28 +83,6 @@
         <plugins>
           <plugin>
             <groupId>net.trajano.mojo</groupId>
-            <artifactId>cleanpom-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>clean-xml</goal>
-                </goals>
-                <configuration>
-                  <xmlFileSets>
-                    <xmlFileSet>
-                      <directory>src/main</directory>
-                      <includes>
-                        <include>**/*.xml</include>
-                        <include>**/*.xhtml</include>
-                      </includes>
-                    </xmlFileSet>
-                  </xmlFileSets>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>net.trajano.mojo</groupId>
             <artifactId>m2e-codestyle-maven-plugin</artifactId>
             <executions>
               <execution>

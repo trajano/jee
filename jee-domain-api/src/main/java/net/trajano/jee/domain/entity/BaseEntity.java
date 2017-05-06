@@ -1,7 +1,6 @@
 package net.trajano.jee.domain.entity;
 
 import java.io.Serializable;
-import java.security.Principal;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -105,17 +104,17 @@ public abstract class BaseEntity implements
     /**
      * Updates the audit data. This is called by {@link BaseEntityListener}
      *
-     * @param principal
-     *            principal
+     * @param username
+     *            user name
      */
-    void updateAudit(final Principal principal) {
+    void updateAudit(final String username) {
 
         final Date current = new Date();
         if (createdBy == null) {
-            createdBy = principal.getName();
+            createdBy = username;
             createdOn = current;
         }
-        lastUpdatedBy = principal.getName();
+        lastUpdatedBy = username;
         lastUpdatedOn = current;
     }
 }

@@ -1,8 +1,5 @@
 package net.trajano.jee.domain.dao.impl;
 
-import java.security.Principal;
-
-import javax.ejb.SessionContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -20,21 +17,6 @@ public class BaseDAO {
      * methods available to subclasses.
      */
     protected EntityManager em;
-
-    /**
-     * Injected session context.
-     */
-    private SessionContext sctx;
-
-    /**
-     * Gets the principal being used to execute the DAO.
-     *
-     * @return principal
-     */
-    protected Principal getPrincipal() {
-
-        return sctx.getCallerPrincipal();
-    }
 
     /**
      * Performs an upsert operation. If the id is {@code null} then
