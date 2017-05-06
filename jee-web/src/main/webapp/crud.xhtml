@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html"
-      	xmlns:p="http://primefaces.org/ui">
+      xmlns:h="http://java.sun.com/jsf/html">
     <h:head>
         <title>Really simple CRUD</title>
     </h:head>
@@ -14,6 +13,7 @@
                 <h:column><f:facet name="header">Name</f:facet>#{item.name}</h:column>
                 <h:column><h:commandButton value="edit" action="#{participantBean.edit(item)}" /></h:column>
                 <h:column><h:commandButton value="delete" action="#{participantBean.delete(item)}" /></h:column>
+                <h:column><h:commandButton value="fire" action="#{participantBean.fire}" /></h:column>
             </h:dataTable>
         </h:form>
         <h:panelGroup rendered="#{empty participantBean.list}">
@@ -24,15 +24,18 @@
             <h:form>
                 <p>Name: <h:inputText value="#{participantBean.participant.name}" /></p>
                 <p><h:commandButton value="add" action="#{participantBean.add}" /></p>
+                <p><h:commandButton value="fire" action="#{participantBean.fire}" /></p>
             </h:form>
         </h:panelGroup>
         <h:panelGroup rendered="#{participantBean.inEdit}">
             <h3>Edit item #{participantBean.participant.id}</h3>
             <h:form>
-                <p>Name: <p:inputText value="#{participantBean.participant.name}" /></p>
+                <p>Name: <h:inputText value="#{participantBean.participant.name}" /></p>
                 <p><h:commandButton value="save" action="#{participantBean.saveParticipant}" /></p>
                 <p><h:commandButton value="add" action="#{participantBean.add}" /></p>
+                <p><h:commandButton value="fire" action="#{participantBean.fire}" /></p>
             </h:form>
         </h:panelGroup>
+        
     </h:body>
 </html>

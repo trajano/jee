@@ -46,8 +46,13 @@ public class ParticipantBean implements
 
     public void edit(final Participant participant) {
 
-        this.participant = participant;
+        this.participant = participantDAO.get(participant.getId());
         edit = true;
+    }
+
+    public void fire() {
+
+        System.out.println("fired");
     }
 
     public List<Participant> getList() {
@@ -63,6 +68,7 @@ public class ParticipantBean implements
     @PostConstruct
     public void init() {
 
+        System.out.println("init");
         list = participantDAO.getAll();
         participant = new Participant(); // Reset placeholder.
     }
