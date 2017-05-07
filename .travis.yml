@@ -37,7 +37,7 @@ script:
 deploy:
 - provider: script
   skip_cleanup: true
-  script: mvn deploy site-deploy
+  script: mvn deploy && mvn site-deploy
   on:
     branch: master
 - provider: script
