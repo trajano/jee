@@ -2,6 +2,8 @@ package net.trajano.jee.domain.entity;
 
 public final class ColumnLengths {
 
+    public static final int EMAIL = 128;
+
     /**
      * Length of enum strings.
      */
