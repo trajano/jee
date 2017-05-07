@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.HttpURLConnection;
 import java.util.Collections;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -64,6 +64,7 @@ public class HttpHeaderAuthModule implements
     public void cleanSubject(final MessageInfo messageInfo,
         final Subject subject) throws AuthException {
 
+        // Not used
     }
 
     @Override
@@ -114,7 +115,7 @@ public class HttpHeaderAuthModule implements
             if (username == null && mandatory) {
                 // return with a not found to hide the fact that a protected resource was requested.
                 return AuthStatus.FAILURE;
-            } else if (username == null && !mandatory) {
+            } else if (username == null) {
                 return AuthStatus.SUCCESS;
             }
 
@@ -161,7 +162,7 @@ public class HttpHeaderAuthModule implements
             });
             final String uniqueid = (String) userRegistry.getClass().getMethod("getUniqueUserId", String.class).invoke(userRegistry, websphereUser);
 
-            final Hashtable<String, Object> hashtable = new Hashtable<>();
+            final Map<String, Object> hashtable = new HashMap<>();
             hashtable.put(WSCREDENTIAL_UNIQUEID, uniqueid);
             hashtable.put(WSCREDENTIAL_SECURITYNAME, principalName);
 
