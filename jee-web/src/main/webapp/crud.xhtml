@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
   <h:head>
     <title>Really simple CRUD</title>
   </h:head>
   <h:body>
     <h3>List items</h3>
     <h:form rendered="#{not empty participantBean.list}">
-      <h:dataTable value="#{participantBean.list}" var="item">
-        <h:column>
-          <f:facet name="header">ID</f:facet>#{item.id}</h:column>
-        <h:column>
-          <f:facet name="header">Name</f:facet>#{item.name}</h:column>
-        <h:column>
-          <h:commandButton value="edit" action="#{participantBean.edit(item)}"/>
-        </h:column>
-        <h:column>
-          <h:commandButton value="delete" action="#{participantBean.delete(item)}"/>
-        </h:column>
-      </h:dataTable>
+      <p:dataTable value="#{participantBean.list}" var="item">
+        <p:column headerText="ID">
+          <h:outputText value="#{item.id}"/></p:column>
+        <p:column>
+          <f:facet name="header">Name</f:facet>#{item.name}</p:column>
+        <p:column>
+          <p:commandButton value="edit" action="#{participantBean.edit(item)}" update="@all"/>
+          <p:commandButton value="delete" action="#{participantBean.delete(item)}" update="@form"/>
+        </p:column>
+          <f:facet name="footer">
+        In total there are #{fn:length(participantBean.list)} participants.
+    </f:facet>
+      </p:dataTable>
       <h:panelGroup rendered="#{participantBean.inEdit}"/>
     </h:form>
     <h:panelGroup rendered="#{empty participantBean.list}">
@@ -26,28 +27,28 @@
     <h:panelGroup rendered="#{!participantBean.inEdit}">
       <h3>Add Participant</h3>
       <h:form>
-        <p>Name: <h:inputText value="#{participantBean.participant.name}"/>
+        <p><p:outputLabel value="Name:" for="addParticipantName" /> <p:inputText id="addParticipantName" value="#{participantBean.participant.name}"/>
         </p>
-        <p>Gender at birth: <h:selectOneMenu value="#{participantBean.participant.genderAtBirth}">
+        <p><p:outputLabel value="Gender at birth:" for="addGender" /> <p:selectOneMenu id="addGender" value="#{participantBean.participant.genderAtBirth}">
             <f:selectItems value="#{enumBean.gender}"/>
-          </h:selectOneMenu>
+          </p:selectOneMenu>
         </p>
         <p>
-          <h:commandButton value="add" action="#{participantBean.add}"/>
+          <p:commandButton value="add" action="#{participantBean.add}" update="@all"/>
         </p>
       </h:form>
     </h:panelGroup>
     <h:panelGroup rendered="#{participantBean.inEdit}">
       <h:form>
         <h3>Edit Participant #{participantBean.participant.id}</h3>
-        <p>Name: <h:inputText value="#{participantBean.participant.name}"/>
+        <p>Name: <p:inputText value="#{participantBean.participant.name}"/>
         </p>
         <p>Gender at birth: <h:selectOneMenu value="#{participantBean.participant.genderAtBirth}">
             <f:selectItems value="#{enumBean.gender}"/>
           </h:selectOneMenu>
         </p>
         <p>
-          <h:commandButton value="save" action="#{participantBean.saveParticipant}"/>
+          <p:commandButton value="save" action="#{participantBean.saveParticipant}" update="@all"/>
         </p>
       </h:form>
     </h:panelGroup>

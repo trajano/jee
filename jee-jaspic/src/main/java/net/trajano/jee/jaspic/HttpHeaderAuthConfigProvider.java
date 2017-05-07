@@ -55,7 +55,7 @@ public class HttpHeaderAuthConfigProvider implements
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @return {@code null}
      */
     @Override
@@ -80,6 +80,7 @@ public class HttpHeaderAuthConfigProvider implements
     @Override
     public void refresh() {
 
+        // Does nothing.
     }
 
 }
