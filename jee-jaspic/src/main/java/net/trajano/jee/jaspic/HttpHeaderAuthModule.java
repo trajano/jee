@@ -6,6 +6,7 @@ import java.net.HttpURLConnection;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.security.auth.Subject;
 import javax.security.auth.callback.Callback;
@@ -27,6 +28,11 @@ import net.trajano.jee.domain.dao.UserDAO;
 public class HttpHeaderAuthModule implements
     ServerAuthModule,
     ServerAuthContext {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOG = Logger.getLogger(HttpHeaderAuthModule.class.getName());
 
     private static final String WSCREDENTIAL_SECURITYNAME = "com.ibm.wsspi.security.cred.securityName";
 
@@ -128,7 +134,7 @@ public class HttpHeaderAuthModule implements
             return AuthStatus.SUCCESS;
         } catch (final IOException
             | UnsupportedCallbackException e) {
-            e.printStackTrace();
+            LOG.throwing(this.getClass().getName(), "validateRequest", e);
             throw new AuthException(e.getMessage());
         }
     }
