@@ -17,7 +17,7 @@ import net.trajano.jee.domain.entity.Participant;
 
 @Path("/participants")
 @Dependent
-@Produces("application/json")
+@Produces(MediaType.APPLICATION_JSON)
 public class Participants {
 
     @Inject

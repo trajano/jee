@@ -8,14 +8,15 @@
     <h:form rendered="#{not empty participantBean.list}">
       <p:dataTable value="#{participantBean.list}" var="item">
         <p:column headerText="ID">
-          <h:outputText value="#{item.id}"/></p:column>
+          <h:outputText value="#{item.id}"/>
+        </p:column>
         <p:column>
           <f:facet name="header">Name</f:facet>#{item.name}</p:column>
         <p:column>
           <p:commandButton value="edit" action="#{participantBean.edit(item)}" update="@all"/>
           <p:commandButton value="delete" action="#{participantBean.delete(item)}" update="@form"/>
         </p:column>
-          <f:facet name="footer">
+        <f:facet name="footer">
         In total there are #{fn:length(participantBean.list)} participants.
     </f:facet>
       </p:dataTable>
@@ -27,9 +28,13 @@
     <h:panelGroup rendered="#{!participantBean.inEdit}">
       <h3>Add Participant</h3>
       <h:form>
-        <p><p:outputLabel value="Name:" for="addParticipantName" /> <p:inputText id="addParticipantName" value="#{participantBean.participant.name}"/>
+        <p>
+          <p:outputLabel value="Name:" for="addParticipantName"/>
+          <p:inputText id="addParticipantName" value="#{participantBean.participant.name}"/>
         </p>
-        <p><p:outputLabel value="Gender at birth:" for="addGender" /> <p:selectOneMenu id="addGender" value="#{participantBean.participant.genderAtBirth}">
+        <p>
+          <p:outputLabel value="Gender at birth:" for="addGender"/>
+          <p:selectOneMenu id="addGender" value="#{participantBean.participant.genderAtBirth}">
             <f:selectItems value="#{enumBean.gender}"/>
           </p:selectOneMenu>
         </p>

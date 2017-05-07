@@ -43,11 +43,8 @@ public class HttpHeaderAuthConfigProvider implements
      * {@link AuthConfigFactory#registerConfigProvider(String, Map, String, String, String)}
      * when registering the provider.
      *
-     * @param options
-     *            options to pass to the modules and the name of the module
-     *            classes
-     * @param authConfigFactory
-     *            configuration factory
+     * @param userDAO
+     *            user DAO
      */
     public HttpHeaderAuthConfigProvider(final UserDAO userDAO) {
         this.userDAO = userDAO;
