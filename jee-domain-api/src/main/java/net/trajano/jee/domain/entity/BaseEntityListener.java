@@ -12,7 +12,7 @@ public class BaseEntityListener {
     /**
      * Injected session context.
      */
-    private transient SessionContext sessionContext;
+    private SessionContext sessionContext;
 
     /**
      * Sets/injects the session context.
