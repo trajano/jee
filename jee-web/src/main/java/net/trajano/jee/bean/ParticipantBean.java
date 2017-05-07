@@ -1,4 +1,4 @@
-package net.trajano.jee.web;
+package net.trajano.jee.bean;
 
 import java.io.Serializable;
 import java.util.List;
