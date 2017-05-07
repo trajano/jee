@@ -1,4 +1,4 @@
-package net.trajano.jee.domain.entity;
+package net.trajano.jee.domain.converter;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -12,12 +12,12 @@ abstract class EnumToStringConverter<E extends Enum<E>> implements
     private final Map<String, E> stringToEnumMap;
 
     protected EnumToStringConverter(final Class<E> enumClass) {
-        final Map<String, E> stringToEnumMap = new HashMap<>();
+        final Map<String, E> tempMap = new HashMap<>();
         final E[] enumConstants = enumClass.getEnumConstants();
         for (final E c : enumConstants) {
-            stringToEnumMap.put(c.toString(), c);
+            tempMap.put(c.toString(), c);
         }
-        this.stringToEnumMap = Collections.unmodifiableMap(stringToEnumMap);
+        this.stringToEnumMap = Collections.unmodifiableMap(tempMap);
     }
 
     @Override

@@ -28,9 +28,9 @@
       <h:form>
         <p>Name: <h:inputText value="#{participantBean.participant.name}"/>
         </p>
-        <p>Gender at birth: <h:selectOneMenu value="#{participantBean.participant.genderAtBirth}" >
-    <f:selectItems value="#{enumBean.gender}" />
-</h:selectOneMenu>
+        <p>Gender at birth: <h:selectOneMenu value="#{participantBean.participant.genderAtBirth}">
+            <f:selectItems value="#{enumBean.gender}"/>
+          </h:selectOneMenu>
         </p>
         <p>
           <h:commandButton value="add" action="#{participantBean.add}"/>
@@ -42,9 +42,9 @@
         <h3>Edit Participant #{participantBean.participant.id}</h3>
         <p>Name: <h:inputText value="#{participantBean.participant.name}"/>
         </p>
-        <p>Gender at birth: <h:selectOneMenu value="#{participantBean.participant.genderAtBirth}" >
-    <f:selectItems value="#{enumBean.gender}" />
-</h:selectOneMenu>
+        <p>Gender at birth: <h:selectOneMenu value="#{participantBean.participant.genderAtBirth}">
+            <f:selectItems value="#{enumBean.gender}"/>
+          </h:selectOneMenu>
         </p>
         <p>
           <h:commandButton value="save" action="#{participantBean.saveParticipant}"/>
