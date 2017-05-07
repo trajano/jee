@@ -15,13 +15,27 @@ public class Participant extends BaseEntity {
      */
     private static final long serialVersionUID = 9067331171225814003L;
 
+    @Column(length = ColumnLengths.ENUM,
+        nullable = false)
+    private Gender genderAtBirth;
+
     @Column(length = ColumnLengths.NAME,
         nullable = false)
     private String name;
 
+    public Gender getGenderAtBirth() {
+
+        return genderAtBirth;
+    }
+
     public String getName() {
 
         return name;
+    }
+
+    public void setGenderAtBirth(final Gender genderAtBirth) {
+
+        this.genderAtBirth = genderAtBirth;
     }
 
     public void setName(final String name) {

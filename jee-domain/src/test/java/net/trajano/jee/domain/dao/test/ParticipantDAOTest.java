@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import net.trajano.jee.domain.dao.ParticipantDAO;
 import net.trajano.jee.domain.dao.impl.DefaultParticipantDAO;
+import net.trajano.jee.domain.entity.Gender;
 import net.trajano.jee.domain.entity.Participant;
 
 public class ParticipantDAOTest extends BaseJpaTest {
@@ -34,6 +35,7 @@ public class ParticipantDAOTest extends BaseJpaTest {
 
         final Participant participant = new Participant();
         participant.setName("Archie");
+        participant.setGenderAtBirth(Gender.MALE);
         final Participant managedParticipant = dao.save(participant);
         assertNotNull(managedParticipant.getId());
         final Participant retrievedParticipant = dao.get(managedParticipant.getId());
@@ -42,6 +44,7 @@ public class ParticipantDAOTest extends BaseJpaTest {
         assertEquals(1, dao.getAll().size());
 
         retrievedParticipant.setName("Janet");
+        retrievedParticipant.setGenderAtBirth(Gender.FEMALE);
         dao.save(retrievedParticipant);
         final Participant updatedParticipant = dao.get(managedParticipant.getId());
         assertEquals("Janet", updatedParticipant.getName());
