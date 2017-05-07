@@ -34,7 +34,6 @@ script:
 - mkdir -p jee-ear/target/test-classes
 - mkdir -p jee-jaspic/target/test-classes
 - mvn verify sonar:sonar 
-- mvn site
 deploy:
 - provider: script
   skip_cleanup: true
