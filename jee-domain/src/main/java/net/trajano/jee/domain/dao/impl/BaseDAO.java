@@ -19,25 +19,6 @@ public class BaseDAO {
     protected EntityManager em;
 
     /**
-     * Performs an upsert operation. If the id is {@code null} then
-     * {@link EntityManager#persist(Object)} is called otherwise a
-     * {@link EntityManager#merge(Object)} is called.
-     *
-     * @param e
-     *            entity
-     * @return managed entity.
-     */
-    public BaseEntity save(final BaseEntity e) {
-
-        if (e.getId() == null) {
-            em.persist(e);
-            return e;
-        } else {
-            return em.merge(e);
-        }
-    }
-
-    /**
      * Sets/injects the entity manager.
      *
      * @param em
@@ -47,6 +28,25 @@ public class BaseDAO {
     public void setEntityManager(final EntityManager em) {
 
         this.em = em;
+    }
+
+    /**
+     * Performs an upsert operation. If the id is {@code null} then
+     * {@link EntityManager#persist(Object)} is called otherwise a
+     * {@link EntityManager#merge(Object)} is called.
+     *
+     * @param e
+     *            entity
+     * @return managed entity.
+     */
+    public BaseEntity upsert(final BaseEntity e) {
+
+        if (e.getId() == null) {
+            em.persist(e);
+            return e;
+        } else {
+            return em.merge(e);
+        }
     }
 
 }

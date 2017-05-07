@@ -37,7 +37,15 @@ public class ParticipantDAOTest extends BaseJpaTest {
         final Participant managedParticipant = dao.save(participant);
         assertNotNull(managedParticipant.getId());
         final Participant retrievedParticipant = dao.get(managedParticipant.getId());
+        assertEquals(retrievedParticipant.getId(), managedParticipant.getId());
         assertEquals("Archie", retrievedParticipant.getName());
         assertEquals(1, dao.getAll().size());
+
+        retrievedParticipant.setName("Janet");
+        dao.save(retrievedParticipant);
+        final Participant updatedParticipant = dao.get(managedParticipant.getId());
+        assertEquals("Janet", updatedParticipant.getName());
+        assertEquals(1, dao.getAll().size());
+
     }
 }
