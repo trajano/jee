@@ -12,6 +12,7 @@
   <packaging>pom</packaging>
   <name>Java EE Sample App</name>
   <description>A sample Java EE application that tries to use as many Java EE techology standards as possible.</description>
+  <url>http://site.trajano.net/${repo.id}/</url>
   <inceptionYear>2017</inceptionYear>
   <modules>
     <module>jee-db</module>
@@ -21,7 +22,6 @@
     <module>jee-jaspic</module>
     <module>jee-web</module>
   </modules>
-  <url>http://site.trajano.net/${repo.id}/</url>
   <scm>
     <connection>scm:git:https://github.com/trajano/${repo.id}.git</connection>
     <developerConnection>scm:git:https://github.com/trajano/${repo.id}.git</developerConnection>
@@ -112,6 +112,20 @@
         </plugin>
       </plugins>
     </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>prepare-agent</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
   </build>
   <profiles>
     <profile>
