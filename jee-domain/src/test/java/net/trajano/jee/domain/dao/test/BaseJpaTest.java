@@ -3,6 +3,8 @@ package net.trajano.jee.domain.dao.test;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.validation.Validation;
+import javax.validation.ValidatorFactory;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -20,12 +22,15 @@ public abstract class BaseJpaTest {
 
     private static EntityManagerFactory emf;
 
+    private static ValidatorFactory vf;
+
     /**
      * Sets up JPA infrastructure.
      */
     @BeforeClass
     public static void setupJpa() {
 
+        vf = Validation.buildDefaultValidatorFactory();
         emf = Persistence.createEntityManagerFactory("test-pu");
         em = emf.createEntityManager();
     }
@@ -38,6 +43,7 @@ public abstract class BaseJpaTest {
 
         em.close();
         emf.close();
+        vf.close();
     }
 
     /**
