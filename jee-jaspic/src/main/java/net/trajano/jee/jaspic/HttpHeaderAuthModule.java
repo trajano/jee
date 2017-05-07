@@ -3,7 +3,6 @@ package net.trajano.jee.jaspic;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.HttpURLConnection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -110,7 +109,6 @@ public class HttpHeaderAuthModule implements
                 resp.sendError(HttpURLConnection.HTTP_FORBIDDEN, "SSL Required");
                 return AuthStatus.SEND_FAILURE;
             }
-            Collections.list(req.getHeaderNames());
             final String username = req.getHeader("X-Forwarded-User");
             if (username == null && mandatory) {
                 // return with a not found to hide the fact that a protected resource was requested.
