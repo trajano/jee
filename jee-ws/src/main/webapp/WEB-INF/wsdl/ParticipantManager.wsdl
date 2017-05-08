@@ -62,7 +62,7 @@
   </wsdl:binding>
   <wsdl:service name="ParticipantManagerPorts">
     <wsdl:port binding="tns:ParticipantManagerBinding"
-      name="ParticipantManagerEndpoint">
+      name="ParticipantManagerService">
       <soap:address
         location="https://example.com/ParticipantService" />
     </wsdl:port>

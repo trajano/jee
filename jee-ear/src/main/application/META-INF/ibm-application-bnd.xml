@@ -3,4 +3,5 @@
   <security-role name="users">
     <special-subject type="ALL_AUTHENTICATED_USERS"/>
   </security-role>
+  <resource-ref name="java:app/ds" binding-name="jdbc/sample"/>
 </application-bnd>
