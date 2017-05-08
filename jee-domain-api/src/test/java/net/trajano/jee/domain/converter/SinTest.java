@@ -20,6 +20,24 @@ public class SinTest {
         assertFalse(validator.isValid("349 798 05A", null));
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testGeneratedBadFirstDigit1() {
+
+        CanadianSinValidator.generate(-1);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGeneratedBadFirstDigit2() {
+
+        CanadianSinValidator.generate(10);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGeneratedBadFirstDigit3() {
+
+        CanadianSinValidator.generate(8);
+    }
+
     /**
      * Test generation of 10000 SINs.
      */
@@ -30,6 +48,31 @@ public class SinTest {
         for (int i = 0; i < 10000; ++i) {
             final String generate = CanadianSinValidator.generate();
             assertTrue(generate + " is not a valid SIN", validator.isValid(generate, null));
+        }
+    }
+
+    /**
+     * Test generation of many SINs for non-zero first digit.
+     */
+    @Test
+    public void testGeneratedSinNonZeroFirstDigit() {
+
+        final CanadianSinValidator validator = new CanadianSinValidator();
+        final int[] firstDigits = {
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            9
+        };
+        for (int i = 0; i < 10000; ++i) {
+            for (final int firstDigit : firstDigits) {
+                final String generate = CanadianSinValidator.generate(firstDigit);
+                assertTrue(generate + " is not a valid SIN", validator.isValid(generate, null));
+            }
         }
     }
 

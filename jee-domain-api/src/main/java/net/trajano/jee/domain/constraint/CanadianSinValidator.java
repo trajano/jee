@@ -22,13 +22,34 @@ public class CanadianSinValidator implements
     };
 
     /**
-     * This generates a fake SIN. Fake SINs used by CRA start with 0.
+     * This generates a fake SIN with a random first digit.
      *
      * @return a randomly generated fake SIN.
      */
     public static String generate() {
 
-        int checksum = 0;
+        final int firstDigit = new Random().nextInt(10);
+        if (firstDigit == 8) {
+            return generate(0);
+        } else {
+            return generate(firstDigit);
+        }
+    }
+
+    /**
+     * This generates a fake SIN with a specified first digit.
+     *
+     * @param firstDigit
+     *            must be one of 0, 1,2,3,4,5,6,7,9. Will throw an
+     *            IllegalArgumentException if it is none of those.
+     * @return a randomly generated fake SIN.
+     */
+    public static String generate(final int firstDigit) {
+
+        if (firstDigit < 0 || firstDigit > 9 || firstDigit == 8) {
+            throw new IllegalArgumentException("Not a valid first digit for SIN: " + firstDigit);
+        }
+        int checksum = firstDigit;
         // Choose middle digits such that there are 7 sigits, but the first digit may not be 0 or 9
         // the reason the first digit cannot be 9 is to ensure there's room for a carry when the checksum mod 10 is 0
         final int middleDigits = new Random().nextInt(9999999 + 1 - 1000000 - 1000000) + 1000000;
@@ -55,7 +76,7 @@ public class CanadianSinValidator implements
             checksum = checksum + MAP[digits[0]] + digits[1];
         }
         final int checkDigit = 10 - checksum % 10;
-        return "0" + digits[0] + digits[1] + digits[2] + digits[3] + digits[4] + digits[5] + digits[6] + checkDigit;
+        return String.format("%d%d%d%05d%d", firstDigit, digits[0], digits[1], middleDigits % 100000, checkDigit);
     }
 
     private boolean stripSpacesAndSymbols;
