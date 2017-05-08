@@ -60,9 +60,9 @@
       </wsdl:output>
     </wsdl:operation>
   </wsdl:binding>
-  <wsdl:service name="ParticipantManagerPorts">
+  <wsdl:service name="ParticipantManagerServiceService">
     <wsdl:port binding="tns:ParticipantManagerBinding"
-      name="ParticipantManagerService">
+      name="ParticipantManagerServicePort">
       <soap:address
         location="https://example.com/ParticipantService" />
     </wsdl:port>

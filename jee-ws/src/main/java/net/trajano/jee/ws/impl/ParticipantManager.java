@@ -12,7 +12,7 @@ import net.trajano.jee.ws.ParticipantManagerService;
 
 @WebService(endpointInterface = "net.trajano.jee.ws.ParticipantManagerService",
     targetNamespace = "http://ws.jee.trajano.net/",
-    portName = "ParticipantManagerService",
+    portName = "ParticipantManagerServicePort",
     wsdlLocation = "WEB-INF/wsdl/ParticipantManager.wsdl")
 @Dependent
 public class ParticipantManager implements
