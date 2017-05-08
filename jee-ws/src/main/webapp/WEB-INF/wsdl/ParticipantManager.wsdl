@@ -16,18 +16,42 @@
   <wsdl:message name="getAllResponse">
     <wsdl:part name="parameters" element="schema:getAllResponse"/>
   </wsdl:message>
+  <wsdl:message name="getBySinRequest">
+    <wsdl:part name="parameters" element="schema:getBySin"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getBySinResponse">
+    <wsdl:part name="parameters" element="schema:getBySinResponse"/>
+  </wsdl:message>
   <wsdl:portType name="ParticipantManagerService">
-    <wsdl:operation name="getAll">
+    <wsdl:operation name="getBySin">
+            <wsdl:input message="tns:getBySinRequest"></wsdl:input>
+            <wsdl:output message="tns:getBySinResponse" name="getAllResponse">
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAll">
             <wsdl:input message="tns:getAllRequest"></wsdl:input>
             <wsdl:output message="tns:getAllResponse" name="getAllResponse">
       </wsdl:output>
     </wsdl:operation>
   </wsdl:portType>    <wsdl:binding name="ParticipantManagerBinding"
     type="tns:ParticipantManagerService">
+
     <soap:binding style="document"
       transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="getAll">
+
       <soap:operation soapAction="http://ws.jee.trajano.net/getAll" />
+      <wsdl:input>
+
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getAllResponse">
+
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getBySin">
+      <soap:operation soapAction="http://ws.jee.trajano.net/getBySin" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

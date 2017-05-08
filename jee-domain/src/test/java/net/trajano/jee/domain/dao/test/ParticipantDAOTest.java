@@ -1,10 +1,10 @@
 package net.trajano.jee.domain.dao.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import javax.persistence.NoResultException;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 
@@ -64,12 +64,7 @@ public class ParticipantDAOTest extends BaseJpaTest {
         updatedParticipant.cancel();
         dao.save(updatedParticipant);
 
-        try {
-            dao.getBySin(sin);
-            fail();
-        } catch (final NoResultException e) {
-
-        }
+        assertNull(dao.getBySin(sin));
 
     }
 

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.enterprise.context.Dependent;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 import net.trajano.jee.domain.dao.ParticipantDAO;
@@ -23,11 +24,11 @@ public class DefaultParticipantDAO extends BaseDAO<Participant> implements
     }
 
     @Override
-    public Participant getBySin(final String sin) {
+    public Participant getBySin(final String sin) throws NoResultException {
 
         final TypedQuery<Participant> q = em.createNamedQuery(NamedQueries.PARTICIPANT_GET_BY_SIN, Participant.class);
         q.setParameter("sin", sin);
-        return q.getSingleResult();
+        return nullIfNotFound(q);
     }
 
 }

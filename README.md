@@ -17,4 +17,6 @@ The following technologies are still missing at this point (not necessarily a co
 * Java Mail
 * Web Sockets
 * Web Service Ref
+* JPA Relationships
+* Complex JPA Inheritance
 * JCache (when Java EE 8 comes out)

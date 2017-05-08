@@ -10,10 +10,30 @@
       </xs:annotation>
       <xs:sequence>
         <xs:element maxOccurs="unbounded" minOccurs="0"
-          name="participants" type="tns:Participant" />
+          name="participant" type="tns:Participant" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="getBySin" >
+      <xs:complexType>
+      <xs:sequence>
+        <xs:element  
+          name="sin" type="tns:CanadianSin" />
+      </xs:sequence>
+    </xs:complexType>  
+  </xs:element>
+  <xs:element name="getBySinResponse">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Response</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element minOccurs="0" 
+          name="participant" type="tns:Participant" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
   <xs:complexType name="Void">
     <xs:annotation>
       <xs:documentation>This is used to create a request that has no
@@ -24,13 +44,17 @@
   </xs:complexType>
   <xs:complexType name="Participant">
     <xs:sequence>
-      <xs:element name="id" type="xs:ID" />
       <xs:element name="email" type="xs:string" />
       <xs:element name="genderAtBirth" type="tns:Gender" />
       <xs:element name="name" type="xs:string" />
-      <xs:element name="sin" type="xs:string" />
+      <xs:element name="sin" type="tns:CanadianSin" />
     </xs:sequence>
   </xs:complexType>
+    <xs:simpleType name="CanadianSin">
+    <xs:restriction base="xs:string">
+    <xs:pattern value="[012345679]\d{8}"></xs:pattern>
+    </xs:restriction>
+  </xs:simpleType>
   <xs:simpleType name="Gender">
     <xs:restriction base="xs:string">
       <xs:enumeration value="female" />

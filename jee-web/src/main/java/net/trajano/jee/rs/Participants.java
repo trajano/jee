@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -12,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import net.trajano.jee.domain.constraint.CanadianSin;
 import net.trajano.jee.domain.dao.ParticipantDAO;
 import net.trajano.jee.domain.entity.Participant;
 
@@ -30,10 +32,10 @@ public class Participants {
     }
 
     @GET
-    @Path("{id}")
-    public Response getOne(@PathParam("id") final long id) {
+    @Path("{sin}")
+    public Response getOne(@PathParam("sin") @CanadianSin @NotNull final String sin) {
 
-        final Participant participant = participantDAO.get(id);
+        final Participant participant = participantDAO.getBySin(sin);
         if (participant != null) {
             return Response.ok(participant).build();
         } else {

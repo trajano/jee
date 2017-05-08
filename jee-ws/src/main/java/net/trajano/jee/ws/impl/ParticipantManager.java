@@ -26,15 +26,36 @@ public class ParticipantManager implements
 
         final List<net.trajano.jee.schema.Participant> ret = new LinkedList<>();
         for (final net.trajano.jee.domain.entity.Participant p : participantDAO.getAll()) {
-            final net.trajano.jee.schema.Participant schemaParticipant = new net.trajano.jee.schema.Participant();
-            schemaParticipant.setEmail(p.getEmail());
-            schemaParticipant.setId(String.valueOf(p.getId()));
-            schemaParticipant.setSin(p.getSin());
-            schemaParticipant.setName(p.getName());
-            schemaParticipant.setGenderAtBirth(mapGender(p.getGenderAtBirth()));
+            final net.trajano.jee.schema.Participant schemaParticipant = mapDomainToSchema(p);
             ret.add(schemaParticipant);
         }
         return ret;
+    }
+
+    @Override
+    public net.trajano.jee.schema.Participant getBySin(final String sin) {
+
+        return mapDomainToSchema(participantDAO.getBySin(sin));
+    }
+
+    /**
+     * Maps from domain object to schema object.
+     *
+     * @param p
+     *            domain object
+     * @return schema object
+     */
+    private net.trajano.jee.schema.Participant mapDomainToSchema(final net.trajano.jee.domain.entity.Participant p) {
+
+        if (p == null) {
+            return null;
+        }
+        final net.trajano.jee.schema.Participant schemaParticipant = new net.trajano.jee.schema.Participant();
+        schemaParticipant.setEmail(p.getEmail());
+        schemaParticipant.setSin(p.getSin());
+        schemaParticipant.setName(p.getName());
+        schemaParticipant.setGenderAtBirth(mapGender(p.getGenderAtBirth()));
+        return schemaParticipant;
     }
 
     /**

@@ -1,7 +1,9 @@
 package net.trajano.jee.domain.dao.impl;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 import net.trajano.jee.domain.entity.BaseEntity;
 
@@ -17,6 +19,23 @@ public class BaseDAO<T extends BaseEntity> {
      * methods available to subclasses.
      */
     protected EntityManager em;
+
+    /**
+     * This will execute a {@link TypedQuery#getSingleResult()} and catch a
+     * {@link NoResultException} and return {@code null} that situation.
+     *
+     * @param q
+     *            query
+     * @return single result or null
+     */
+    protected T nullIfNotFound(final TypedQuery<T> q) {
+
+        try {
+            return q.getSingleResult();
+        } catch (final NoResultException e) {
+            return null;
+        }
+    }
 
     /**
      * Performs an upsert operation to store the data. If the id is {@code null}
