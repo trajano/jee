@@ -1,4 +1,4 @@
-package net.trajano.jee.ws.internal;
+package net.trajano.jee.ws;
 
 import java.util.LinkedList;
 import java.util.List;
