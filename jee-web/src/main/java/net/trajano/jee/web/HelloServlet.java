@@ -1,6 +1,7 @@
 package net.trajano.jee.web;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Date;
 
 import javax.inject.Inject;
@@ -32,12 +33,17 @@ public class HelloServlet extends HttpServlet {
         final HttpServletResponse resp) throws ServletException,
         IOException {
 
-        resp.setContentType("text/plain");
-        resp.getWriter().println("Hello " + req.getUserPrincipal().getName() + " at " + new Date());
-        resp.getWriter().println("user is " + userDAO.getByUsername("trajano"));
-        resp.getWriter().println(participantDAO.getAll());
-        resp.getWriter().println(req.isUserInRole("users"));
-        resp.getWriter().println(req.isUserInRole("appuser"));
-        resp.getWriter().println(req.isUserInRole("appusers"));
+        try {
+            resp.setContentType("text/plain");
+            final PrintWriter writer = resp.getWriter();
+            writer.println("Hello " + req.getUserPrincipal().getName() + " at " + new Date());
+            writer.println("user is " + userDAO.getByUsername("trajano"));
+            writer.println(participantDAO.getAll());
+            writer.println(req.isUserInRole("users"));
+            writer.println(req.isUserInRole("appuser"));
+            writer.println(req.isUserInRole("appusers"));
+        } catch (final IOException e) {
+            log("IO Exception", e);
+        }
     }
 }
