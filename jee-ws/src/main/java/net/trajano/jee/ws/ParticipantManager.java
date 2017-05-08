@@ -8,11 +8,10 @@ import javax.inject.Inject;
 import javax.jws.WebService;
 
 import net.trajano.jee.domain.dao.ParticipantDAO;
-import net.trajano.jee.ws.ParticipantManagerService;
 
 @WebService(endpointInterface = "net.trajano.jee.ws.ParticipantManagerService",
     targetNamespace = "http://ws.jee.trajano.net/",
-    portName = "ParticipantManagerPorts",
+    portName = "ParticipantManagerEndpoint",
     wsdlLocation = "WEB-INF/wsdl/ParticipantManager.wsdl")
 @Dependent
 public class ParticipantManager implements
