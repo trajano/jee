@@ -1,5 +1,8 @@
 package net.trajano.jee.domain.dao.test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -31,7 +34,9 @@ public abstract class BaseJpaTest {
     public static void setupJpa() {
 
         vf = Validation.buildDefaultValidatorFactory();
-        emf = Persistence.createEntityManagerFactory("test-pu");
+        final Map<String, String> props = new HashMap<>();
+        props.put("javax.persistence.provider", "org.eclipse.persistence.jpa.PersistenceProvider");
+        emf = Persistence.createEntityManagerFactory("test-pu", props);
         em = emf.createEntityManager();
     }
 
