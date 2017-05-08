@@ -1,4 +1,4 @@
-package net.trajano.jee.ws;
+package net.trajano.jee.ws.impl;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.jws.WebService;
 
 import net.trajano.jee.domain.dao.ParticipantDAO;
+import net.trajano.jee.ws.ParticipantManagerService;
 
 @WebService(endpointInterface = "net.trajano.jee.ws.ParticipantManagerService",
     targetNamespace = "http://ws.jee.trajano.net/",
