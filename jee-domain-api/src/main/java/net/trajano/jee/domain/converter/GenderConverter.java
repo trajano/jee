@@ -5,9 +5,9 @@ import javax.persistence.Converter;
 import net.trajano.jee.domain.entity.Gender;
 
 @Converter(autoApply = true)
-class GenderConverter extends EnumToStringConverter<Gender> {
+public class GenderConverter extends EnumToStringConverter<Gender> {
 
-    protected GenderConverter() {
+    public GenderConverter() {
         super(Gender.class);
     }
 
