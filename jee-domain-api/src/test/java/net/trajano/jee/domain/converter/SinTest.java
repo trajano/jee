@@ -21,6 +21,19 @@ public class SinTest {
     }
 
     /**
+     * Test generation of 10000 SINs.
+     */
+    @Test
+    public void testGeneratedSin() {
+
+        final CanadianSinValidator validator = new CanadianSinValidator();
+        for (int i = 0; i < 10000; ++i) {
+            final String generate = CanadianSinValidator.generate();
+            assertTrue(generate + " is not a valid SIN", validator.isValid(generate, null));
+        }
+    }
+
+    /**
      * Use numbers that are valid according to LUGN but not according to
      * Canadian SIN rules..
      */

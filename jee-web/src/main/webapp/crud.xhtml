@@ -8,8 +8,8 @@
     <h3>List items</h3>
     <h:form rendered="#{not empty participantBean.list}">
       <p:dataTable value="#{participantBean.list}" var="item">
-        <p:column headerText="ID">
-          <h:outputText value="#{item.id}"/>
+        <p:column headerText="SIN">
+          <h:outputText value="#{item.sin}"/>
         </p:column>
         <p:column>
           <f:facet name="header">Name</f:facet>#{item.name}</p:column>
@@ -49,7 +49,7 @@
         </p>
         <p>
           <p:outputLabel value="Social Insurance Number" for="addSin"/>
-          <p:inputText id="addSin" value="#{participantBean.participant.sin}"/>
+          <p:inputText id="addSin" value="#{participantBean.participantSinInput}"/>
           <p:message for="addSin"/>
         </p>
         <p>

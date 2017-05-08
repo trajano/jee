@@ -3,6 +3,9 @@
   <named-query name="Participant.getAll">
     <query>from Participant p where not p.cancelled</query>
   </named-query>
+  <named-query name="Participant.getBySin">
+    <query>from Participant p where p.sin = :sin and not p.cancelled</query>
+  </named-query>
   <named-query name="User.getByUserName">
     <query>from User u where u.username = :username and not u.cancelled</query>
   </named-query>

@@ -1,15 +1,17 @@
 package net.trajano.jee.domain.dao.test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+import javax.persistence.NoResultException;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import net.trajano.jee.domain.constraint.CanadianSinValidator;
 import net.trajano.jee.domain.dao.ParticipantDAO;
 import net.trajano.jee.domain.dao.impl.DefaultParticipantDAO;
 import net.trajano.jee.domain.entity.Gender;
@@ -33,27 +35,41 @@ public class ParticipantDAOTest extends BaseJpaTest {
         assertTrue(dao.getAll().isEmpty());
     }
 
+    /**
+     * Tests create, read, update, "cancel"
+     */
     @Test
-    public void testSaveAndGet() {
+    public void testLifecycle() {
 
         final Participant participant = new Participant();
         participant.setName("Archie");
         participant.setGenderAtBirth(Gender.MALE);
         participant.setEmail("foo@spam.trajano.net");
-        participant.setSin("675828594");
+        final String sin = CanadianSinValidator.generate();
+        participant.setSin(sin);
         final Participant managedParticipant = dao.save(participant);
-        assertNotNull(managedParticipant.getId());
-        final Participant retrievedParticipant = dao.get(managedParticipant.getId());
-        assertEquals(retrievedParticipant.getId(), managedParticipant.getId());
+        assertTrue(managedParticipant.isAssigned());
+        final Participant retrievedParticipant = dao.getBySin(sin);
+        assertEquals(retrievedParticipant.getSin(), sin);
         assertEquals("Archie", retrievedParticipant.getName());
         assertEquals(1, dao.getAll().size());
 
         retrievedParticipant.setName("Janet");
         retrievedParticipant.setGenderAtBirth(Gender.FEMALE);
         dao.save(retrievedParticipant);
-        final Participant updatedParticipant = dao.get(managedParticipant.getId());
+        final Participant updatedParticipant = dao.getBySin(sin);
         assertEquals("Janet", updatedParticipant.getName());
         assertEquals(1, dao.getAll().size());
+
+        updatedParticipant.cancel();
+        dao.save(updatedParticipant);
+
+        try {
+            dao.getBySin(sin);
+            fail();
+        } catch (final NoResultException e) {
+
+        }
 
     }
 
@@ -64,20 +80,19 @@ public class ParticipantDAOTest extends BaseJpaTest {
         participant.setName("Archie");
         participant.setGenderAtBirth(Gender.MALE);
         participant.setSin("675828594");
-        final Participant managedParticipant = dao.save(participant);
-        assertNotNull(managedParticipant.getId());
-        final Participant retrievedParticipant = dao.get(managedParticipant.getId());
-        assertEquals(retrievedParticipant.getId(), managedParticipant.getId());
-        assertEquals("Archie", retrievedParticipant.getName());
-        assertEquals(1, dao.getAll().size());
+        dao.save(participant);
+        fail();
+    }
 
-        retrievedParticipant.setName("Janet");
-        retrievedParticipant.setGenderAtBirth(Gender.FEMALE);
-        dao.save(retrievedParticipant);
-        final Participant updatedParticipant = dao.get(managedParticipant.getId());
-        assertEquals("Janet", updatedParticipant.getName());
-        assertEquals(1, dao.getAll().size());
+    @Test(expected = ValidationException.class)
+    public void testSaveAndGetFailDueToInvalidSin() {
 
+        final Participant participant = new Participant();
+        participant.setName("Archie");
+        participant.setSin("675828595");
+        participant.setGenderAtBirth(Gender.MALE);
+        dao.save(participant);
+        fail();
     }
 
     @Test(expected = ValidationException.class)
@@ -86,19 +101,8 @@ public class ParticipantDAOTest extends BaseJpaTest {
         final Participant participant = new Participant();
         participant.setName("Archie");
         participant.setGenderAtBirth(Gender.MALE);
-        final Participant managedParticipant = dao.save(participant);
-        assertNotNull(managedParticipant.getId());
-        final Participant retrievedParticipant = dao.get(managedParticipant.getId());
-        assertEquals(retrievedParticipant.getId(), managedParticipant.getId());
-        assertEquals("Archie", retrievedParticipant.getName());
-        assertEquals(1, dao.getAll().size());
-
-        retrievedParticipant.setName("Janet");
-        retrievedParticipant.setGenderAtBirth(Gender.FEMALE);
-        dao.save(retrievedParticipant);
-        final Participant updatedParticipant = dao.get(managedParticipant.getId());
-        assertEquals("Janet", updatedParticipant.getName());
-        assertEquals(1, dao.getAll().size());
-
+        dao.save(participant);
+        fail();
     }
+
 }

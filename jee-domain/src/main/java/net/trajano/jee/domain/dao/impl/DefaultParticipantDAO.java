@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.enterprise.context.Dependent;
+import javax.persistence.TypedQuery;
 
 import net.trajano.jee.domain.dao.ParticipantDAO;
 import net.trajano.jee.domain.entity.Participant;
@@ -12,14 +13,8 @@ import net.trajano.jee.domain.entity.Participant;
 @Local
 @Stateless
 @Dependent
-public class DefaultParticipantDAO extends BaseDAO implements
+public class DefaultParticipantDAO extends BaseDAO<Participant> implements
     ParticipantDAO {
-
-    @Override
-    public Participant get(final long id) {
-
-        return em.find(Participant.class, id);
-    }
 
     @Override
     public List<Participant> getAll() {
@@ -28,9 +23,11 @@ public class DefaultParticipantDAO extends BaseDAO implements
     }
 
     @Override
-    public Participant save(final Participant participant) {
+    public Participant getBySin(final String sin) {
 
-        return (Participant) upsert(participant);
+        final TypedQuery<Participant> q = em.createNamedQuery(NamedQueries.PARTICIPANT_GET_BY_SIN, Participant.class);
+        q.setParameter("sin", sin);
+        return q.getSingleResult();
     }
 
 }

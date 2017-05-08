@@ -9,9 +9,9 @@ import net.trajano.jee.domain.entity.Participant;
 @Local
 public interface ParticipantDAO {
 
-    Participant get(long id);
-
     List<Participant> getAll();
+
+    Participant getBySin(String sin);
 
     Participant save(Participant participant);
 }

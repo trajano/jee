@@ -13,7 +13,7 @@ import net.trajano.jee.domain.entity.User;
 @Local
 @Stateless
 @Dependent
-public class DefaultUserDAO extends BaseDAO implements
+public class DefaultUserDAO extends BaseDAO<User> implements
     UserDAO {
 
     /**
@@ -24,9 +24,7 @@ public class DefaultUserDAO extends BaseDAO implements
     @Override
     public User getByPrincipal(final Principal p) {
 
-        final TypedQuery<User> q = em.createNamedQuery(NamedQueries.USER_GET_BY_USERNAME, User.class);
-        q.setParameter(PARAM_USERNAME, p.getName());
-        return q.getSingleResult();
+        return getByUsername(p.getName());
     }
 
     @Override

@@ -55,7 +55,7 @@ public abstract class BaseEntity implements
     private Date createdOn;
 
     /**
-     * Primary key.
+     * Primary key. These are internal IDs and are not exposed to the user.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -91,14 +91,13 @@ public abstract class BaseEntity implements
     }
 
     /**
-     * Obtains the primary key associated with the entity. This may return
-     * {@code null} if not set.
+     * Checks if the entity is assigned with a primary key.
      *
-     * @return
+     * @return primary key is not {@code null}
      */
-    public Long getId() {
+    public boolean isAssigned() {
 
-        return id;
+        return id != null;
     }
 
     /**

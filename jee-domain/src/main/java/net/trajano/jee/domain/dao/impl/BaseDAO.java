@@ -10,13 +10,32 @@ import net.trajano.jee.domain.entity.BaseEntity;
  *
  * @author Archimedes Trajano
  */
-public class BaseDAO {
+public class BaseDAO<T extends BaseEntity> {
 
     /**
      * Injected entity manager. Made protected to allow the whole gamut of
      * methods available to subclasses.
      */
     protected EntityManager em;
+
+    /**
+     * Performs an upsert operation to store the data. If the id is {@code null}
+     * then {@link EntityManager#persist(Object)} is called otherwise a
+     * {@link EntityManager#merge(Object)} is called.
+     *
+     * @param e
+     *            entity
+     * @return managed entity.
+     */
+    public T save(final T e) {
+
+        if (e.isAssigned()) {
+            return em.merge(e);
+        } else {
+            em.persist(e);
+            return e;
+        }
+    }
 
     /**
      * Sets/injects the entity manager.
@@ -28,25 +47,6 @@ public class BaseDAO {
     public void setEntityManager(final EntityManager em) {
 
         this.em = em;
-    }
-
-    /**
-     * Performs an upsert operation. If the id is {@code null} then
-     * {@link EntityManager#persist(Object)} is called otherwise a
-     * {@link EntityManager#merge(Object)} is called.
-     *
-     * @param e
-     *            entity
-     * @return managed entity.
-     */
-    public BaseEntity upsert(final BaseEntity e) {
-
-        if (e.getId() == null) {
-            em.persist(e);
-            return e;
-        } else {
-            return em.merge(e);
-        }
     }
 
 }

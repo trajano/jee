@@ -15,5 +15,6 @@ The following technologies are still missing at this point (not necessarily a co
 * JMS
 * MDB
 * Java Mail
+* Web Sockets
+* Web Service Ref
 * JCache (when Java EE 8 comes out)
-
