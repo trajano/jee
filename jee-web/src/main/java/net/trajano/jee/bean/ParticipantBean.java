@@ -10,6 +10,7 @@ import javax.inject.Named;
 import javax.validation.constraints.NotNull;
 
 import net.trajano.jee.domain.constraint.CanadianSin;
+import net.trajano.jee.domain.constraint.CanadianSinValidator;
 import net.trajano.jee.domain.dao.ParticipantDAO;
 import net.trajano.jee.domain.entity.Participant;
 
@@ -58,6 +59,11 @@ public class ParticipantBean implements
 
         this.participant = participant;
         edit = true;
+    }
+
+    public String getGeneratedSin() {
+
+        return CanadianSinValidator.generate();
     }
 
     public List<Participant> getList() {
