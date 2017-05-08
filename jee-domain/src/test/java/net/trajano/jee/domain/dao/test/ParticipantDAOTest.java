@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -39,6 +40,7 @@ public class ParticipantDAOTest extends BaseJpaTest {
         participant.setName("Archie");
         participant.setGenderAtBirth(Gender.MALE);
         participant.setEmail("foo@spam.trajano.net");
+        participant.setSin("675828594");
         final Participant managedParticipant = dao.save(participant);
         assertNotNull(managedParticipant.getId());
         final Participant retrievedParticipant = dao.get(managedParticipant.getId());
@@ -57,6 +59,29 @@ public class ParticipantDAOTest extends BaseJpaTest {
 
     @Test(expected = ConstraintViolationException.class)
     public void testSaveAndGetFailDueToConstraintViolation() {
+
+        final Participant participant = new Participant();
+        participant.setName("Archie");
+        participant.setGenderAtBirth(Gender.MALE);
+        participant.setSin("675828594");
+        final Participant managedParticipant = dao.save(participant);
+        assertNotNull(managedParticipant.getId());
+        final Participant retrievedParticipant = dao.get(managedParticipant.getId());
+        assertEquals(retrievedParticipant.getId(), managedParticipant.getId());
+        assertEquals("Archie", retrievedParticipant.getName());
+        assertEquals(1, dao.getAll().size());
+
+        retrievedParticipant.setName("Janet");
+        retrievedParticipant.setGenderAtBirth(Gender.FEMALE);
+        dao.save(retrievedParticipant);
+        final Participant updatedParticipant = dao.get(managedParticipant.getId());
+        assertEquals("Janet", updatedParticipant.getName());
+        assertEquals(1, dao.getAll().size());
+
+    }
+
+    @Test(expected = ValidationException.class)
+    public void testSaveAndGetFailDueToValidationException() {
 
         final Participant participant = new Participant();
         participant.setName("Archie");

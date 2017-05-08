@@ -1,10 +1,8 @@
-/* AUTOMATICALLY GENERATED ON Sat May 06 12:11:43 EDT 2017*/
-/* DO NOT EDIT */
-
 grant codeBase "file:${application}" {
   permission java.security.SecurityPermission "getProperty.authconfigprovider.factory";
   permission java.security.SecurityPermission "setProperty.authconfigprovider.factory";
   permission java.security.SecurityPermission "setProperty.authconfigfactory.provider";
+  permission java.lang.RuntimePermission "accessDeclaredMembers";
   permission javax.security.auth.AuthPermission "modifyPrivateCredentials";
 };
 

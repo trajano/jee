@@ -6,6 +6,7 @@ import javax.persistence.Index;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import net.trajano.jee.domain.constraint.CanadianSin;
 import net.trajano.jee.domain.constraint.Email;
 
 @Entity
@@ -33,6 +34,12 @@ public class Participant extends BaseEntity {
         nullable = false)
     private String name;
 
+    @NotNull
+    @CanadianSin
+    @Column(length = 9,
+        nullable = false)
+    private String sin;
+
     public String getEmail() {
 
         return email;
@@ -48,6 +55,11 @@ public class Participant extends BaseEntity {
         return name;
     }
 
+    public String getSin() {
+
+        return sin;
+    }
+
     public void setEmail(final String email) {
 
         this.email = email;
@@ -61,6 +73,11 @@ public class Participant extends BaseEntity {
     public void setName(final String name) {
 
         this.name = name;
+    }
+
+    public void setSin(final String sin) {
+
+        this.sin = sin;
     }
 
 }
