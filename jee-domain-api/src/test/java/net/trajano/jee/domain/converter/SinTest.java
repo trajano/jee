@@ -17,6 +17,7 @@ public class SinTest {
         final CanadianSinValidator validator = new CanadianSinValidator();
         validator.initialize(getClass().getMethod("testSinSkipSymbols").getAnnotation(CanadianSin.class));
         assertFalse(validator.isValid("349 798 053", null));
+        assertFalse(validator.isValid("349 798 05A", null));
     }
 
     /**
@@ -47,6 +48,7 @@ public class SinTest {
         validator.initialize(getClass().getMethod("testSinSkipSymbols").getAnnotation(CanadianSin.class));
         assertTrue(validator.isValid("349 798 033", null));
         assertTrue(validator.isValid("    349 798 033   ", null));
+        assertTrue(validator.isValid("    349-798-033   ", null));
         assertTrue(validator.isValid("    349 798 03   3", null));
     }
 
