@@ -41,6 +41,6 @@ public class JaspicInitializer implements
         final ServletContext context = sce.getServletContext();
         registrationID = AuthConfigFactory.getFactory()
             .registerConfigProvider(new HttpHeaderAuthConfigProvider(userDAO), "HttpServlet",
-                context.getVirtualServerName() + " " + context.getContextPath(), "JEE Sample");
+                context.getVirtualServerName() + " " + context.getContextPath(), "Web Services Sample");
     }
 }
