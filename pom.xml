@@ -21,6 +21,7 @@
     <module>jee-ear</module>
     <module>jee-jaspic</module>
     <module>jee-web</module>
+    <module>jee-ws</module>
   </modules>
   <scm>
     <connection>scm:git:https://github.com/trajano/${repo.id}.git</connection>

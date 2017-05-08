@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:tns="http://schema.jee.trajano.net/" elementFormDefault="unqualified"
+  targetNamespace="http://schema.jee.trajano.net/" version="1.0">
+  <xs:element name="getAll" type="tns:Void" />
+  <xs:element name="getAllResponse">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Response</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" minOccurs="0"
+          name="participants" type="tns:Participant" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="Void">
+    <xs:annotation>
+      <xs:documentation>This is used to create a request that has no
+        parameters.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence />
+  </xs:complexType>
+  <xs:complexType name="Participant">
+    <xs:sequence>
+      <xs:element name="id" type="xs:ID" />
+      <xs:element name="email" type="xs:string" />
+      <xs:element name="genderAtBirth" type="tns:Gender" />
+      <xs:element name="name" type="xs:string" />
+      <xs:element name="sin" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="Gender">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="female" />
+      <xs:enumeration value="male" />
+      <xs:enumeration value="not disclosed" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
