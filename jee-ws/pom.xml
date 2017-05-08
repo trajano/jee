@@ -64,6 +64,7 @@ This decouple the services plumbing code from a full web UI code.  However, they
               <vmArgs>
                 <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
               </vmArgs>
+              <xnocompile>true</xnocompile>
             </configuration>
           </execution>
         </executions>
