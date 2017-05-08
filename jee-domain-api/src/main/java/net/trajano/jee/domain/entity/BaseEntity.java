@@ -91,6 +91,27 @@ public abstract class BaseEntity implements
     }
 
     /**
+     * Returns the primary key. May be <code>null</code> if not
+     * {@link #isAssigned()}.
+     *
+     * @return primary key.
+     */
+    public Long getId() {
+
+        return id;
+    }
+
+    /**
+     * Retruens the optimistic locking version number.
+     *
+     * @return
+     */
+    public long getVersionNo() {
+
+        return versionNo;
+    }
+
+    /**
      * Checks if the entity is assigned with a primary key.
      *
      * @return primary key is not {@code null}
@@ -98,6 +119,23 @@ public abstract class BaseEntity implements
     public boolean isAssigned() {
 
         return id != null;
+    }
+
+    /**
+     * This sets the key data for updating the record in the database later.
+     * These are normally set together as such ther is no individual setter for
+     * ID and versionNo.
+     * 
+     * @param id
+     *            primary key
+     * @param versionNo
+     *            optimistic locking version
+     */
+    public void setUpdateKey(final long id,
+        final long versionNo) {
+
+        this.id = id;
+        this.versionNo = versionNo;
     }
 
     /**
