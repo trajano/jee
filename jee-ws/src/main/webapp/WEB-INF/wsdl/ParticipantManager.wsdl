@@ -22,7 +22,7 @@
   <wsdl:message name="getBySinResponse">
     <wsdl:part name="parameters" element="schema:getBySinResponse"/>
   </wsdl:message>
-  <wsdl:portType name="ParticipantManagerService">
+  <wsdl:portType name="ParticipantManager">
     <wsdl:operation name="getBySin">
             <wsdl:input message="tns:getBySinRequest"></wsdl:input>
             <wsdl:output message="tns:getBySinResponse" name="getAllResponse">
@@ -34,7 +34,7 @@
       </wsdl:output>
     </wsdl:operation>
   </wsdl:portType>    <wsdl:binding name="ParticipantManagerBinding"
-    type="tns:ParticipantManagerService">
+    type="tns:ParticipantManager">
 
     <soap:binding style="document"
       transport="http://schemas.xmlsoap.org/soap/http" />
@@ -60,11 +60,11 @@
       </wsdl:output>
     </wsdl:operation>
   </wsdl:binding>
-  <wsdl:service name="ParticipantManagerServiceService">
+  <wsdl:service name="ParticipantManagerService">
     <wsdl:port binding="tns:ParticipantManagerBinding"
-      name="ParticipantManagerServicePort">
+      name="ParticipantManagerPort">
       <soap:address
-        location="https://example.com/ParticipantService" />
+        location="https://example.com/ParticipantManagerService" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

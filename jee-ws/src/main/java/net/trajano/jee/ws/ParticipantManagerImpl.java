@@ -1,4 +1,4 @@
-package net.trajano.jee.ws.impl;
+package net.trajano.jee.ws;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -8,15 +8,14 @@ import javax.inject.Inject;
 import javax.jws.WebService;
 
 import net.trajano.jee.domain.dao.ParticipantDAO;
-import net.trajano.jee.ws.ParticipantManagerService;
 
-@WebService(endpointInterface = "net.trajano.jee.ws.ParticipantManagerService",
-    targetNamespace = "http://ws.jee.trajano.net/",
-    portName = "ParticipantManagerServicePort",
+@WebService(serviceName = "ParticipantManagerService",
+    endpointInterface = "net.trajano.jee.ws.ParticipantManager",
+    portName = "ParticipantManagerPort",
     wsdlLocation = "WEB-INF/wsdl/ParticipantManager.wsdl")
 @Dependent
-public class ParticipantManager implements
-    ParticipantManagerService {
+public class ParticipantManagerImpl implements
+    ParticipantManager {
 
     @Inject
     private ParticipantDAO participantDAO;
