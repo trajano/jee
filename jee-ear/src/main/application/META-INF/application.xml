@@ -21,6 +21,7 @@
   </security-role>
   <resource-ref>
     <res-ref-name>java:app/ds</res-ref-name>
+    <lookup-name>java:app/ds</lookup-name>
     <res-type>javax.sql.DataSource</res-type>
   </resource-ref>
   <library-directory>lib</library-directory>
