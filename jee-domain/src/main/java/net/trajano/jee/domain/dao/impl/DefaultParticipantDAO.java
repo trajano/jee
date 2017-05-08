@@ -24,7 +24,7 @@ public class DefaultParticipantDAO extends BaseDAO<Participant> implements
     }
 
     @Override
-    public Participant getBySin(final String sin) throws NoResultException {
+    public Participant getBySin(final String sin) {
 
         final TypedQuery<Participant> q = em.createNamedQuery(NamedQueries.PARTICIPANT_GET_BY_SIN, Participant.class);
         q.setParameter("sin", sin);
