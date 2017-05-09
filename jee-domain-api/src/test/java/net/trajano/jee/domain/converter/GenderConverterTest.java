@@ -15,4 +15,11 @@ public class GenderConverterTest {
         assertEquals("M", genderConverter.convertToDatabaseColumn(Gender.MALE));
         assertEquals(Gender.MALE, genderConverter.convertToEntityAttribute("M"));
     }
+
+    @Test
+    public void testStaticConverter() {
+
+        assertEquals("F", StaticEnumToStringConverter.convertToDatabaseColumn(Gender.FEMALE));
+        assertEquals(Gender.FEMALE, StaticEnumToStringConverter.convertToEntityAttribute("F", Gender.class));
+    }
 }
