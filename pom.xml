@@ -92,6 +92,7 @@
         <plugin>
           <groupId>net.trajano.mojo</groupId>
           <artifactId>cleanpom-maven-plugin</artifactId>
+          <version>1.2.2</version>
           <executions>
             <execution>
               <goals>
