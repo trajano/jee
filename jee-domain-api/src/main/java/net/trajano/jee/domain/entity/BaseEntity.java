@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
-import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,7 +22,6 @@ import javax.persistence.Version;
  * @author Archimedes Trajano
  */
 @MappedSuperclass
-@EntityListeners(BaseEntityListener.class)
 public abstract class BaseEntity implements
     Serializable {
 
@@ -125,7 +123,7 @@ public abstract class BaseEntity implements
      * This sets the key data for updating the record in the database later.
      * These are normally set together as such ther is no individual setter for
      * ID and versionNo.
-     * 
+     *
      * @param id
      *            primary key
      * @param versionNo
