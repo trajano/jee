@@ -2,7 +2,6 @@ package net.trajano.jee.ws;
 
 import java.util.List;
 
-import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.jws.WebMethod;
 import javax.jws.WebService;

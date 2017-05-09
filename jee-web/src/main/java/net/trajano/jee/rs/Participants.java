@@ -2,7 +2,6 @@ package net.trajano.jee.rs;
 
 import java.util.List;
 
-import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.GET;

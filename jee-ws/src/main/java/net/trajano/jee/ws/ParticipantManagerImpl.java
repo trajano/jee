@@ -3,7 +3,6 @@ package net.trajano.jee.ws;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.jws.WebService;
 

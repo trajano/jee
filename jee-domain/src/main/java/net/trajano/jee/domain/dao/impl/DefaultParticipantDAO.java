@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.ejb.Local;
 import javax.ejb.Stateless;
-import javax.enterprise.context.Dependent;
 import javax.persistence.TypedQuery;
 
 import net.trajano.jee.domain.dao.ParticipantDAO;
