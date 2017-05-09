@@ -27,7 +27,9 @@ public class ParticipantBean implements
 
     private boolean edit;
 
-    @NotNull
+    /**
+     * Gender at birth input.
+     */
     private Gender genderAtBirthInput;
 
     private List<Participant> list;
