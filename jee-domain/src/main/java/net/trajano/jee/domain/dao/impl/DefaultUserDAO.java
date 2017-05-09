@@ -12,7 +12,6 @@ import net.trajano.jee.domain.entity.User;
 
 @Local
 @Stateless
-@Dependent
 public class DefaultUserDAO extends BaseDAO<User> implements
     UserDAO {
 

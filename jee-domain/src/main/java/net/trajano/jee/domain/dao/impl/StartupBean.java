@@ -3,11 +3,13 @@ package net.trajano.jee.domain.dao.impl;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Singleton
 @Startup
+@ApplicationScoped
 public class StartupBean {
 
     @PersistenceContext

@@ -12,7 +12,6 @@ import net.trajano.jee.domain.entity.Participant;
 
 @Local
 @Stateless
-@Dependent
 public class DefaultParticipantDAO extends BaseDAO<Participant> implements
     ParticipantDAO {
 

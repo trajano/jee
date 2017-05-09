@@ -2,11 +2,11 @@ package net.trajano.jee.domain.entity;
 
 import javax.annotation.Resource;
 import javax.ejb.SessionContext;
-import javax.enterprise.context.Dependent;
+import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
-@Dependent
+@ApplicationScoped
 public class BaseEntityListener {
 
     /**

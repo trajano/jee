@@ -13,7 +13,6 @@ import net.trajano.jee.domain.dao.ParticipantDAO;
     endpointInterface = "net.trajano.jee.ws.ParticipantManager",
     portName = "ParticipantManagerPort",
     wsdlLocation = "WEB-INF/wsdl/ParticipantManager.wsdl")
-@Dependent
 public class ParticipantManagerImpl implements
     ParticipantManager {
 

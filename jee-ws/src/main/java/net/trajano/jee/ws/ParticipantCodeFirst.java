@@ -17,7 +17,6 @@ import net.trajano.jee.domain.entity.Participant;
  * @author Archimedes Trajano
  */
 @WebService
-@Dependent
 public class ParticipantCodeFirst {
 
     @Inject

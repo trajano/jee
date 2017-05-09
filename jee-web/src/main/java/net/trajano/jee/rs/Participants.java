@@ -18,7 +18,6 @@ import net.trajano.jee.domain.dao.ParticipantDAO;
 import net.trajano.jee.domain.entity.Participant;
 
 @Path("/participants")
-@Dependent
 @Produces(MediaType.APPLICATION_JSON)
 public class Participants {
 
