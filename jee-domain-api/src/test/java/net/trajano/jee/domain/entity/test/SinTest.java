@@ -1,4 +1,4 @@
-package net.trajano.jee.domain.converter;
+package net.trajano.jee.domain.entity.test;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
