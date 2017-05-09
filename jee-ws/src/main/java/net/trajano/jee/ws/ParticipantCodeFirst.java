@@ -5,6 +5,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
+import javax.xml.ws.soap.MTOM;
 
 import net.trajano.jee.domain.dao.ParticipantDAO;
 import net.trajano.jee.domain.entity.Participant;
@@ -15,6 +16,7 @@ import net.trajano.jee.domain.entity.Participant;
  *
  * @author Archimedes Trajano
  */
+@MTOM(enabled = true)
 @WebService
 public class ParticipantCodeFirst {
 

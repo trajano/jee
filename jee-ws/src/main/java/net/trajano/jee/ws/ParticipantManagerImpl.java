@@ -5,9 +5,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.jws.WebService;
+import javax.xml.ws.soap.MTOM;
 
 import net.trajano.jee.domain.dao.ParticipantDAO;
 
+@MTOM(enabled = true)
 @WebService(serviceName = "ParticipantManagerService",
     endpointInterface = "net.trajano.jee.ws.ParticipantManager",
     portName = "ParticipantManagerPort",
