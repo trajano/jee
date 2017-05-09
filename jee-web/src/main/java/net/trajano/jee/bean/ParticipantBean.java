@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import net.trajano.jee.domain.constraint.CanadianSin;
 import net.trajano.jee.domain.constraint.CanadianSinValidator;
 import net.trajano.jee.domain.dao.ParticipantDAO;
+import net.trajano.jee.domain.entity.Gender;
 import net.trajano.jee.domain.entity.Participant;
 
 @Named
@@ -25,6 +26,9 @@ public class ParticipantBean implements
     private static final long serialVersionUID = 5615914274881003121L;
 
     private boolean edit;
+
+    @NotNull
+    private Gender genderAtBirthInput;
 
     private List<Participant> list;
 
@@ -44,6 +48,7 @@ public class ParticipantBean implements
     public void add() {
 
         participant.setSin(participantSinInput.replaceAll("[\\s\\-]", ""));
+        participant.setGenderAtBirth(genderAtBirthInput);
         participantDAO.save(participant);
         init();
     }
@@ -58,7 +63,14 @@ public class ParticipantBean implements
     public void edit(final Participant participant) {
 
         this.participant = participant;
+        participantSinInput = participant.getSin();
+        genderAtBirthInput = participant.getGenderAtBirth();
         edit = true;
+    }
+
+    public Gender getGenderAtBirthInput() {
+
+        return genderAtBirthInput;
     }
 
     public String getGeneratedSin() {
@@ -88,6 +100,7 @@ public class ParticipantBean implements
         // Reset placeholder.
         participant = new Participant();
         participantSinInput = "";
+        genderAtBirthInput = null;
     }
 
     public boolean isInEdit() {
@@ -97,9 +110,15 @@ public class ParticipantBean implements
 
     public void saveParticipant() {
 
+        participant.setGenderAtBirth(genderAtBirthInput);
         participantDAO.save(participant);
         init();
         edit = false;
+    }
+
+    public void setGenderAtBirthInput(final Gender genderAtBirthInput) {
+
+        this.genderAtBirthInput = genderAtBirthInput;
     }
 
     public void setParticipantSinInput(final String participantSinInput) {

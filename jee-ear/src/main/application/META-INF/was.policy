@@ -4,5 +4,5 @@ grant codeBase "file:${application}" {
   permission java.security.SecurityPermission "setProperty.authconfigfactory.provider";
   permission java.lang.RuntimePermission "accessDeclaredMembers";
   permission javax.security.auth.AuthPermission "modifyPrivateCredentials";
+  permission java.lang.reflect.ReflectPermission "suppressAccessChecks";
 };
-

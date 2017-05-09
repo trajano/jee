@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 
 import net.trajano.jee.domain.constraint.CanadianSin;
 import net.trajano.jee.domain.constraint.Email;
+import net.trajano.jee.domain.converter.StaticEnumToStringConverter;
 
 @Entity
 @Table(indexes = @Index(columnList = "cancelled",
@@ -28,7 +29,7 @@ public class Participant extends BaseEntity {
     @NotNull
     @Column(length = ColumnLengths.ENUM,
         nullable = false)
-    private Gender genderAtBirth;
+    private String genderAtBirth;
 
     @Column(length = ColumnLengths.NAME,
         nullable = false)
@@ -47,7 +48,7 @@ public class Participant extends BaseEntity {
 
     public Gender getGenderAtBirth() {
 
-        return genderAtBirth;
+        return StaticEnumToStringConverter.convertToEntityAttribute(genderAtBirth, Gender.class);
     }
 
     public String getName() {
@@ -67,7 +68,7 @@ public class Participant extends BaseEntity {
 
     public void setGenderAtBirth(final Gender genderAtBirth) {
 
-        this.genderAtBirth = genderAtBirth;
+        this.genderAtBirth = StaticEnumToStringConverter.convertToDatabaseColumn(genderAtBirth);
     }
 
     public void setName(final String name) {

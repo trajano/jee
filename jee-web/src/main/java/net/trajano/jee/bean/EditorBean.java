@@ -1,8 +1,8 @@
 package net.trajano.jee.bean;
 
-import javax.faces.bean.ManagedBean;
+import javax.inject.Named;
 
-@ManagedBean(name = "editor")
+@Named
 public class EditorBean {
 
     private String value = "This editor is provided by PrimeFaces";
