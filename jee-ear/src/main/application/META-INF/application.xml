@@ -19,10 +19,11 @@
   <security-role>
     <role-name>users</role-name>
   </security-role>
+  <library-directory>lib</library-directory>
   <resource-ref>
     <res-ref-name>java:app/ds</res-ref-name>
-    <lookup-name>java:app/ds</lookup-name>
     <res-type>javax.sql.DataSource</res-type>
+    <res-auth>Container</res-auth>
+    <lookup-name>java:app/ds</lookup-name>
   </resource-ref>
-  <library-directory>lib</library-directory>
 </application>
