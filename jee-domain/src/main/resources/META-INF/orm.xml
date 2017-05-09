@@ -13,5 +13,5 @@
     <query>select count(u) from User u where u.username = :username and u.cancelled = false</query>
   </named-query>
   <mapped-superclass class="net.trajano.jee.domain.entity.BaseEntity">
-  <entity-listeners><entity-listener class="net.trajano.jee.domain.entity.BaseEntityListener"></entity-listener></entity-listeners></mapped-superclass>
+  <entity-listeners><entity-listener class="net.trajano.jee.domain.dao.impl.BaseEntityListener"></entity-listener></entity-listeners></mapped-superclass>
 </entity-mappings>

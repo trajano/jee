@@ -137,12 +137,12 @@ public abstract class BaseEntity implements
     }
 
     /**
-     * Updates the audit data. This is called by {@link BaseEntityListener}
+     * Updates the audit data.
      *
      * @param username
      *            user name
      */
-    void updateAudit(final String username) {
+    public void updateAudit(final String username) {
 
         final Date current = new Date();
         if (createdBy == null) {
