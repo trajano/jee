@@ -1,70 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.jee.trajano.net/"
-  xmlns:schema = "http://schema.jee.trajano.net/"
-  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http"
-  name="ParticipantManager" targetNamespace="http://ws.jee.trajano.net/">
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.jee.trajano.net/" xmlns:schema="http://schema.jee.trajano.net/" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:mtom="http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="ParticipantManager" targetNamespace="http://ws.jee.trajano.net/">
   <wsdl:types>
     <xsd:schema>
-      <xsd:import schemaLocation="Participant.xsd"
-        namespace="http://schema.jee.trajano.net/" />
+      <xsd:import schemaLocation="Participant.xsd" namespace="http://schema.jee.trajano.net/"/>
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="getAllRequest">
-    <wsdl:part name="parameters" element="schema:getAll"></wsdl:part>
+    <wsdl:part name="parameters" element="schema:getAll"/>
   </wsdl:message>
   <wsdl:message name="getAllResponse">
     <wsdl:part name="parameters" element="schema:getAllResponse"/>
   </wsdl:message>
   <wsdl:message name="getBySinRequest">
-    <wsdl:part name="parameters" element="schema:getBySin"></wsdl:part>
+    <wsdl:part name="parameters" element="schema:getBySin"/>
   </wsdl:message>
   <wsdl:message name="getBySinResponse">
     <wsdl:part name="parameters" element="schema:getBySinResponse"/>
   </wsdl:message>
   <wsdl:portType name="ParticipantManager">
     <wsdl:operation name="getBySin">
-            <wsdl:input message="tns:getBySinRequest"></wsdl:input>
-            <wsdl:output message="tns:getBySinResponse" name="getAllResponse">
-      </wsdl:output>
+      <wsdl:input message="tns:getBySinRequest"/>
+      <wsdl:output message="tns:getBySinResponse" name="getAllResponse"/>
     </wsdl:operation>
     <wsdl:operation name="getAll">
-            <wsdl:input message="tns:getAllRequest"></wsdl:input>
-            <wsdl:output message="tns:getAllResponse" name="getAllResponse">
-      </wsdl:output>
+      <wsdl:input message="tns:getAllRequest"/>
+      <wsdl:output message="tns:getAllResponse" name="getAllResponse"/>
     </wsdl:operation>
-  </wsdl:portType>    <wsdl:binding name="ParticipantManagerBinding"
-    type="tns:ParticipantManager">
-
-    <soap:binding style="document"
-      transport="http://schemas.xmlsoap.org/soap/http" />
+  </wsdl:portType>
+  <wsdl:binding name="ParticipantManagerBinding" type="tns:ParticipantManager">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
     <wsdl:operation name="getAll">
-
-      <soap:operation soapAction="http://ws.jee.trajano.net/getAll" />
+      <soap:operation soapAction="http://ws.jee.trajano.net/getAll"/>
       <wsdl:input>
-
-        <soap:body use="literal" />
+        <soap:body use="literal"/>
       </wsdl:input>
       <wsdl:output name="getAllResponse">
-
-        <soap:body use="literal" />
+        <soap:body use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="getBySin">
-      <soap:operation soapAction="http://ws.jee.trajano.net/getBySin" />
+      <soap:operation soapAction="http://ws.jee.trajano.net/getBySin"/>
       <wsdl:input>
-        <soap:body use="literal" />
+        <soap:body use="literal"/>
       </wsdl:input>
       <wsdl:output name="getAllResponse">
-        <soap:body use="literal" />
+        <soap:body use="literal"/>
       </wsdl:output>
     </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="ParticipantManagerService">
-    <wsdl:port binding="tns:ParticipantManagerBinding"
-      name="ParticipantManagerPort">
-      <soap:address
-        location="https://example.com/ParticipantManagerService" />
+    <wsdl:port binding="tns:ParticipantManagerBinding" name="ParticipantManagerPort">
+      <soap:address location="https://example.com/ParticipantManagerService"/>
     </wsdl:port>
   </wsdl:service>
+  <wsp:Policy>
+    <mtom:OptimizedMimeSerialization wsp:Optional="false"/>
+    <wsam:Addressing wsp:Optional="false">
+      <wsp:Policy/>
+    </wsam:Addressing>
+  </wsp:Policy>
 </wsdl:definitions>

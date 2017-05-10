@@ -103,6 +103,8 @@
                   <xmlFileSet>
                     <directory>${basedir}</directory>
                     <includes>
+                      <include>**/src/**/*.wsdl</include>
+                      <include>**/src/**/*.xsd</include>
                       <include>**/src/**/*.xml</include>
                       <include>**/src/**/*.xhtml</include>
                     </includes>

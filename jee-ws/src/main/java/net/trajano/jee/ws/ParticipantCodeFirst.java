@@ -5,6 +5,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
+import javax.xml.ws.soap.Addressing;
 import javax.xml.ws.soap.MTOM;
 
 import net.trajano.jee.domain.dao.ParticipantDAO;
@@ -18,6 +19,8 @@ import net.trajano.jee.domain.entity.Participant;
  */
 @MTOM(enabled = true)
 @WebService
+@Addressing(enabled = true,
+    required = true)
 public class ParticipantCodeFirst {
 
     @Inject

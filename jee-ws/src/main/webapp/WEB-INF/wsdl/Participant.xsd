@@ -1,26 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  xmlns:tns="http://schema.jee.trajano.net/" elementFormDefault="unqualified"
-  targetNamespace="http://schema.jee.trajano.net/" version="1.0">
-  <xs:element name="getAll" type="tns:Void" />
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schema.jee.trajano.net/" elementFormDefault="unqualified" targetNamespace="http://schema.jee.trajano.net/" version="1.0">
+  <xs:element name="getAll" type="tns:Void"/>
   <xs:element name="getAllResponse">
     <xs:complexType>
       <xs:annotation>
         <xs:documentation>Response</xs:documentation>
       </xs:annotation>
       <xs:sequence>
-        <xs:element maxOccurs="unbounded" minOccurs="0"
-          name="participant" type="tns:Participant" />
+        <xs:element maxOccurs="unbounded" minOccurs="0" name="participant" type="tns:Participant"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="getBySin" >
-      <xs:complexType>
+  <xs:element name="getBySin">
+    <xs:complexType>
       <xs:sequence>
-        <xs:element  
-          name="sin" type="tns:CanadianSin" />
+        <xs:element name="sin" type="tns:CanadianSin"/>
       </xs:sequence>
-    </xs:complexType>  
+    </xs:complexType>
   </xs:element>
   <xs:element name="getBySinResponse">
     <xs:complexType>
@@ -28,38 +24,37 @@
         <xs:documentation>Response</xs:documentation>
       </xs:annotation>
       <xs:sequence>
-        <xs:element minOccurs="0" 
-          name="participant" type="tns:Participant" />
+        <xs:element minOccurs="0" name="participant" type="tns:Participant"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  
   <xs:complexType name="Void">
     <xs:annotation>
       <xs:documentation>This is used to create a request that has no
         parameters.
       </xs:documentation>
     </xs:annotation>
-    <xs:sequence />
+    <xs:sequence/>
   </xs:complexType>
   <xs:complexType name="Participant">
-    <xs:sequence>
-      <xs:element name="email" type="xs:string" />
-      <xs:element name="genderAtBirth" type="tns:Gender" />
-      <xs:element name="name" type="xs:string" />
-      <xs:element name="sin" type="tns:CanadianSin" />
-    </xs:sequence>
+    <xs:all>
+      <xs:element name="email" type="xs:string"/>
+      <xs:element name="genderAtBirth" type="tns:Gender"/>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="sin" type="tns:CanadianSin"/>
+      <xs:element name="photo" type="xs:base64Binary" minOccurs="0"/>
+    </xs:all>
   </xs:complexType>
-    <xs:simpleType name="CanadianSin">
+  <xs:simpleType name="CanadianSin">
     <xs:restriction base="xs:string">
-    <xs:pattern value="[012345679]\d{8}"></xs:pattern>
+      <xs:pattern value="[012345679]\d{8}"/>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="Gender">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="female" />
-      <xs:enumeration value="male" />
-      <xs:enumeration value="not disclosed" />
+      <xs:enumeration value="female"/>
+      <xs:enumeration value="male"/>
+      <xs:enumeration value="not disclosed"/>
     </xs:restriction>
   </xs:simpleType>
 </xs:schema>

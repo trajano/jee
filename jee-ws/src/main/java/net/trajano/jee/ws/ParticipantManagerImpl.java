@@ -5,11 +5,14 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.jws.WebService;
+import javax.xml.ws.soap.Addressing;
 import javax.xml.ws.soap.MTOM;
 
 import net.trajano.jee.domain.dao.ParticipantDAO;
 
 @MTOM(enabled = true)
+@Addressing(enabled = true,
+    required = true)
 @WebService(serviceName = "ParticipantManagerService",
     endpointInterface = "net.trajano.jee.ws.ParticipantManager",
     portName = "ParticipantManagerPort",
@@ -53,6 +56,7 @@ public class ParticipantManagerImpl implements
         schemaParticipant.setSin(p.getSin());
         schemaParticipant.setName(p.getName());
         schemaParticipant.setGenderAtBirth(mapGender(p.getGenderAtBirth()));
+        schemaParticipant.setPhoto("Hello World".getBytes());
         return schemaParticipant;
     }
 
