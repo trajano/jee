@@ -100,9 +100,9 @@ public abstract class BaseEntity implements
     }
 
     /**
-     * Retruens the optimistic locking version number.
+     * Returns the optimistic locking version number.
      *
-     * @return
+     * @return optimistic locking version number.
      */
     public long getVersionNo() {
 
