@@ -11,8 +11,12 @@ import net.trajano.jee.domain.constraint.Email;
 import net.trajano.jee.domain.converter.StaticEnumToStringConverter;
 
 @Entity
-@Table(indexes = @Index(columnList = "cancelled",
-    unique = false))
+@Table(indexes = {
+    @Index(columnList = "cancelled",
+        unique = false),
+    @Index(columnList = "sin, cancelled",
+        unique = true)
+})
 public class Participant extends BaseEntity {
 
     /**
@@ -38,6 +42,7 @@ public class Participant extends BaseEntity {
     @NotNull
     @CanadianSin
     @Column(length = 9,
+        unique = true,
         nullable = false)
     private String sin;
 
