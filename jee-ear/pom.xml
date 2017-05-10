@@ -21,6 +21,12 @@
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
+      <artifactId>jee-react</artifactId>
+      <version>${project.version}</version>
+      <type>war</type>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
       <artifactId>jee-web</artifactId>
       <version>${project.version}</version>
       <type>war</type>
@@ -48,6 +54,12 @@
           <version>7</version>
           <defaultLibBundleDir>lib</defaultLibBundleDir>
           <modules>
+            <webModule>
+              <groupId>${project.groupId}</groupId>
+              <artifactId>jee-react</artifactId>
+              <contextRoot>/jee-react</contextRoot>
+              <uri>jee-react.war</uri>
+            </webModule>
             <webModule>
               <groupId>${project.groupId}</groupId>
               <artifactId>jee-web</artifactId>

@@ -20,6 +20,7 @@
     <module>jee-domain-api</module>
     <module>jee-ear</module>
     <module>jee-jaspic</module>
+    <module>jee-react</module>
     <module>jee-web</module>
     <module>jee-ws</module>
   </modules>
