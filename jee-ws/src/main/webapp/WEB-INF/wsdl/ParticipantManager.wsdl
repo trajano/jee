@@ -34,7 +34,7 @@
       <wsdl:input>
         <soap:body use="literal"/>
       </wsdl:input>
-      <wsdl:output name="getAllResponse">
+      <wsdl:output>
         <soap:body use="literal"/>
       </wsdl:output>
     </wsdl:operation>
@@ -43,7 +43,7 @@
       <wsdl:input>
         <soap:body use="literal"/>
       </wsdl:input>
-      <wsdl:output name="getAllResponse">
+      <wsdl:output>
         <soap:body use="literal"/>
       </wsdl:output>
     </wsdl:operation>
