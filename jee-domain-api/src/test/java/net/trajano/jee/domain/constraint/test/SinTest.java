@@ -1,4 +1,4 @@
-package net.trajano.jee.domain.entity.test;
+package net.trajano.jee.domain.constraint.test;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -11,7 +11,7 @@ import net.trajano.jee.domain.constraint.CanadianSinValidator;
 public class SinTest {
 
     @Test
-    @CanadianSin(stripSpacesAndSymbols = true)
+    @CanadianSin(relaxed = true)
     public void testFailSinSkipSymbols() throws Exception {
 
         final CanadianSinValidator validator = new CanadianSinValidator();
@@ -97,7 +97,7 @@ public class SinTest {
     }
 
     @Test
-    @CanadianSin(stripSpacesAndSymbols = true)
+    @CanadianSin(relaxed = true)
     public void testSinSkipSymbols() throws Exception {
 
         final CanadianSinValidator validator = new CanadianSinValidator();

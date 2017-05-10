@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-@Constraint(validatedBy = CanadianSinValidator.class)
+@Constraint(validatedBy = CanadianPostalCodeValidator.class)
 @Documented
 @Target({
     ElementType.METHOD,
@@ -19,7 +19,7 @@ import javax.validation.Payload;
     ElementType.PARAMETER
 })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface CanadianSin {
+public @interface CanadianPostalCode {
 
     @Target({
         ElementType.METHOD,
@@ -32,17 +32,18 @@ public @interface CanadianSin {
     @Documented
     @interface List {
 
-        CanadianSin[] value();
+        CanadianPostalCode[] value();
     }
 
     Class<?>[] groups() default {};
 
-    String message() default "{invalid Canadian SIN}";
+    String message() default "{invalid Canadian Postal code}";
 
     Class<? extends Payload>[] payload() default {};
 
     /**
-     * If this is <code>true</code>, then spaces and dashes are allowed.
+     * If this is <code>true</code>, then extra spaces and lower case values are
+     * allowed.
      *
      * @return relaxed check
      */

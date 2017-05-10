@@ -42,7 +42,7 @@ public class ParticipantBean implements
      * Input version of the SIN. This allows for spaces and symbols on input it
      * will be stripped off when persisting to the participant.
      */
-    @CanadianSin(stripSpacesAndSymbols = true)
+    @CanadianSin(relaxed = true)
     @NotNull
     private String participantSinInput;
 

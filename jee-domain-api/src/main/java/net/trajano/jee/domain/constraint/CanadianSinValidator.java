@@ -84,7 +84,7 @@ public class CanadianSinValidator implements
     @Override
     public void initialize(final CanadianSin constraintAnnotation) {
 
-        stripSpacesAndSymbols = constraintAnnotation.stripSpacesAndSymbols();
+        stripSpacesAndSymbols = constraintAnnotation.relaxed();
     }
 
     @Override
