@@ -36,7 +36,6 @@ public class ParticipantBean implements
 
     private Participant participant = new Participant();
 
-    @Inject
     private transient ParticipantDAO participantDAO;
 
     /**
@@ -121,6 +120,12 @@ public class ParticipantBean implements
     public void setGenderAtBirthInput(final Gender genderAtBirthInput) {
 
         this.genderAtBirthInput = genderAtBirthInput;
+    }
+
+    @Inject
+    public void setParticipantDAO(final ParticipantDAO participantDAO) {
+
+        this.participantDAO = participantDAO;
     }
 
     public void setParticipantSinInput(final String participantSinInput) {

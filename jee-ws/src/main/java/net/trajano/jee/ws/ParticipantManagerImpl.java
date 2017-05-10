@@ -17,7 +17,6 @@ import net.trajano.jee.domain.dao.ParticipantDAO;
 public class ParticipantManagerImpl implements
     ParticipantManager {
 
-    @Inject
     private ParticipantDAO participantDAO;
 
     @Override
@@ -76,6 +75,12 @@ public class ParticipantManagerImpl implements
         default:
             throw new IllegalArgumentException(domainGender.name());
         }
+    }
+
+    @Inject
+    public void setParticipantDAO(final ParticipantDAO participantDAO) {
+
+        this.participantDAO = participantDAO;
     }
 
 }
