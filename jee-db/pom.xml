@@ -9,6 +9,9 @@
   <artifactId>jee-db</artifactId>
   <name>Database Administration</name>
   <description>Provides the database administration tooling to manage the schema used by the sample application.  This is not used directly as of yet but the liquibase driver is set up here.</description>
+  <properties>
+    <maven.javadoc.skip>true</maven.javadoc.skip>
+  </properties>
   <build>
     <plugins>
       <plugin>
