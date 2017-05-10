@@ -35,4 +35,7 @@
   <security-role>
     <role-name>users</role-name>
   </security-role>
+  <listener>
+    <listener-class>net.trajano.jee.jaspic.JaspicInitializer</listener-class>
+  </listener>
 </web-app>

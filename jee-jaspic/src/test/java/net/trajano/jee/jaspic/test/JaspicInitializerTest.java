@@ -1,4 +1,4 @@
-package net.trajano.jee.web.test;
+package net.trajano.jee.jaspic.test;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -9,7 +9,7 @@ import javax.servlet.ServletContextEvent;
 
 import org.junit.Test;
 
-import net.trajano.jee.web.JaspicInitializer;
+import net.trajano.jee.jaspic.JaspicInitializer;
 
 public class JaspicInitializerTest {
 

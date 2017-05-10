@@ -1,16 +1,13 @@
-package net.trajano.jee.ws.internal;
+package net.trajano.jee.jaspic;
 
 import javax.inject.Inject;
 import javax.security.auth.message.config.AuthConfigFactory;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import javax.servlet.annotation.WebListener;
 
 import net.trajano.jee.domain.dao.UserDAO;
-import net.trajano.jee.jaspic.HttpHeaderAuthConfigProvider;
 
-@WebListener
 public class JaspicInitializer implements
     ServletContextListener {
 
@@ -41,6 +38,6 @@ public class JaspicInitializer implements
         final ServletContext context = sce.getServletContext();
         registrationID = AuthConfigFactory.getFactory()
             .registerConfigProvider(new HttpHeaderAuthConfigProvider(userDAO), "HttpServlet",
-                context.getVirtualServerName() + " " + context.getContextPath(), "Web Services Sample");
+                context.getVirtualServerName() + " " + context.getContextPath(), "JEE Sample");
     }
 }
