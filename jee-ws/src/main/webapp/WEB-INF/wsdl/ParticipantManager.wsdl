@@ -54,8 +54,8 @@
     </wsdl:port>
   </wsdl:service>
   <wsp:Policy>
-    <mtom:OptimizedMimeSerialization wsp:Optional="false"/>
-    <wsam:Addressing wsp:Optional="false">
+    <mtom:OptimizedMimeSerialization/>
+    <wsam:Addressing>
       <wsp:Policy/>
     </wsam:Addressing>
   </wsp:Policy>
