@@ -12,7 +12,6 @@ import javax.persistence.PersistenceContext;
 @ApplicationScoped
 public class StartupBean {
 
-    @PersistenceContext
     private EntityManager em;
 
     /**
@@ -22,5 +21,17 @@ public class StartupBean {
     public void ensureDatabase() {
 
         em.createNamedQuery(NamedQueries.PARTICIPANT_GET_ALL).getResultList();
+    }
+
+    /**
+     * Sets/injects the entity manager.
+     *
+     * @param em
+     *            entity manager
+     */
+    @PersistenceContext
+    public void setEntityManager(final EntityManager em) {
+
+        this.em = em;
     }
 }
