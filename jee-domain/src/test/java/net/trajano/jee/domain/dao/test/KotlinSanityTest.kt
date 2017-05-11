@@ -1,4 +1,4 @@
-package net.trajano.jee.domain.kotlin.test
+package net.trajano.jee.domain.dao.test
 
 import org.junit.Assert
 import org.junit.Test
