@@ -20,11 +20,11 @@
   <wsdl:portType name="ParticipantManager">
     <wsdl:operation name="getBySin">
       <wsdl:input message="tns:getBySinRequest"/>
-      <wsdl:output message="tns:getBySinResponse" name="getAllResponse"/>
+      <wsdl:output message="tns:getBySinResponse"/>
     </wsdl:operation>
     <wsdl:operation name="getAll">
       <wsdl:input message="tns:getAllRequest"/>
-      <wsdl:output message="tns:getAllResponse" name="getAllResponse"/>
+      <wsdl:output message="tns:getAllResponse"/>
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="ParticipantManagerBinding" type="tns:ParticipantManager">
