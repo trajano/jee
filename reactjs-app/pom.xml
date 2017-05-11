@@ -21,13 +21,14 @@
         <executions>
           <execution>
             <goals>
-              <goal>install-node-and-npm</goal>
-              <goal>npm</goal>
+              <goal>install-node-and-yarn</goal>
+              <goal>yarn</goal>
             </goals>
             <phase>generate-resources</phase>
             <configuration>
               <installDirectory>target</installDirectory>
               <nodeVersion>v7.10.0</nodeVersion>
+              <yarnVersion>v0.23.4</yarnVersion>
             </configuration>
           </execution>
         </executions>

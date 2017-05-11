@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "ReactJS App.",
   "main": "src/app.js",
+  "license":"EPL-1.0",
   "scripts": {
     "build": "webpack",
     "prepare": "webpack -p",
