@@ -20,9 +20,10 @@
     <module>jee-domain-api</module>
     <module>jee-ear</module>
     <module>jee-jaspic</module>
-    <module>jee-react</module>
     <module>jee-web</module>
     <module>jee-ws</module>
+    <module>reactjs-app</module>
+    <module>web-api</module>
   </modules>
   <scm>
     <connection>scm:git:https://github.com/trajano/${repo.id}.git</connection>

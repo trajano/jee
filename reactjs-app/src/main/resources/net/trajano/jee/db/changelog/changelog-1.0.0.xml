@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+  <changeSet author="trajano (generated)" id="1494110135927-1">
+    <createTable tableName="participant">
+      <column name="ID" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+      <column defaultValueBoolean="false" name="CANCELLED" type="BIT(3)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="CREATEDBY" type="VARCHAR(64)"/>
+      <column name="CREATEDON" type="datetime(6)"/>
+      <column name="LASTUPDATEDBY" type="VARCHAR(64)"/>
+      <column name="LASTUPDATEDON" type="datetime(6)"/>
+      <column name="NAME" type="VARCHAR(256)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="VERSIONNO" type="BIGINT"/>
+    </createTable>
+  </changeSet>
+  <changeSet author="trajano (generated)" id="1494110135927-2">
+    <createTable tableName="sequence">
+      <column name="SEQ_NAME" type="VARCHAR(50)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="SEQ_COUNT" type="DECIMAL(38)"/>
+    </createTable>
+  </changeSet>
+  <changeSet author="trajano (generated)" id="1494110135927-3">
+    <createTable tableName="users">
+      <column name="ID" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+      <column defaultValueBoolean="false" name="CANCELLED" type="BIT(3)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="CREATEDBY" type="VARCHAR(64)"/>
+      <column name="CREATEDON" type="datetime(6)"/>
+      <column name="LASTUPDATEDBY" type="VARCHAR(64)"/>
+      <column name="LASTUPDATEDON" type="datetime(6)"/>
+      <column name="USERNAME" type="VARCHAR(64)"/>
+      <column name="VERSIONNO" type="BIGINT"/>
+    </createTable>
+  </changeSet>
+  <changeSet author="trajano (generated)" id="1494110135927-4">
+    <addPrimaryKey columnNames="ID" tableName="participant"/>
+  </changeSet>
+  <changeSet author="trajano (generated)" id="1494110135927-5">
+    <addPrimaryKey columnNames="SEQ_NAME" tableName="sequence"/>
+  </changeSet>
+  <changeSet author="trajano (generated)" id="1494110135927-6">
+    <addPrimaryKey columnNames="ID" tableName="users"/>
+  </changeSet>
+  <changeSet author="trajano (generated)" id="1494110135927-7">
+    <addUniqueConstraint columnNames="USERNAME" constraintName="USERNAME" tableName="users"/>
+  </changeSet>
+  <changeSet author="trajano (generated)" id="1494110135927-8">
+    <createIndex indexName="INDEX_PARTICIPANT_cancelled" tableName="participant">
+      <column name="CANCELLED"/>
+    </createIndex>
+  </changeSet>
+</databaseChangeLog>

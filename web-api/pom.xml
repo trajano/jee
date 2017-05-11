@@ -6,10 +6,10 @@
     <artifactId>jee</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
-  <artifactId>jee-react</artifactId>
+  <artifactId>web-api</artifactId>
   <packaging>war</packaging>
-  <name>React Application</name>
-  <description>This provides an application that utilizes the ReactJS UI framework connecting with Java EE using JAX-RS and WebSockets.</description>
+  <name>Web API</name>
+  <description>This provides a web API for the application utilizing JAX-RS and Web Sockets.  It also depends on reactjs-admin to provide a UI.</description>
   <dependencyManagement>
     <dependencies/>
   </dependencyManagement>
@@ -22,6 +22,11 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>jee-jaspic</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>reactjs-app</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

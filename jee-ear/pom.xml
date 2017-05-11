@@ -21,12 +21,6 @@
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>jee-react</artifactId>
-      <version>${project.version}</version>
-      <type>war</type>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
       <artifactId>jee-web</artifactId>
       <version>${project.version}</version>
       <type>war</type>
@@ -34,6 +28,12 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>jee-ws</artifactId>
+      <version>${project.version}</version>
+      <type>war</type>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>web-api</artifactId>
       <version>${project.version}</version>
       <type>war</type>
     </dependency>
@@ -56,9 +56,9 @@
           <modules>
             <webModule>
               <groupId>${project.groupId}</groupId>
-              <artifactId>jee-react</artifactId>
-              <contextRoot>/jee-react</contextRoot>
-              <uri>jee-react.war</uri>
+              <artifactId>web-api</artifactId>
+              <contextRoot>/api</contextRoot>
+              <uri>web-api.war</uri>
             </webModule>
             <webModule>
               <groupId>${project.groupId}</groupId>
