@@ -43,9 +43,30 @@ public class HttpHeaderAuthTest {
         final Subject serviceSubject = new Subject();
         final ServerAuthContext authContext = serverAuthConfig.getAuthContext("SOMECONTEXTID", serviceSubject, Collections.emptyMap());
         final MessageInfo messageInfo = mock(MessageInfo.class);
+        final HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
+        when(httpServletRequest.isSecure()).thenReturn(true);
+        when(messageInfo.getRequestMessage()).thenReturn(httpServletRequest);
+        when(messageInfo.getResponseMessage()).thenReturn(mock(HttpServletResponse.class));
+        assertEquals(AuthStatus.FAILURE, authContext.validateRequest(messageInfo, null, serviceSubject));
+    }
+
+    @Test
+    public void testNoSsl() throws Exception {
+
+        final UserDAO userDAO = mock(UserDAO.class);
+        final CallbackHandler callbackHandler = mock(CallbackHandler.class);
+        final HttpHeaderAuthConfigProvider authConfigProvider = new HttpHeaderAuthConfigProvider(userDAO);
+        final String appContext = "default_host /jee";
+        assertNull(authConfigProvider.getClientAuthConfig("HttpServlet", appContext, callbackHandler));
+        final ServerAuthConfig serverAuthConfig = authConfigProvider.getServerAuthConfig("HttpServlet", appContext, callbackHandler);
+        assertNotNull(serverAuthConfig);
+        assertEquals(appContext, serverAuthConfig.getAppContext());
+        final Subject serviceSubject = new Subject();
+        final ServerAuthContext authContext = serverAuthConfig.getAuthContext("SOMECONTEXTID", serviceSubject, Collections.emptyMap());
+        final MessageInfo messageInfo = mock(MessageInfo.class);
         when(messageInfo.getRequestMessage()).thenReturn(mock(HttpServletRequest.class));
         when(messageInfo.getResponseMessage()).thenReturn(mock(HttpServletResponse.class));
-        assertEquals(AuthStatus.SEND_FAILURE, authContext.validateRequest(messageInfo, null, serviceSubject));
+        assertEquals(AuthStatus.SEND_CONTINUE, authContext.validateRequest(messageInfo, null, serviceSubject));
     }
 
     @Test

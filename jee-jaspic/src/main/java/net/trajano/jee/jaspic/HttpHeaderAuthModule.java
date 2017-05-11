@@ -107,7 +107,7 @@ public class HttpHeaderAuthModule implements
             }
             if (!req.isSecure()) {
                 resp.sendError(HttpURLConnection.HTTP_FORBIDDEN, "SSL Required");
-                return AuthStatus.SEND_FAILURE;
+                return AuthStatus.SEND_CONTINUE;
             }
             final String username = req.getHeader("X-Forwarded-User");
             if (username == null && mandatory) {
