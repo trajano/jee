@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -11,6 +13,7 @@ import javax.validation.constraints.NotNull;
 
 import net.trajano.jee.domain.constraint.CanadianSin;
 import net.trajano.jee.domain.constraint.CanadianSinValidator;
+import net.trajano.jee.domain.dao.DuplicateSinException;
 import net.trajano.jee.domain.dao.ParticipantDAO;
 import net.trajano.jee.domain.entity.Gender;
 import net.trajano.jee.domain.entity.Participant;
@@ -50,11 +53,15 @@ public class ParticipantBean implements
 
         participant.setSin(participantSinInput.replaceAll("[\\s\\-]", ""));
         participant.setGenderAtBirth(genderAtBirthInput);
-        participantDAO.save(participant);
-        init();
+        try {
+            participantDAO.save(participant);
+            init();
+        } catch (final DuplicateSinException e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Duplicate SIN", "Duplicate SIN"));
+        }
     }
 
-    public void delete(final Participant participant) {
+    public void delete(final Participant participant) throws DuplicateSinException {
 
         participant.cancel();
         participantDAO.save(participant);
@@ -109,7 +116,7 @@ public class ParticipantBean implements
         return edit;
     }
 
-    public void saveParticipant() {
+    public void saveParticipant() throws DuplicateSinException {
 
         participant.setGenderAtBirth(genderAtBirthInput);
         participantDAO.save(participant);

@@ -4,13 +4,16 @@ import java.util.List;
 
 import javax.ejb.Local;
 import javax.ejb.Stateless;
+import javax.enterprise.context.Dependent;
 import javax.persistence.TypedQuery;
+import javax.validation.constraints.NotNull;
 
 import net.trajano.jee.domain.dao.ParticipantDAO;
 import net.trajano.jee.domain.entity.Participant;
 
 @Local
 @Stateless
+@Dependent
 public class DefaultParticipantDAO extends BaseDAO<Participant> implements
     ParticipantDAO {
 
@@ -21,7 +24,7 @@ public class DefaultParticipantDAO extends BaseDAO<Participant> implements
     }
 
     @Override
-    public Participant getBySin(final String sin) {
+    public Participant getBySin(@NotNull final String sin) {
 
         final TypedQuery<Participant> q = em.createNamedQuery(NamedQueries.PARTICIPANT_GET_BY_SIN, Participant.class);
         q.setParameter("sin", sin);

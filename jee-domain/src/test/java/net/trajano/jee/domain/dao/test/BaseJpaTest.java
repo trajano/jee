@@ -9,10 +9,14 @@ import javax.persistence.Persistence;
 import javax.validation.Validation;
 import javax.validation.ValidatorFactory;
 
+import org.jboss.weld.environment.se.Weld;
+import org.jboss.weld.environment.se.WeldContainer;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+
+import net.trajano.jee.domain.dao.impl.JpaProvider;
 
 /**
  * Provides basic framework for JPA testing.
@@ -27,17 +31,24 @@ public abstract class BaseJpaTest {
 
     private static ValidatorFactory vf;
 
+    private static Weld weld;
+
     /**
      * Sets up JPA infrastructure.
      */
     @BeforeClass
     public static void setupJpa() {
 
+        weld = new Weld();
+        final WeldContainer container = weld.initialize();
+        final JpaProvider jpaProvider = container.select(JpaProvider.class).get();
         vf = Validation.buildDefaultValidatorFactory();
-        final Map<String, String> props = new HashMap<>();
+        final Map<String, Object> props = new HashMap<>();
         props.put("javax.persistence.provider", "org.eclipse.persistence.jpa.PersistenceProvider");
+        props.put("javax.persistence.bean.manager", container.getBeanManager());
         emf = Persistence.createEntityManagerFactory("test-pu", props);
         em = emf.createEntityManager();
+        jpaProvider.setEntityManager(em);
     }
 
     /**
@@ -49,6 +60,7 @@ public abstract class BaseJpaTest {
         em.close();
         emf.close();
         vf.close();
+        weld.shutdown();
     }
 
     /**

@@ -14,7 +14,7 @@ import net.trajano.jee.domain.entity.Participant;
 public class ParticipantBeanTest {
 
     @Test
-    public void testParticipantBean() {
+    public void testParticipantBean() throws Exception {
 
         final ParticipantBean bean = new ParticipantBean();
         bean.setParticipantDAO(mock(ParticipantDAO.class));

@@ -1,9 +1,11 @@
 package net.trajano.jee.domain.dao.impl;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.TypedQuery;
+import javax.validation.Valid;
 
 import net.trajano.jee.domain.entity.BaseEntity;
 
@@ -32,6 +34,9 @@ public class BaseDAO<T extends BaseEntity> {
 
         try {
             return q.getSingleResult();
+        } catch (final NonUniqueResultException e) {
+            System.out.println(q.getResultList());
+            throw e;
         } catch (final NoResultException e) {
             return null;
         }
@@ -40,20 +45,24 @@ public class BaseDAO<T extends BaseEntity> {
     /**
      * Performs an upsert operation to store the data. If the id is {@code null}
      * then {@link EntityManager#persist(Object)} is called otherwise a
-     * {@link EntityManager#merge(Object)} is called.
+     * {@link EntityManager#merge(Object)} is called. This will perform a flush
+     * after saving.
      *
      * @param e
      *            entity
      * @return managed entity.
      */
-    public T save(final T e) {
+    public T save(@Valid final T e) {
 
+        final T ret;
         if (e.isAssigned()) {
-            return em.merge(e);
+            ret = em.merge(e);
         } else {
             em.persist(e);
-            return e;
+            ret = e;
         }
+        em.flush();
+        return ret;
     }
 
     /**
@@ -62,7 +71,7 @@ public class BaseDAO<T extends BaseEntity> {
      * @param em
      *            entity manager
      */
-    @PersistenceContext
+    @Inject
     public void setEntityManager(final EntityManager em) {
 
         this.em = em;

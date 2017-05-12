@@ -3,7 +3,6 @@ package net.trajano.jee.domain.dao.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
@@ -12,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import net.trajano.jee.domain.constraint.CanadianSinValidator;
+import net.trajano.jee.domain.dao.DuplicateSinException;
 import net.trajano.jee.domain.dao.ParticipantDAO;
 import net.trajano.jee.domain.dao.impl.DefaultParticipantDAO;
 import net.trajano.jee.domain.entity.Gender;
@@ -33,6 +33,25 @@ public class ParticipantDAOTest extends BaseJpaTest {
     public void testEmptyCollectionAtStart() {
 
         assertTrue(dao.getAll().isEmpty());
+    }
+
+    @Test(expected = DuplicateSinException.class)
+    public void testFailDuplicateSin() throws Exception {
+
+        final Participant participant = new Participant();
+        participant.setName("Archie");
+        participant.setGenderAtBirth(Gender.MALE);
+        participant.setEmail("foo@com.com");
+        final String sin = CanadianSinValidator.generate();
+        participant.setSin(sin);
+        dao.save(participant);
+
+        final Participant participant2 = new Participant();
+        participant2.setName("Archie");
+        participant2.setGenderAtBirth(Gender.MALE);
+        participant2.setEmail("foo@com.com");
+        participant2.setSin(sin);
+        dao.save(participant2);
     }
 
     /**
@@ -76,7 +95,6 @@ public class ParticipantDAOTest extends BaseJpaTest {
         participant.setGenderAtBirth(Gender.MALE);
         participant.setSin("675828594");
         dao.save(participant);
-        fail();
     }
 
     @Test(expected = ValidationException.class)
@@ -87,7 +105,6 @@ public class ParticipantDAOTest extends BaseJpaTest {
         participant.setSin("675828595");
         participant.setGenderAtBirth(Gender.MALE);
         dao.save(participant);
-        fail();
     }
 
     @Test(expected = ValidationException.class)
@@ -97,7 +114,6 @@ public class ParticipantDAOTest extends BaseJpaTest {
         participant.setName("Archie");
         participant.setGenderAtBirth(Gender.MALE);
         dao.save(participant);
-        fail();
     }
 
 }

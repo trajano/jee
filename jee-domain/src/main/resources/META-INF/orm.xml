@@ -6,6 +6,9 @@
   <named-query name="Participant.getBySin">
     <query>from Participant p where p.sin = :sin and p.cancelled = false</query>
   </named-query>
+  <named-query name="Participant.countBySinAndNotSelf">
+    <query>select count(p) from Participant p where p.sin = :sin and p.cancelled = false and p != :self</query>
+  </named-query>
   <named-query name="User.getByUserName">
     <query>from User u where u.username = :username and u.cancelled = false</query>
   </named-query>
@@ -17,4 +20,8 @@
       <entity-listener class="net.trajano.jee.domain.dao.impl.BaseEntityListener"/>
     </entity-listeners>
   </mapped-superclass>
+  <entity class="net.trajano.jee.domain.entity.Participant">
+  <entity-listeners>
+      <entity-listener class="net.trajano.jee.domain.dao.impl.ParticipantListener"/>
+    </entity-listeners></entity>
 </entity-mappings>

@@ -15,7 +15,7 @@ import net.trajano.jee.domain.converter.StaticEnumToStringConverter;
     @Index(columnList = "cancelled",
         unique = false),
     @Index(columnList = "sin, cancelled",
-        unique = true)
+        unique = false)
 })
 public class Participant extends BaseEntity {
 
@@ -42,7 +42,6 @@ public class Participant extends BaseEntity {
     @NotNull
     @CanadianSin
     @Column(length = 9,
-        unique = true,
         nullable = false)
     private String sin;
 
