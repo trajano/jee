@@ -35,8 +35,7 @@ public class BaseDAO<T extends BaseEntity> {
         try {
             return q.getSingleResult();
         } catch (final NonUniqueResultException e) {
-            System.out.println(q.getResultList());
-            throw e;
+            throw new NonUniqueResultException(q.getResultList().toString());
         } catch (final NoResultException e) {
             return null;
         }

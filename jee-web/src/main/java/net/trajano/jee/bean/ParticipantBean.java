@@ -61,7 +61,7 @@ public class ParticipantBean implements
         }
     }
 
-    public void delete(final Participant participant) throws DuplicateSinException {
+    public void delete(final Participant participant) {
 
         participant.cancel();
         participantDAO.save(participant);
@@ -116,7 +116,7 @@ public class ParticipantBean implements
         return edit;
     }
 
-    public void saveParticipant() throws DuplicateSinException {
+    public void saveParticipant() {
 
         participant.setGenderAtBirth(genderAtBirthInput);
         participantDAO.save(participant);
