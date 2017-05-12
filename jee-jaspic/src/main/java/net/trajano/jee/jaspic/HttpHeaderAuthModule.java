@@ -63,7 +63,8 @@ public class HttpHeaderAuthModule implements
     public void cleanSubject(final MessageInfo messageInfo,
         final Subject subject) throws AuthException {
 
-        // Not used
+        subject.getPrivateCredentials().clear();
+        subject.getPublicCredentials().clear();
     }
 
     @Override

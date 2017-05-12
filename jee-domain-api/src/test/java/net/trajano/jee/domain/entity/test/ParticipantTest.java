@@ -2,6 +2,7 @@ package net.trajano.jee.domain.entity.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
@@ -15,6 +16,9 @@ public class ParticipantTest {
 
         final Participant p = new Participant();
         assertFalse(p.isAssigned());
+        assertNull(p.getId());
+        p.setName("Hatsune Miku");
+        p.setEmail("Hatsune@Miku.net");
         p.setGenderAtBirth(Gender.NOT_DISCLOSED);
         assertEquals(Gender.NOT_DISCLOSED, p.getGenderAtBirth());
     }
