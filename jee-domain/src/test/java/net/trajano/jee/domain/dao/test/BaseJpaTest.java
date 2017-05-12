@@ -1,7 +1,10 @@
 package net.trajano.jee.domain.dao.test;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.LogManager;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -35,9 +38,17 @@ public abstract class BaseJpaTest {
 
     /**
      * Sets up JPA infrastructure.
+     *
+     * @throws IOException
+     * @throws SecurityException
      */
     @BeforeClass
-    public static void setupJpa() {
+    public static void setupInfrastructure() throws SecurityException,
+        IOException {
+
+        try (InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("basejpatest-logging.properties")) {
+            LogManager.getLogManager().readConfiguration(is);
+        }
 
         weld = new Weld();
         final WeldContainer container = weld.initialize();
@@ -52,15 +63,16 @@ public abstract class BaseJpaTest {
     }
 
     /**
-     * Teardown JPA infrastructure.
+     * Teardown infrastructure.
      */
     @AfterClass
-    public static void tearDownJpa() {
+    public static void tearDownInfrastructure() {
 
         em.close();
         emf.close();
         vf.close();
         weld.shutdown();
+        LogManager.getLogManager().reset();
     }
 
     /**
