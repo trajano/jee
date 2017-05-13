@@ -11,6 +11,7 @@ cache:
   directories:
   - "$HOME/.m2/repository"
   - "$HOME/.sonar/cache"
+  - "$HOME/apache-maven-3.5.0"
 addons:
   apt:
     packages:
@@ -22,20 +23,18 @@ addons:
   sonarqube:
     token:
       secure: ibixZFEwZdGaHbD3/ZTrmu6HMJ0tCr5v+JrF/FElkR183rgvAwXVtYZKp3sdo9IBb3mJuDHU6P0ggyxHeESZPHPyRoko6EAn/9kOWdXc1MFqvx0XkEBgY5VdKC6wgDwjhcKaDMX4CzkCsA/+VPgS4w9rnX0ynauYdFD8juBLvZPtkHpRl1v8XNuSnSTfKBk8dPANWcTH0yVgT1xPdYZO2yYKFS9FIA7yvBQ3vT5haGUNsUB7ALQ5eEU1GtVoX1Y+XjHYmCzWK0hMY5CZg123oula1jbJwOIuOL/+zFfknH9ret4VMMAUZBLKnWv6cAAyLi1/AIHvlaX2Zj3J2IF3Ag827vtQWxgdUuy3ebPwIhT7Lzn/djZTgCk6fegWj1BcWhhnrEWSVpUDyLdMyQrH1zY1us0VCOGEBmRI3a6E/x4+IK7YSa5oY50hwma8qxbreNlLqr61cu8LnP2o4qI4sSKWWo8MBqwBMvczqq1lOXg+CLojeKUZouBxzRVFP8znqLv6lZIlemBbruqwJw0Y3Uwe68GUZA48Kg4MtvWxoi6Nj/aUmzAXqmcQ6Zs+KvjxKblkX5xiIkETwBq0tqAgGLGOio3UeQWljsYM8tnjosYWok9Ewyuo0nQ3RJ04cteg9XdPHdyJk2G8BJUMGk+njF30wuSWkzvaLW7ba3Q++8g=
+before_install:
+- export M2_HOME=$HOME/apache-maven-3.5.0
+- if [ ! -d $M2_HOME/bin ]; then curl https://archive.apache.org/dist/maven/maven-3/3.5.0/binaries/apache-maven-3.5.0-bin.tar.gz | tar zxf - -C $HOME; fi
+- export PATH=$M2_HOME/bin:$PATH
+- echo "MAVEN_OPTS='-Xmx1g'" > $HOME/.mavenrc
+- openssl aes-256-cbc -K $encrypted_a57c19a99eaa_key -iv $encrypted_a57c19a99eaa_iv
+  -in deploy-keys.tar.enc -out deploy-keys.tar -d
 install:
 - tar xf deploy-keys.tar -C $HOME && chmod go-rwx -R $HOME/.m2 $HOME/.ssh
 before_script:
 - mvn clean
 script:
-- mkdir -p target/classes
-- mkdir -p target/test-classes
-- mkdir -p jee-db/target/test-classes
-- mkdir -p jee-domain-api/target/test-classes
-- mkdir -p jee-ear/target/classes
-- mkdir -p jee-ear/target/test-classes
-- mkdir -p jee-jaspic/target/test-classes
-- mkdir -p reactjs-app/target/test-classes
-- mkdir -p web-api/target/test-classes
 - mvn verify sonar:sonar 
 deploy:
 - provider: script
@@ -51,7 +50,4 @@ deploy:
     tags: true
 env:
   global:
-    secure: TfDmbUPIJ5V31SyLEKEvEi5nBIIwkHxRLGFIJqpjxekmX4c6u4ZOXJwHxeQmYVJtFmVpE6Wm4qL0EAdUtbncTGPlKN1AIBcCMP9UQSmgR2PdJn2nSHejNXt+T6Dnvs3csy0NZfJzIVQ5K4Obkh9tL7jNaF/qzq7JBxRfXDmEW1dVEhJEEyCykQgjLep6kSNtyNsTKWBhbWo/xil4/GaWvrFbLZj5DEEHB/gbVZPu26Pjr4G/UhkR685oP4yG5KkEzmR4F4Z8CFdPPIhVF2jvdX7yI2ZCVJBfGpBRjI9h76NLbPHqGT9gSLqiuAPBlTj+KGmkOMAUURGpvkGs8iwFO36q4dolhfq5KZUil7XbrakFV8uiu/iPFnkkqjiVWMcFKlV7/GVZLOFTutjWLJet5hdw4V43sbXyqjfNTnVM6ZbIweY7zT/m1XXGvqTGDCxsKkqr7qykH2EMIX2Dfipt1tdKpz4apWhstcudZUSrGnZJY98wrv0IRhcicGPYB8CrFaLD8zHyFSCXf6GtGShOJMGGKRq1roDAT7PNb3r8dKxmMx6Po7zdKlxR3kITQMKSCFDlEg08gnz3jBN7axb7Y1oi/LEG0+78kFhgCFGUrj3kiM8/Zygv5MsIIAL5oidwj6p3swlwTawrg0rN2EE14W72LITKlB6bPAzQZ6M/Pic=
-before_install:
-- openssl aes-256-cbc -K $encrypted_a57c19a99eaa_key -iv $encrypted_a57c19a99eaa_iv
-  -in deploy-keys.tar.enc -out deploy-keys.tar -d
+  - secure: TfDmbUPIJ5V31SyLEKEvEi5nBIIwkHxRLGFIJqpjxekmX4c6u4ZOXJwHxeQmYVJtFmVpE6Wm4qL0EAdUtbncTGPlKN1AIBcCMP9UQSmgR2PdJn2nSHejNXt+T6Dnvs3csy0NZfJzIVQ5K4Obkh9tL7jNaF/qzq7JBxRfXDmEW1dVEhJEEyCykQgjLep6kSNtyNsTKWBhbWo/xil4/GaWvrFbLZj5DEEHB/gbVZPu26Pjr4G/UhkR685oP4yG5KkEzmR4F4Z8CFdPPIhVF2jvdX7yI2ZCVJBfGpBRjI9h76NLbPHqGT9gSLqiuAPBlTj+KGmkOMAUURGpvkGs8iwFO36q4dolhfq5KZUil7XbrakFV8uiu/iPFnkkqjiVWMcFKlV7/GVZLOFTutjWLJet5hdw4V43sbXyqjfNTnVM6ZbIweY7zT/m1XXGvqTGDCxsKkqr7qykH2EMIX2Dfipt1tdKpz4apWhstcudZUSrGnZJY98wrv0IRhcicGPYB8CrFaLD8zHyFSCXf6GtGShOJMGGKRq1roDAT7PNb3r8dKxmMx6Po7zdKlxR3kITQMKSCFDlEg08gnz3jBN7axb7Y1oi/LEG0+78kFhgCFGUrj3kiM8/Zygv5MsIIAL5oidwj6p3swlwTawrg0rN2EE14W72LITKlB6bPAzQZ6M/Pic=
