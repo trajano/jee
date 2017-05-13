@@ -77,6 +77,7 @@ public abstract class BaseEntity implements
      * Optimistic locking version.
      */
     @Version
+    @Column(nullable = false)
     private long versionNo;
 
     /**

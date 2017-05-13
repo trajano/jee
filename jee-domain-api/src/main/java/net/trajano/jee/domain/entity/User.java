@@ -19,7 +19,8 @@ public class User extends BaseEntity {
     private static final long serialVersionUID = -7953114178733155155L;
 
     @Column(length = ColumnLengths.PRINCIPAL_LENGTH,
-        unique = true)
+        unique = true,
+        nullable = false)
     private String username;
 
 }
