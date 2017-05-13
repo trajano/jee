@@ -21,7 +21,8 @@
     </entity-listeners>
   </mapped-superclass>
   <entity class="net.trajano.jee.domain.entity.Participant">
-  <entity-listeners>
+    <entity-listeners>
       <entity-listener class="net.trajano.jee.domain.dao.impl.ParticipantListener"/>
-    </entity-listeners></entity>
+    </entity-listeners>
+  </entity>
 </entity-mappings>
