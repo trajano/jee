@@ -8,10 +8,22 @@
   </parent>
   <artifactId>nlp-api</artifactId>
   <name>Natural Language Processing API</name>
-  <dependencyManagement>
-    <dependencies/>
-  </dependencyManagement>
+  <description>This uses Kotlin as the main language.  But it is built on JDK 7.</description>
+  <properties>
+    <maven.javadoc.skip>true</maven.javadoc.skip>
+  </properties>
   <dependencies>
+    <dependency>
+      <groupId>edu.stanford.nlp</groupId>
+      <artifactId>stanford-corenlp</artifactId>
+      <version>3.7.0</version>
+      <classifier>models</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib</artifactId>
+      <version>1.1.2-3</version>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -23,10 +35,54 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>jcenter</id>
+      <name>JCenter</name>
+      <url>https://jcenter.bintray.com/</url>
+    </pluginRepository>
+  </pluginRepositories>
   <build>
     <plugins>
       <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
+        <groupId>org.jetbrains.dokka</groupId>
+        <artifactId>dokka-maven-plugin</artifactId>
+        <version>0.9.13</version>
+        <executions>
+          <execution>
+            <id>dokka</id>
+            <phase>pre-site</phase>
+            <goals>
+              <goal>dokka</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>dokka-package</id>
+            <phase>package</phase>
+            <goals>
+              <goal>javadocJar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-maven-plugin</artifactId>
+        <version>1.1.2-3</version>
+        <executions>
+          <execution>
+            <id>compile</id>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>test-compile</id>
+            <goals>
+              <goal>test-compile</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
@@ -62,5 +118,4 @@
       </build>
     </profile>
   </profiles>
-  <description>This uses Kotlin as the main language.  But it is built on JDK 7.</description>
 </project>
