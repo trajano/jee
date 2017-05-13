@@ -22,6 +22,8 @@
     <module>jee-jaspic</module>
     <module>jee-web</module>
     <module>jee-ws</module>
+    <module>nlp</module>
+    <module>nlp-api</module>
     <module>reactjs-app</module>
     <module>web-api</module>
   </modules>
