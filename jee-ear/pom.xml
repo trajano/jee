@@ -9,9 +9,6 @@
   <artifactId>jee-ear</artifactId>
   <packaging>ear</packaging>
   <name>Enterprise Application Archive</name>
-  <dependencyManagement>
-    <dependencies/>
-  </dependencyManagement>
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
@@ -30,6 +27,12 @@
       <artifactId>jee-ws</artifactId>
       <version>${project.version}</version>
       <type>war</type>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>nlp</artifactId>
+      <version>${project.version}</version>
+      <type>ejb</type>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
@@ -76,6 +79,11 @@
               <groupId>${project.groupId}</groupId>
               <artifactId>jee-domain</artifactId>
               <uri>jee-domain.jar</uri>
+            </ejbModule>
+            <ejbModule>
+              <groupId>${project.groupId}</groupId>
+              <artifactId>nlp</artifactId>
+              <uri>nlp.jar</uri>
             </ejbModule>
             <jarModule>
               <groupId>${project.groupId}</groupId>

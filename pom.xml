@@ -4,7 +4,7 @@
   <parent>
     <groupId>net.trajano</groupId>
     <artifactId>trajano</artifactId>
-    <version>14</version>
+    <version>15</version>
   </parent>
   <groupId>net.trajano.jee</groupId>
   <artifactId>jee</artifactId>

@@ -8,10 +8,7 @@
   </parent>
   <artifactId>reactjs-app</artifactId>
   <name>ReactJS Application</name>
-  <description>This is a ReactJS </description>
-  <properties>
-    <maven.javadoc.skip>true</maven.javadoc.skip>
-  </properties>
+  <description>This is a ReactJS application built using WebPack.</description>
   <build>
     <plugins>
       <plugin>
@@ -38,4 +35,19 @@
       </plugin>
     </plugins>
   </build>
+  <reporting>
+    <plugins>
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>javadoc-no-fork</report>
+              <report>test-javadoc-no-fork</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+    </plugins>
+  </reporting>
 </project>
