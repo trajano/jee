@@ -18,8 +18,8 @@
         <p:column>
           <f:facet name="header">Gender at Birth</f:facet>#{item.genderAtBirth.name()}</p:column>
         <p:column>
-          <p:commandButton value="edit" action="#{participantBean.edit(item)}" update="@all"/>
-          <p:commandButton value="delete" action="#{participantBean.delete(item)}" update="@form"/>
+          <p:commandButton value="edit" action="#{participantBean.edit(item)}" update="@all"  icon="fa fa-fw fa-edit" />
+          <p:commandButton value="delete" action="#{participantBean.delete(item)}" update="@form"  icon="fa fa-fw fa-remove" />
         </p:column>
         <f:facet name="footer">
         In total there are #{fn:length(participantBean.list)} participants.
