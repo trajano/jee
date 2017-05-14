@@ -34,7 +34,10 @@
       <h3>Add Participant</h3>
       <h:form>
         <p:messages/>
-        <h:panelGrid columns="3" cellpadding="5">
+        <p:panelGrid columns="3" cellpadding="5">
+          <p:outputLabel value="Social Insurance Number" for="addSin"/>
+          <p:inputText id="addSin" value="#{participantBean.participantSinInput}" required="true"/>
+          <p:message for="addSin"/>
           <p:outputLabel value="Name:" for="addParticipantName"/>
           <p:inputText id="addParticipantName" value="#{participantBean.participant.name}" required="true"/>
           <p:message for="addParticipantName"/>
@@ -47,13 +50,12 @@
           <p:outputLabel value="E-mail" for="addEmail"/>
           <p:inputText id="addEmail" value="#{participantBean.participant.email}" required="true"/>
           <p:message for="addEmail"/>
-          <p:outputLabel value="Social Insurance Number" for="addSin"/>
-          <h:panelGroup>
-            <p:inputText id="addSin" value="#{participantBean.participantSinInput}" required="true"/> #{participantBean.generatedSin}</h:panelGroup>
-          <p:message for="addSin"/>
-        </h:panelGrid>
+        </p:panelGrid>
         <p>
           <p:commandButton value="add" action="#{participantBean.add}" update="@all" icon="fa fa-fw fa-plus"/>
+          <p:commandButton value="Fill Sample" action="#{participantBean.fillSample(participantBean.generatedSin)}" update="@form" process="@this" icon="fa fa-fw fa-pencil">
+            <p:resetInput target="@form"/>
+          </p:commandButton>
           <p:button outcome="nlp" value="NLP processor" icon="fa fa-fw fa-eye"/>
         </p>
         <p:ajaxExceptionHandler type="net.trajano.jee.domain.dao.DuplicateSinException" update="exceptionDialog" onexception="PF('exceptionDialog').show();"/>
@@ -68,16 +70,23 @@
     <h:panelGroup rendered="#{participantBean.inEdit}">
       <h:form>
         <h3>Edit Participant #{participantBean.participant.id}</h3>
-        <p>
-				Name:
-				<p:inputText value="#{participantBean.participant.name}"/>
-        </p>
-        <p>
-				Gender at birth:
-				<p:selectOneMenu value="#{participantBean.genderAtBirthInput}">
-            <f:selectItems value="#{genders}"/>
+        <p:messages/>
+        <p:panelGrid columns="3" cellpadding="5">
+          <p:outputLabel value="Social Insurance Number:" for="editSin"/>
+          <p:inputText id="editSin" value="#{participantBean.participant.sin}" readonly="true"/>
+          <p:message for="editSin"/>
+          <p:outputLabel value="Name:" for="editParticipantName"/>
+          <p:inputText id="editParticipantName" value="#{participantBean.participant.name}" required="true"/>
+          <p:message for="editParticipantName"/>
+          <p:outputLabel value="Gender at birth:" for="editGender"/>
+          <p:selectOneMenu id="editGender" value="#{participantBean.genderAtBirthInput}" required="true">
+            <f:selectItems value="#{genders}" var="e" itemLabel="#{e.name()}"/>
           </p:selectOneMenu>
-        </p>
+          <p:message for="editGender"/>
+          <p:outputLabel value="E-mail" for="editEmail"/>
+          <p:inputText id="editEmail" value="#{participantBean.participant.email}" required="true"/>
+          <p:message for="editEmail"/>
+        </p:panelGrid>
         <p>
           <p:commandButton value="save" action="#{participantBean.saveParticipant}" process="@all" update="@all"/>
         </p>

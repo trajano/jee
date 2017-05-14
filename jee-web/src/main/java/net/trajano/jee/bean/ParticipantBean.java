@@ -76,6 +76,15 @@ public class ParticipantBean implements
         edit = true;
     }
 
+    public String fillSample(final String sin) {
+
+        setParticipantSinInput(sin);
+        participant.setEmail(sin + "@example.com");
+        participant.setName("Archie " + sin);
+        setGenderAtBirthInput(Gender.MALE);
+        return null;
+    }
+
     public Gender getGenderAtBirthInput() {
 
         return genderAtBirthInput;

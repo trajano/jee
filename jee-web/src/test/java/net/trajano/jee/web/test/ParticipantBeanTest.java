@@ -50,6 +50,17 @@ public class ParticipantBeanTest {
     }
 
     @Test
+    public void testFillSample() throws Exception {
+
+        final ParticipantBean bean = new ParticipantBean();
+        final String sin = bean.getGeneratedSin();
+        bean.fillSample(sin);
+        assertEquals(Gender.MALE, bean.getGenderAtBirthInput());
+        assertEquals(sin, bean.getParticipantSinInput());
+
+    }
+
+    @Test
     public void testParticipantBean() throws Exception {
 
         final ParticipantBean bean = new ParticipantBean();
