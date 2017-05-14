@@ -33,13 +33,13 @@ before_install:
 install:
 - tar xf deploy-keys.tar -C $HOME && chmod go-rwx -R $HOME/.m2 $HOME/.ssh
 before_script:
-- mvn clean
+- mvn -B clean
 script:
-- mvn verify sonar:sonar 
+- mvn -B verify sonar:sonar 
 deploy:
 - provider: script
   skip_cleanup: true
-  script: mvn deploy && mvn site-deploy
+  script: mvn -B deploy && mvn -B site-deploy
   on:
     branch: master
 - provider: script
