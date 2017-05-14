@@ -22,6 +22,9 @@
   <module>
     <ejb>jee-domain.jar</ejb>
   </module>
+  <module>
+    <ejb>nlp.jar</ejb>
+  </module>
   <security-role>
     <role-name>users</role-name>
   </security-role>

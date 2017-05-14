@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:o="http://omnifaces.org/ui" xmlns:of="http://omnifaces.org/functions">
+  <h:head>
+    <title>NLP Processor</title>
+    <h:outputStylesheet library="css" name="primefaces-fix.css"/>
+  </h:head>
+  <h:body>
+    <h1>NLP processor</h1>
+    <p>Enter a few sentences. This will be sent to the parser.</p>
+    <h:form>
+      <p>
+        <p:commandButton value="parse" action="#{nlpBean.parse()}" icon="fa fa-fw fa-eye" update="@all"/>
+      </p>
+      <p>
+        <p:inputTextarea value="#{nlpBean.input}" cols="80" rows="20"/>
+      </p>
+    </h:form>
+    <h:panelGroup rendered="#{nlpBean.parsed}">
+      <p:dataTable var="sentence" value="#{nlpBean.result.sentences}">
+        <p:column headerText="Lemmas">
+          <p:dataList value="#{sentence.lemmas}" var="lemma">
+            <h:outputText value="#{lemma}"/>
+          </p:dataList>
+        </p:column>
+        <p:column headerText="Parse Tree">
+          <h:outputText value="#{sentence.parseTree}"/>
+        </p:column>
+      </p:dataTable>
+    </h:panelGroup>
+  </h:body>
+</html>

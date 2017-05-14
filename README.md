@@ -22,7 +22,6 @@ The focus is practicality rather than "artistic elegance" for this project.  So 
 * Bean Validation
     - Canadian Postal Code validation
     - Canadian SIN validation
-* [Kotlin](https://kotlinlang.org/) support
 * SOAP 
     - WS-Addressing 
     - MTOM
@@ -32,6 +31,13 @@ The focus is practicality rather than "artistic elegance" for this project.  So 
     - [OmniFaces](http://omnifaces.org/) for some common JSF utilities
     - Bean validation integration
     - Simple CRUD application integrating with JPA.
+
+### Additional technologies experimented on
+
+* [Kotlin](https://kotlinlang.org/) support (only for unit tests, does not work with deployed code in Eclipse)
+* Natural language processing with [CoreNLP](https://stanfordnlp.github.io/CoreNLP/).
+* JDK 8 build on an isolated EJB.
+
 
 ### TODO
 

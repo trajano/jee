@@ -1,8 +1,9 @@
-package net.trajano.jee.domain.dao.test
+package net.trajano.jee.domain.nlp.test
 
+import net.trajano.jee.nlp.AnalysisResult
+import net.trajano.jee.nlp.impl.CoreNlp
 import org.junit.Assert
 import org.junit.Test
-import net.trajano.jee.nlp.impl.CoreNlp
 
 class CoreNlpTest {
 	/**
@@ -16,6 +17,7 @@ class CoreNlpTest {
 	@Test
 	fun testAnalyze() {
 		val c = CoreNlp()
-		c.analyze("Archie loves Janet very much.");
+		val r = c.analyze("Archie loves Janet very much.  That much is QUITE true.");
+		Assert.assertEquals(2, r.sentences.size)
 	}
 }

@@ -18,8 +18,8 @@
         <p:column>
           <f:facet name="header">Gender at Birth</f:facet>#{item.genderAtBirth.name()}</p:column>
         <p:column>
-          <p:commandButton value="edit" action="#{participantBean.edit(item)}" update="@all"  icon="fa fa-fw fa-edit" />
-          <p:commandButton value="delete" action="#{participantBean.delete(item)}" update="@form"  icon="fa fa-fw fa-remove" />
+          <p:commandButton value="edit" action="#{participantBean.edit(item)}" update="@all" icon="fa fa-fw fa-edit"/>
+          <p:commandButton value="delete" action="#{participantBean.delete(item)}" update="@form" icon="fa fa-fw fa-remove"/>
         </p:column>
         <f:facet name="footer">
         In total there are #{fn:length(participantBean.list)} participants.
@@ -67,9 +67,13 @@
     <h:panelGroup rendered="#{participantBean.inEdit}">
       <h:form>
         <h3>Edit Participant #{participantBean.participant.id}</h3>
-        <p>Name: <p:inputText value="#{participantBean.participant.name}"/>
+        <p>
+				Name:
+				<p:inputText value="#{participantBean.participant.name}"/>
         </p>
-        <p>Gender at birth: <p:selectOneMenu value="#{participantBean.genderAtBirthInput}">
+        <p>
+				Gender at birth:
+				<p:selectOneMenu value="#{participantBean.genderAtBirthInput}">
             <f:selectItems value="#{genders}"/>
           </p:selectOneMenu>
         </p>
@@ -77,6 +81,9 @@
           <p:commandButton value="save" action="#{participantBean.saveParticipant}" process="@all" update="@all"/>
         </p>
       </h:form>
+    </h:panelGroup>
+    <h:panelGroup>
+      <h:outputLink value="nlp.xhtml">NSP processor</h:outputLink>
     </h:panelGroup>
   </h:body>
 </html>
