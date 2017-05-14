@@ -11,6 +11,7 @@
     <h:form>
       <p>
         <p:commandButton value="parse" action="#{nlpBean.parse()}" icon="fa fa-fw fa-eye" update="@all"/>
+        <p:button value="crud" outcome="crud" icon="fa fa-fw fa-list"/>
       </p>
       <p>
         <p:inputTextarea value="#{nlpBean.input}" cols="80" rows="20"/>
@@ -19,9 +20,7 @@
     <h:panelGroup rendered="#{nlpBean.parsed}">
       <p:dataTable var="sentence" value="#{nlpBean.result.sentences}">
         <p:column headerText="Lemmas">
-          <p:dataList value="#{sentence.lemmas}" var="lemma">
-            <h:outputText value="#{lemma}"/>
-          </p:dataList>
+          <h:outputText value="#{sentence.lemmas}"/>
         </p:column>
         <p:column headerText="Parse Tree">
           <h:outputText value="#{sentence.parseTree}"/>
