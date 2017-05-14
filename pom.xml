@@ -98,7 +98,8 @@
           <artifactId>cleanpom-maven-plugin</artifactId>
           <version>1.2.2</version>
           <executions>
-            <execution><id>clean-xml</id>
+            <execution>
+              <id>clean-xml</id>
               <goals>
                 <goal>clean-xml</goal>
               </goals>

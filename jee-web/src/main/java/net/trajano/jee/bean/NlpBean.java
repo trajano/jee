@@ -21,7 +21,7 @@ public class NlpBean implements
 
     private String input;
 
-    private Nlp nlp;
+    private transient Nlp nlp;
 
     private AnalysisResult result;
 
