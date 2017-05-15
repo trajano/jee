@@ -10,6 +10,9 @@
   <packaging>ejb</packaging>
   <name>Natural Language Processing backend</name>
   <description>This is an advanced EJB implementation that utilizes Java 8 runtime with CoreNLP and Kotlin as the primary language for tests and the API rather than Java.  Because of debugging purposes, the implementation itself is written in Java.</description>
+  <properties>
+    <maven.javadoc.skip>true</maven.javadoc.skip>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
@@ -85,9 +88,14 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>org.tensorflow</groupId>
-      <artifactId>tensorflow</artifactId>
-      <version>1.1.0</version>
+      <groupId>org.deeplearning4j</groupId>
+      <artifactId>deeplearning4j-core</artifactId>
+      <version>0.8.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.nd4j</groupId>
+      <artifactId>nd4j-native</artifactId>
+      <version>0.8.0</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -240,7 +248,4 @@
       </build>
     </profile>
   </profiles>
-  <properties>
-    <maven.javadoc.skip>true</maven.javadoc.skip>
-  </properties>
 </project>

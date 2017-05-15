@@ -10,16 +10,16 @@ import java.io.InputStream;
 import org.junit.Before;
 import org.junit.Test;
 
-import net.trajano.jee.domain.dao.impl.DefaultLobDAO;
+import net.trajano.jee.domain.dao.LobDAO;
 
 public class LobDAOTest extends BaseIntegrationTest {
 
-    private DefaultLobDAO dao;
+    private LobDAO dao;
 
     @Before
     public void buildDao() {
 
-        dao = container.select(DefaultLobDAO.class).get();
+        dao = container.select(LobDAO.class).get();
     }
 
     @Test

@@ -1,5 +1,8 @@
 package net.trajano.jee.domain.dao;
 
+import java.io.InputStream;
+import java.sql.SQLException;
+
 public interface LobDAO {
 
     /**
@@ -12,6 +15,15 @@ public interface LobDAO {
     byte[] get(long id);
 
     /**
+     * This may return <code>null</code>.
+     *
+     * @param id
+     *            id for the lob.
+     * @return input stream for the lob data.
+     */
+    InputStream getInputStream(long id) throws SQLException;
+
+    /**
      * Sets the value for the lob data.
      *
      * @param id
@@ -21,4 +33,7 @@ public interface LobDAO {
      */
     void set(long id,
         byte[] data);
+
+    void update(long id,
+        InputStream is) throws SQLException;
 }

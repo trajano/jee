@@ -32,10 +32,9 @@ public class DefaultLobDAO implements
     private DataSource ds;
 
     /**
-     * Injected entity manager. Made protected to allow the whole gamut of
-     * methods available to subclasses.
+     * Injected entity manager.
      */
-    protected EntityManager em;
+    private EntityManager em;
 
     @Override
     public byte[] get(final long id) {
@@ -49,6 +48,7 @@ public class DefaultLobDAO implements
     }
 
     @Transactional(value = TxType.REQUIRED)
+    @Override
     public InputStream getInputStream(final long id) throws SQLException {
 
         try (final Connection c = ds.getConnection()) {
@@ -110,6 +110,7 @@ public class DefaultLobDAO implements
         this.em = em;
     }
 
+    @Override
     public void update(final long id,
         final InputStream is) throws SQLException {
 
