@@ -14,7 +14,7 @@ import net.trajano.jee.domain.entity.BaseEntity;
  *
  * @author Archimedes Trajano
  */
-public class BaseDAO<T extends BaseEntity> {
+public abstract class BaseDAO<T extends BaseEntity> {
 
     /**
      * Injected entity manager. Made protected to allow the whole gamut of

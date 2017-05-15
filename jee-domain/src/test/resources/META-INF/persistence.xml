@@ -4,6 +4,7 @@
     <mapping-file>META-INF/orm.xml</mapping-file>
     <class>net.trajano.jee.domain.entity.User</class>
     <class>net.trajano.jee.domain.entity.Participant</class>
+    <class>net.trajano.jee.domain.dao.impl.LobData</class>
     <validation-mode>AUTO</validation-mode>
     <properties>
       <property name="javax.persistence.schema-generation.database.action" value="create"/>
