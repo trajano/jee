@@ -1,5 +1,8 @@
 package net.trajano.jee.domain.dao.impl;
 
+import javax.ejb.Local;
+import javax.ejb.Stateless;
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
@@ -10,6 +13,9 @@ import net.trajano.jee.domain.dao.LobDAO;
  *
  * @author Archimedes Trajano
  */
+@Local
+@Stateless
+@Dependent
 public class DefaultLobDAO implements
     LobDAO {
 

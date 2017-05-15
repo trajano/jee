@@ -13,13 +13,12 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 
 import org.tensorflow.Graph;
 import org.tensorflow.OperationBuilder;
 import org.tensorflow.Session;
 
-import net.trajano.jee.nlp.jpa.TensorGraph;
+import net.trajano.jee.domain.dao.LobDAO;
 
 /**
  * This is a tensor graph provider. It will periodically save it's data to the
@@ -36,9 +35,9 @@ public class TensorGraphProvider {
 
     private static final Logger LOG = Logger.getLogger("net.trajano.jee.nlp");
 
-    private EntityManager em;
-
     private Graph graph;
+
+    private LobDAO lobDAO;
 
     @Lock(LockType.WRITE)
     @PreDestroy
@@ -54,14 +53,12 @@ public class TensorGraphProvider {
     @PostConstruct
     public void loadFromDatabase() {
 
-        TensorGraph dbData = em.find(TensorGraph.class, GRAPH_ID);
+        final byte[] dbData = lobDAO.get(GRAPH_ID);
         if (dbData == null) {
             graph = new Graph();
-            dbData = new TensorGraph(GRAPH_ID);
-            dbData.setGraphDef(graph.toGraphDef());
-            em.persist(dbData);
+            lobDAO.set(GRAPH_ID, graph.toGraphDef());
         } else {
-            graph.importGraphDef(dbData.getGraphDef());
+            graph.importGraphDef(dbData);
         }
 
     }
@@ -89,14 +86,12 @@ public class TensorGraphProvider {
     @Lock(LockType.READ)
     public void persistCurrentGraph() {
 
-        final TensorGraph dbData = em.find(TensorGraph.class, GRAPH_ID);
-        dbData.setGraphDef(graph.toGraphDef());
-        em.merge(dbData);
+        lobDAO.set(GRAPH_ID, graph.toGraphDef());
     }
 
     @Inject
-    public void setEm(final EntityManager em) {
+    public void setLobDAO(final LobDAO lobDAO) {
 
-        this.em = em;
+        this.lobDAO = lobDAO;
     }
 }
