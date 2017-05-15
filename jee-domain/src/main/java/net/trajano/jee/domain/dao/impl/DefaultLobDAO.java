@@ -12,9 +12,8 @@ import javax.ejb.Stateless;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import javax.sql.DataSource;
-import javax.transaction.Transactional;
-import javax.transaction.Transactional.TxType;
 
 import net.trajano.jee.domain.dao.LobDAO;
 
@@ -47,9 +46,8 @@ public class DefaultLobDAO implements
         }
     }
 
-    @Transactional(value = TxType.REQUIRED)
     @Override
-    public InputStream getInputStream(final long id) throws SQLException {
+    public InputStream getInputStream(final long id) {
 
         try (final Connection c = ds.getConnection()) {
 
@@ -59,12 +57,29 @@ public class DefaultLobDAO implements
                     if (!rs.next()) {
                         return null;
                     } else {
-                        System.out.println("getting" + id + "stream");
                         return rs.getBlob(1).getBinaryStream();
                     }
                 }
             }
+        } catch (final SQLException e) {
+            throw new PersistenceException(e);
         }
+    }
+
+    @Override
+    public void remove(final long id) {
+
+        try (final Connection c = ds.getConnection()) {
+            try (final PreparedStatement stmt = c.prepareStatement("delete from LOBDATA where ID = ?")) {
+                stmt.setLong(1, id);
+                if (stmt.executeUpdate() != 1) {
+                    throw new SQLException("delete failed");
+                }
+            }
+        } catch (final SQLException e) {
+            throw new PersistenceException(e);
+        }
+
     }
 
     /**
@@ -112,7 +127,7 @@ public class DefaultLobDAO implements
 
     @Override
     public void update(final long id,
-        final InputStream is) throws SQLException {
+        final InputStream is) {
 
         try (final Connection c = ds.getConnection()) {
             try (final PreparedStatement stmt = c.prepareStatement("select LOBDATA, LASTUPDATEDON from LOBDATA where ID = ?", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
@@ -132,6 +147,8 @@ public class DefaultLobDAO implements
                     }
                 }
             }
+        } catch (final SQLException e) {
+            throw new PersistenceException(e);
         }
     }
 

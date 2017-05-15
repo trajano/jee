@@ -1,13 +1,12 @@
 package net.trajano.jee.nlp.impl;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
+import java.io.OutputStream;
 import java.sql.SQLException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -19,6 +18,7 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.persistence.PersistenceException;
 
 import org.deeplearning4j.nn.api.OptimizationAlgorithm;
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
@@ -69,9 +69,7 @@ public class ModelProvider {
      * @throws InterruptedException
      */
     @PostConstruct
-    public void loadFromDatabase() throws IOException,
-        SQLException,
-        InterruptedException {
+    public void loadFromDatabase() {
 
         final InputStream dbData = lobDAO.getInputStream(GRAPH_ID);
         if (dbData == null) {
@@ -106,7 +104,14 @@ public class ModelProvider {
             network.init();
             persistCurrentGraph();
         } else {
-            network = ModelSerializer.restoreMultiLayerNetwork(dbData, true);
+            try {
+                network = ModelSerializer.restoreMultiLayerNetwork(dbData, true);
+            } catch (final IOException e) {
+                LOG.severe("Unable to restore network, rebuilding");
+                LOG.throwing(this.getClass().getName(), "loadFromDatabase", e);
+                lobDAO.remove(GRAPH_ID);
+                loadFromDatabase();
+            }
         }
 
     }
@@ -114,48 +119,24 @@ public class ModelProvider {
     @Schedule(minute = "*/10",
         hour = "*")
     @Lock(LockType.READ)
-    public void persistCurrentGraph() throws IOException,
-        SQLException,
-        InterruptedException {
+    public void persistCurrentGraph() {
 
-        try (PipedInputStream is = new PipedInputStream();
-            PipedOutputStream os = new PipedOutputStream(is)) {
-
-            final Runnable source = new Runnable() {
-
-                @Override
-                public void run() {
-
-                    try {
-                        ModelSerializer.writeModel(network, os, true);
-                        os.close();
-                    } catch (final IOException e) {
-                        LOG.throwing(this.getClass().getName(), "persistCurrentGraph.source", e);
-                        throw new RuntimeException(e);
-                    }
-                }
-            };
-
-            final Runnable updater = new Runnable() {
-
-                @Override
-                public void run() {
-
-                    try {
-                        lobDAO.update(GRAPH_ID, is);
-                        is.close();
-                    } catch (final IOException
-                        | SQLException e) {
-                        LOG.throwing(this.getClass().getName(), "persistCurrentGraph.updater", e);
-                        throw new RuntimeException(e);
-                    }
-                }
-            };
-            final ExecutorService service = Executors.newFixedThreadPool(2);
-            service.execute(source);
-            service.execute(updater);
-            service.awaitTermination(10, TimeUnit.SECONDS);
+        try {
+            final File tempFile = File.createTempFile("model", ".zip");
+            try (OutputStream os = new FileOutputStream(tempFile)) {
+                ModelSerializer.writeModel(network, os, true);
+            }
+            try (InputStream is = new FileInputStream(tempFile)) {
+                lobDAO.update(GRAPH_ID, is);
+            }
+            if (!tempFile.delete()) {
+                LOG.warning("Unable to delete temporary file " + tempFile);
+            }
+        } catch (final IOException e) {
+            LOG.throwing(this.getClass().getName(), "persistCurrentGraph", e);
+            throw new PersistenceException(e);
         }
+
     }
 
     @Inject

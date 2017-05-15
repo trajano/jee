@@ -11,6 +11,10 @@ import java.io.DataInputStream
  * @author Archimedes Trajano
  */
 class FakeLobDAO : LobDAO {
+	override fun remove(id: Long) {
+		store.remove(id)
+	}
+
 	override fun update(id: Long, input: InputStream) {
 		store.put(id, input.readBytes())
 	}

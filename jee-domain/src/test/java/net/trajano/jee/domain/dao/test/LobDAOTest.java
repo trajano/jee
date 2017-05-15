@@ -54,6 +54,9 @@ public class LobDAOTest extends BaseIntegrationTest {
         final InputStream inputStream = dao.getInputStream(257L);
         new DataInputStream(inputStream).readFully(testDataBuffer);
         assertArrayEquals(testDataBuffer, testData);
+
+        dao.remove(257L);
+        assertNull(dao.getInputStream(257L));
     }
 
 }
