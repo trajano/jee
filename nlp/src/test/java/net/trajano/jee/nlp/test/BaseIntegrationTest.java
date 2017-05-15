@@ -1,4 +1,4 @@
-package net.trajano.jee.domain.dao.test;
+package net.trajano.jee.nlp.test;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.LogManager;
 
+import javax.enterprise.inject.spi.BeanManager;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -19,7 +20,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
-import net.trajano.jee.domain.dao.impl.JpaProvider;
+import net.trajano.jee.nlp.impl.JpaProvider;
 
 /**
  * Provides basic framework for JPA testing.
@@ -27,6 +28,8 @@ import net.trajano.jee.domain.dao.impl.JpaProvider;
  * @author Archimedes Trajano
  */
 public abstract class BaseIntegrationTest {
+
+    protected static BeanManager beanManager;
 
     protected static EntityManager em;
 
@@ -56,7 +59,8 @@ public abstract class BaseIntegrationTest {
         vf = Validation.buildDefaultValidatorFactory();
         final Map<String, Object> props = new HashMap<>();
         props.put("javax.persistence.provider", "org.eclipse.persistence.jpa.PersistenceProvider");
-        props.put("javax.persistence.bean.manager", container.getBeanManager());
+        beanManager = container.getBeanManager();
+        props.put("javax.persistence.bean.manager", beanManager);
         emf = Persistence.createEntityManagerFactory("test-pu", props);
         em = emf.createEntityManager();
         jpaProvider.setEntityManager(em);
