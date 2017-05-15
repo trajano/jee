@@ -17,7 +17,7 @@ import net.trajano.jee.domain.dao.impl.DefaultParticipantDAO;
 import net.trajano.jee.domain.entity.Gender;
 import net.trajano.jee.domain.entity.Participant;
 
-public class ParticipantDAOTest extends BaseJpaTest {
+public class ParticipantDAOTest extends BaseIntegrationTest {
 
     private ParticipantDAO dao;
 

@@ -26,7 +26,7 @@ import net.trajano.jee.domain.dao.impl.JpaProvider;
  *
  * @author Archimedes Trajano
  */
-public abstract class BaseJpaTest {
+public abstract class BaseIntegrationTest {
 
     protected static EntityManager em;
 
