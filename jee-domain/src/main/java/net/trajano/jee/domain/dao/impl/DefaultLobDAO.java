@@ -1,10 +1,20 @@
 package net.trajano.jee.domain.dao.impl;
 
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.sql.DataSource;
+import javax.transaction.Transactional;
+import javax.transaction.Transactional.TxType;
 
 import net.trajano.jee.domain.dao.LobDAO;
 
@@ -18,6 +28,8 @@ import net.trajano.jee.domain.dao.LobDAO;
 @Dependent
 public class DefaultLobDAO implements
     LobDAO {
+
+    private DataSource ds;
 
     /**
      * Injected entity manager. Made protected to allow the whole gamut of
@@ -33,6 +45,25 @@ public class DefaultLobDAO implements
             return null;
         } else {
             return entity.getLobData();
+        }
+    }
+
+    @Transactional(value = TxType.REQUIRED)
+    public InputStream getInputStream(final long id) throws SQLException {
+
+        try (final Connection c = ds.getConnection()) {
+
+            try (final PreparedStatement stmt = c.prepareStatement("select LOBDATA from LOBDATA where ID = ?")) {
+                stmt.setLong(1, id);
+                try (final ResultSet rs = stmt.executeQuery()) {
+                    if (!rs.next()) {
+                        return null;
+                    } else {
+                        System.out.println("getting" + id + "stream");
+                        return rs.getBlob(1).getBinaryStream();
+                    }
+                }
+            }
         }
     }
 
@@ -60,6 +91,13 @@ public class DefaultLobDAO implements
 
     }
 
+    @Inject
+    public void setDataSource(final DataSource ds) {
+
+        this.ds = ds;
+
+    }
+
     /**
      * Sets/injects the entity manager.
      *
@@ -70,6 +108,30 @@ public class DefaultLobDAO implements
     public void setEntityManager(final EntityManager em) {
 
         this.em = em;
+    }
+
+    public void update(final long id,
+        final InputStream is) throws SQLException {
+
+        try (final Connection c = ds.getConnection()) {
+            try (final PreparedStatement stmt = c.prepareStatement("select LOBDATA, LASTUPDATEDON from LOBDATA where ID = ?", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+                final PreparedStatement insertStmt = c.prepareStatement("insert INTO LOBDATA (ID, LOBDATA, LASTUPDATEDON) values (?,?,?)")) {
+                stmt.setLong(1, id);
+                try (final ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) {
+                        rs.updateBinaryStream(1, is);
+                        rs.updateTimestamp(2, new Timestamp(System.currentTimeMillis()));
+                    } else {
+                        insertStmt.setLong(1, id);
+                        insertStmt.setBinaryStream(2, is);
+                        insertStmt.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+                        if (insertStmt.executeUpdate() != 1) {
+                            throw new SQLException("Insert failed");
+                        }
+                    }
+                }
+            }
+        }
     }
 
 }

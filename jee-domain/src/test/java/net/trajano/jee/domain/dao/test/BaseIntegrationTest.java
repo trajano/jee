@@ -12,6 +12,7 @@ import javax.persistence.Persistence;
 import javax.validation.Validation;
 import javax.validation.ValidatorFactory;
 
+import org.h2.jdbcx.JdbcDataSource;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
 import org.junit.After;
@@ -27,6 +28,8 @@ import net.trajano.jee.domain.dao.impl.JpaProvider;
  * @author Archimedes Trajano
  */
 public abstract class BaseIntegrationTest {
+
+    protected static WeldContainer container;
 
     protected static EntityManager em;
 
@@ -51,7 +54,7 @@ public abstract class BaseIntegrationTest {
         }
 
         weld = new Weld();
-        final WeldContainer container = weld.initialize();
+        container = weld.initialize();
         final JpaProvider jpaProvider = container.select(JpaProvider.class).get();
         vf = Validation.buildDefaultValidatorFactory();
         final Map<String, Object> props = new HashMap<>();
@@ -60,6 +63,10 @@ public abstract class BaseIntegrationTest {
         emf = Persistence.createEntityManagerFactory("test-pu", props);
         em = emf.createEntityManager();
         jpaProvider.setEntityManager(em);
+
+        final JdbcDataSource ds = new JdbcDataSource();
+        ds.setURL("jdbc:h2:mem:test");
+        jpaProvider.setDataSource(ds);
     }
 
     /**

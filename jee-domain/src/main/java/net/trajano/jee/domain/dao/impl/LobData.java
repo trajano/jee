@@ -15,6 +15,9 @@ import javax.persistence.TemporalType;
  * This entity stores keyed LOB data that is meant to be used by system services
  * rather than by general user interaction. This entity is not exposed to
  * clients as it only has the lob data so all interaction is through the DAO.
+ * <p>
+ * This entity is not normally used either as raw JDBC calls are used to improve
+ * performance.
  *
  * @author Archimedes Trajano
  */

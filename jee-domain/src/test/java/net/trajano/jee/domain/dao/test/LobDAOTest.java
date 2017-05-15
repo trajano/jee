@@ -1,24 +1,25 @@
 package net.trajano.jee.domain.dao.test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertNull;
+
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.InputStream;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import net.trajano.jee.domain.dao.LobDAO;
 import net.trajano.jee.domain.dao.impl.DefaultLobDAO;
 
 public class LobDAOTest extends BaseIntegrationTest {
 
-    private LobDAO dao;
+    private DefaultLobDAO dao;
 
     @Before
     public void buildDao() {
 
-        final DefaultLobDAO dao = new DefaultLobDAO();
-        dao.setEntityManager(em);
-        this.dao = dao;
+        dao = container.select(DefaultLobDAO.class).get();
     }
 
     @Test
@@ -33,7 +34,26 @@ public class LobDAOTest extends BaseIntegrationTest {
         };
         assertNull(dao.get(256));
         dao.set(256, testData);
-        assertEquals(testData, dao.get(256));
+        assertArrayEquals(testData, dao.get(256));
+    }
+
+    @Test
+    public void testDaoStreamOperations() throws Exception {
+
+        final byte[] testData = new byte[] {
+            0,
+            1,
+            2,
+            3,
+            4
+        };
+        final byte[] testDataBuffer = new byte[testData.length];
+        assertNull(dao.getInputStream(257L));
+        dao.update(257L, new ByteArrayInputStream(testData));
+        assertArrayEquals(testData, dao.get(257L));
+        final InputStream inputStream = dao.getInputStream(257L);
+        new DataInputStream(inputStream).readFully(testDataBuffer);
+        assertArrayEquals(testDataBuffer, testData);
     }
 
 }
