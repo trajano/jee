@@ -42,7 +42,7 @@ script:
 deploy:
 - provider: script
   skip_cleanup: true
-  script: mvn -B deploy && mvn -B site-deploy
+  script: mvn -B deploy -Dmaven.test.skip=true && mvn -B site-deploy
   on:
     branch: master
 - provider: script
