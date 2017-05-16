@@ -1,11 +1,25 @@
 package net.trajano.jee.domain.nlp.test
 
-import net.trajano.jee.nlp.AnalysisResult
 import net.trajano.jee.nlp.impl.CoreNlp
+import org.junit.AfterClass
 import org.junit.Assert
+import org.junit.BeforeClass
 import org.junit.Test
+import java.util.logging.LogManager
 
 class CoreNlpTest {
+	companion object {
+		@BeforeClass @JvmStatic fun setup() {
+			Thread.currentThread().getContextClassLoader().getResourceAsStream("test-logging.properties").use {
+				LogManager.getLogManager().readConfiguration(it)
+			}
+		}
+
+		@AfterClass @JvmStatic fun teardown() {
+			LogManager.getLogManager().reset()
+		}
+	}
+
 	/**
 	 * Ensure Kotlin is setup correctly.
 	 */
