@@ -87,6 +87,43 @@ public class HttpHeaderAuthTest {
 
     }
 
+    @Test(expected = AuthException.class)
+    public void testInvalidWebSphere() throws Exception {
+
+        System.setProperty("was.install.root", "nowhere");
+        try {
+            final UserDAO userDAO = mock(UserDAO.class);
+            when(userDAO.isUsernameExist("haruna")).thenReturn(true);
+            final CallbackHandler callbackHandler = mock(CallbackHandler.class);
+            final HttpHeaderAuthConfigProvider authConfigProvider = new HttpHeaderAuthConfigProvider(userDAO);
+            final String appContext = "default_host /jee";
+            assertNull(authConfigProvider.getClientAuthConfig("HttpServlet", appContext, callbackHandler));
+            final ServerAuthConfig serverAuthConfig = authConfigProvider.getServerAuthConfig("HttpServlet", appContext, callbackHandler);
+            assertNotNull(serverAuthConfig);
+
+            assertEquals(appContext, serverAuthConfig.getAppContext());
+            final Subject clientSubject = new Subject();
+            final Subject serviceSubject = new Subject();
+            final MessageInfo messageInfo = mock(MessageInfo.class);
+
+            final HttpServletRequest servletRequest = mock(HttpServletRequest.class);
+            when(servletRequest.isSecure()).thenReturn(true);
+            when(servletRequest.getHeader("X-Forwarded-User")).thenReturn("haruna");
+            when(messageInfo.getRequestMessage()).thenReturn(servletRequest);
+            when(messageInfo.getResponseMessage()).thenReturn(mock(HttpServletResponse.class));
+            final Map<String, Object> messageInfoMap = new HashMap<>();
+            messageInfoMap.put("javax.security.auth.message.MessagePolicy.isMandatory", "true");
+            when(messageInfo.getMap()).thenReturn(messageInfoMap);
+
+            final HttpHeaderAuthModule authModule = (HttpHeaderAuthModule) serverAuthConfig.getAuthContext(serverAuthConfig.getAuthContextID(messageInfo), serviceSubject, Collections.emptyMap());
+            authModule.getSupportedMessageTypes();
+            authModule.validateRequest(messageInfo, clientSubject, serviceSubject);
+
+        } finally {
+            System.clearProperty("was.install.root");
+        }
+    }
+
     @Test
     public void testNoSsl() throws Exception {
 
