@@ -85,15 +85,14 @@ public class DefaultLobDAO implements
      * <li>if there are still more records:
      * <ol>
      * <li>update the record</li>
-     * <li>set last chunk = true if last chunk</li>
      * </ol>
      * <li>else
      * <ol>
      * <li>insert a new record</li>
-     * <li>set last chunk = true if last chunk</li>
      * </ol>
      * </li></li>
      * </ol>
+     * <li>Delete other records</li>
      * </ol>
      */
     @Override
@@ -101,8 +100,10 @@ public class DefaultLobDAO implements
         final InputStream is) {
 
         try (final Connection c = ds.getConnection();
-            final PreparedStatement selectStmt = c.prepareStatement("SELECT NAME, CHUNKSEQUENCE, CHUNK, LASTUPDATEDON FROM LOBDATA where NAME = ? order by CHUNKSEQUENCE", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
-            final PreparedStatement insertStmt = c.prepareStatement("insert INTO LOBDATA (NAME, CHUNKSEQUENCE, CHUNK, LASTUPDATEDON) values (?,?,?,?)")) {
+            final PreparedStatement selectStmt = c.prepareStatement("select CHUNKSEQUENCE FROM LOBDATA where NAME = ? order by CHUNKSEQUENCE", ResultSet.TYPE_FORWARD_ONLY);
+            final PreparedStatement insertStmt = c.prepareStatement("insert INTO LOBDATA (NAME, CHUNKSEQUENCE, CHUNK, LASTUPDATEDON) values (?,?,?,?)");
+            final PreparedStatement updateStmt = c.prepareStatement("update LOBDATA set CHUNK = ?, LASTUPDATEDON = ? where NAME = ? and CHUNKSEQUENCE = ?");
+            final PreparedStatement deleteStmt = c.prepareStatement("delete LOBDATA where NAME = ? and CHUNKSEQUENCE >= ?")) {
 
             final Timestamp ts = new Timestamp(System.currentTimeMillis());
             selectStmt.setString(1, name);
@@ -132,16 +133,18 @@ public class DefaultLobDAO implements
                             insertStmt.executeUpdate();
                             ++seq;
                         } else {
-                            seq = rs.getInt(2) + 1;
-                            rs.updateBinaryStream(3, new ByteArrayInputStream(chunk, 0, length));
-                            rs.updateTimestamp(4, ts);
-                            rs.updateRow();
+                            updateStmt.setBlob(1, new ByteArrayInputStream(chunk, 0, length));
+                            updateStmt.setTimestamp(2, ts);
+                            updateStmt.setString(3, name);
+                            updateStmt.setInt(4, seq);
+                            updateStmt.executeUpdate();
+                            seq = rs.getInt(1) + 1;
                         }
                     }
 
-                }
-                while (rs.next()) {
-                    rs.deleteRow();
+                    deleteStmt.setString(1, name);
+                    deleteStmt.setInt(2, seq);
+                    deleteStmt.executeUpdate();
                 }
             }
 
