@@ -100,10 +100,10 @@ public class DefaultLobDAO implements
         final InputStream is) {
 
         try (final Connection c = ds.getConnection();
-            final PreparedStatement selectStmt = c.prepareStatement("select CHUNKSEQUENCE FROM LOBDATA where NAME = ? order by CHUNKSEQUENCE", ResultSet.TYPE_FORWARD_ONLY);
-            final PreparedStatement insertStmt = c.prepareStatement("insert INTO LOBDATA (NAME, CHUNKSEQUENCE, CHUNK, LASTUPDATEDON) values (?,?,?,?)");
+            final PreparedStatement selectStmt = c.prepareStatement("select CHUNKSEQUENCE from LOBDATA where NAME = ? order by CHUNKSEQUENCE", ResultSet.TYPE_FORWARD_ONLY);
+            final PreparedStatement insertStmt = c.prepareStatement("insert into LOBDATA (NAME, CHUNKSEQUENCE, CHUNK, LASTUPDATEDON) values (?,?,?,?)");
             final PreparedStatement updateStmt = c.prepareStatement("update LOBDATA set CHUNK = ?, LASTUPDATEDON = ? where NAME = ? and CHUNKSEQUENCE = ?");
-            final PreparedStatement deleteStmt = c.prepareStatement("delete LOBDATA where NAME = ? and CHUNKSEQUENCE >= ?")) {
+            final PreparedStatement deleteStmt = c.prepareStatement("delete from LOBDATA where NAME = ? and CHUNKSEQUENCE >= ?")) {
 
             final Timestamp ts = new Timestamp(System.currentTimeMillis());
             selectStmt.setString(1, name);
