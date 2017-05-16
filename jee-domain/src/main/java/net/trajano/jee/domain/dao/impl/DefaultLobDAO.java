@@ -79,36 +79,78 @@ public class DefaultLobDAO implements
 
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Updates are implemented as follows:
+     * </p>
+     * <ol>
+     * <li>Select to find all the entries for the name ordered by sequence</li>
+     * <li>For each chunk
+     * <ol>
+     * <li>if there are still more records:
+     * <ol>
+     * <li>update the record</li>
+     * <li>set last chunk = true if last chunk</li>
+     * </ol>
+     * <li>else
+     * <ol>
+     * <li>insert a new record</li>
+     * <li>set last chunk = true if last chunk</li>
+     * </ol>
+     * </li></li>
+     * </ol>
+     * </ol>
+     */
     @Override
     public void update(final String name,
         final InputStream is) {
 
         try (final Connection c = ds.getConnection()) {
-            try (final PreparedStatement deleteStmt = c.prepareStatement("delete from LOBDATA where NAME = ?")) {
-                deleteStmt.setString(1, name);
-                deleteStmt.executeUpdate();
-            }
-            try (final PreparedStatement insertStmt = c.prepareStatement("insert INTO LOBDATA (NAME, CHUNKSEQUENCE, CHUNK, LASTCHUNK, LASTUPDATEDON) values (?,?,?,?,?)")) {
-                final byte[] chunk = new byte[LobData.CHUNK_SIZE];
-                try (final BufferedInputStream stream = new BufferedInputStream(is)) {
-                    int seq = 0;
-                    for (;;) {
-                        final int length = stream.read(chunk);
+            try (
+                final PreparedStatement selectStmt = c.prepareStatement("SELECT NAME, CHUNKSEQUENCE, CHUNK, LASTCHUNK, LASTUPDATEDON FROM LOBDATA where NAME = ? order by CHUNKSEQUENCE", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+                final PreparedStatement insertStmt = c.prepareStatement("insert INTO LOBDATA (NAME, CHUNKSEQUENCE, CHUNK, LASTCHUNK, LASTUPDATEDON) values (?,?,?,?,?)")) {
+                final Timestamp ts = new Timestamp(System.currentTimeMillis());
 
-                        if (length == -1) {
-                            break;
-                        } else {
-                            insertStmt.setString(1, name);
-                            insertStmt.setInt(2, seq);
-                            insertStmt.setBlob(3, new ByteArrayInputStream(chunk, 0, length));
-                            insertStmt.setBoolean(4, false);
-                            insertStmt.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
-                            insertStmt.executeUpdate();
-                            ++seq;
+                selectStmt.setString(1, name);
+                insertStmt.setString(1, name);
+                insertStmt.setTimestamp(5, ts);
+
+                try (final ResultSet rs = selectStmt.executeQuery()) {
+
+                    final byte[] chunk = new byte[LobData.CHUNK_SIZE];
+                    try (final BufferedInputStream stream = new BufferedInputStream(is, LobData.CHUNK_SIZE)) {
+                        int seq = 0;
+                        boolean startInserting = false;
+                        for (;;) {
+                            final int length = stream.read(chunk);
+
+                            if (length == -1) {
+                                break;
+                            }
+
+                            if (!startInserting && !rs.next()) {
+                                startInserting = true;
+                            }
+
+                            if (startInserting) {
+                                insertStmt.setInt(2, seq);
+                                insertStmt.setBlob(3, new ByteArrayInputStream(chunk, 0, length));
+                                insertStmt.setBoolean(4, length < LobData.CHUNK_SIZE);
+                                insertStmt.executeUpdate();
+                                ++seq;
+                            } else {
+                                seq = rs.getInt(2) + 1;
+                                rs.updateBinaryStream(3, new ByteArrayInputStream(chunk, 0, length));
+                                rs.updateBoolean(4, length < LobData.CHUNK_SIZE);
+                                rs.updateTimestamp(5, ts);
+                                rs.updateRow();
+                            }
                         }
-                    }
 
+                    }
                 }
+
             }
         } catch (final IOException
             | SQLException e) {
