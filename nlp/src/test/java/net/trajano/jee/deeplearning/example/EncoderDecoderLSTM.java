@@ -118,9 +118,9 @@ import org.nd4j.linalg.lossfunctions.LossFunctions;
  * two inputs, the thought vector made by the encoder and the token that it
  * _should have produced_ (but usually it outputs something else so we have our
  * loss metric and can compute gradients for the backward pass) on the previous
- * step (or <go> for the very first step). These two vectors are simply
- * concatenated by the merge vertex. The decoder's output goes to the softmax
- * layer and that's it.
+ * step (or <code>&lt;go&gt;</code> for the very first step). These two vectors
+ * are simply concatenated by the merge vertex. The decoder's output goes to the
+ * softmax layer and that's it.
  * </p>
  * <p>
  * The test phase is much more tricky. We don't know the decoder input because
@@ -134,14 +134,14 @@ import org.nd4j.linalg.lossfunctions.LossFunctions;
  * element, <code>&lt;go&gt;</code>. We don't need the actual activations except
  * the "thought vector". It resides in the second merge vertex input (named
  * "dup"). So we get it and store for the entire response generation time. Then
- * we put the decoder input (<go> for the first iteration) and the thought
- * vector to the merge vertex inputs and feed it forward. The result goes to the
- * decoder layer, now with rnnTimeStep() method so that the internal layer state
- * is updated for the next iteration. The result is fed to the output softmax
- * layer and then we sample it randomly (not with argMax(), it tends to give a
- * lot of same tokens in a row). The resulting token is looked up in the
- * dictionary, printed to the {@link System#out} and then it goes to the next
- * iteration as the decoder input and so on until we get
+ * we put the decoder input (<code>&lt;go&gt;</code> for the first iteration)
+ * and the thought vector to the merge vertex inputs and feed it forward. The
+ * result goes to the decoder layer, now with rnnTimeStep() method so that the
+ * internal layer state is updated for the next iteration. The result is fed to
+ * the output softmax layer and then we sample it randomly (not with argMax(),
+ * it tends to give a lot of same tokens in a row). The resulting token is
+ * looked up in the dictionary, printed to the {@link System#out} and then it
+ * goes to the next iteration as the decoder input and so on until we get
  * <code>&lt;eos&gt;</code>.
  * </p>
  * <p>
@@ -160,7 +160,12 @@ public class EncoderDecoderLSTM {
 
     private static final int EMBEDDING_WIDTH = 128; // one-hot vectors will be embedded to more dense vectors with this width
 
-    private static final int GC_WINDOW = 2000; // delay between garbage collections, try to reduce if you run out of VRAM or increase for
+    /**
+     * The delay between invocations of {@link java.lang.System#gc()} in
+     * milliseconds. If VRAM is being exhausted, reduce this value. Increase
+     * this value to yield better performance.
+     */
+    private static final int GC_WINDOW = 2000;
 
     private static final int HIDDEN_LAYER_WIDTH = 512; // this is purely empirical, affects performance and VRAM requirement
 
@@ -195,6 +200,10 @@ public class EncoderDecoderLSTM {
 
     private final String CHARS = "-\\/_&" + CorpusProcessor.SPECIALS;
 
+    /**
+     * The contents of the corpus. This is a list of sentences (each word of the
+     * sentence is denoted by a {@link java.lang.Double}).
+     */
     private final List<List<Double>> corpus = new ArrayList<>();
 
     private final Map<String, Double> dict = new HashMap<>();
@@ -203,30 +212,61 @@ public class EncoderDecoderLSTM {
 
     private final Map<Double, String> revDict = new HashMap<>();
 
+    /**
+     * Configure and initialize the computation graph. This is done once in the
+     * beginning to prepare the {@link #net} for training.
+     */
     private void createComputationGraph() {
 
-        final NeuralNetConfiguration.Builder builder = new NeuralNetConfiguration.Builder();
-        builder.iterations(1).learningRate(LEARNING_RATE).rmsDecay(RMS_DECAY)
-            .optimizationAlgo(OptimizationAlgorithm.STOCHASTIC_GRADIENT_DESCENT).miniBatch(true).updater(Updater.RMSPROP)
-            .weightInit(WeightInit.XAVIER).gradientNormalization(GradientNormalization.RenormalizeL2PerLayer);
+        final NeuralNetConfiguration.Builder builder = new NeuralNetConfiguration.Builder()
+            .iterations(1)
+            .learningRate(LEARNING_RATE)
+            .rmsDecay(RMS_DECAY)
+            .optimizationAlgo(OptimizationAlgorithm.STOCHASTIC_GRADIENT_DESCENT)
+            .miniBatch(true)
+            .updater(Updater.RMSPROP)
+            .weightInit(WeightInit.XAVIER)
+            .gradientNormalization(GradientNormalization.RenormalizeL2PerLayer);
 
-        final GraphBuilder graphBuilder = builder.graphBuilder().pretrain(false).backprop(true).backpropType(BackpropType.Standard)
-            .tBPTTBackwardLength(TBPTT_SIZE).tBPTTForwardLength(TBPTT_SIZE);
-        graphBuilder.addInputs("inputLine", "decoderInput")
+        final GraphBuilder graphBuilder = builder.graphBuilder()
+            .pretrain(false)
+            .backprop(true)
+            .backpropType(BackpropType.Standard)
+            .tBPTTBackwardLength(TBPTT_SIZE)
+            .tBPTTForwardLength(TBPTT_SIZE)
+            .addInputs("inputLine", "decoderInput")
             .setInputTypes(InputType.recurrent(dict.size()), InputType.recurrent(dict.size()))
-            .addLayer("embeddingEncoder", new EmbeddingLayer.Builder().nIn(dict.size()).nOut(EMBEDDING_WIDTH).build(), "inputLine")
+            .addLayer("embeddingEncoder",
+                new EmbeddingLayer.Builder()
+                    .nIn(dict.size())
+                    .nOut(EMBEDDING_WIDTH)
+                    .build(),
+                "inputLine")
             .addLayer("encoder",
-                new GravesLSTM.Builder().nIn(EMBEDDING_WIDTH).nOut(HIDDEN_LAYER_WIDTH).activation(Activation.TANH).build(),
+                new GravesLSTM.Builder()
+                    .nIn(EMBEDDING_WIDTH)
+                    .nOut(HIDDEN_LAYER_WIDTH)
+                    .activation(Activation.TANH)
+                    .build(),
                 "embeddingEncoder")
             .addVertex("thoughtVector", new LastTimeStepVertex("inputLine"), "encoder")
             .addVertex("dup", new DuplicateToTimeSeriesVertex("decoderInput"), "thoughtVector")
             .addVertex("merge", new MergeVertex(), "decoderInput", "dup")
             .addLayer("decoder",
-                new GravesLSTM.Builder().nIn(dict.size() + HIDDEN_LAYER_WIDTH).nOut(HIDDEN_LAYER_WIDTH).activation(Activation.TANH)
+                new GravesLSTM.Builder()
+                    .nIn(dict.size() + HIDDEN_LAYER_WIDTH)
+                    .nOut(HIDDEN_LAYER_WIDTH)
+                    .activation(Activation.TANH)
                     .build(),
                 "merge")
-            .addLayer("output", new RnnOutputLayer.Builder().nIn(HIDDEN_LAYER_WIDTH).nOut(dict.size()).activation(Activation.SOFTMAX)
-                .lossFunction(LossFunctions.LossFunction.MCXENT).build(), "decoder")
+            .addLayer("output",
+                new RnnOutputLayer.Builder()
+                    .nIn(HIDDEN_LAYER_WIDTH)
+                    .nOut(dict.size())
+                    .activation(Activation.SOFTMAX)
+                    .lossFunction(LossFunctions.LossFunction.MCXENT)
+                    .build(),
+                "decoder")
             .setOutputs("output");
 
         net = new ComputationGraph(graphBuilder.build());

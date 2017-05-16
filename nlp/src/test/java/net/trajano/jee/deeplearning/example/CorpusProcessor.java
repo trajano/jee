@@ -151,11 +151,12 @@ public class CorpusProcessor {
     }
 
     /**
-     * Converts a list of words to a list of indices.
+     * Converts an iterable sequence of words to a list of indices. This will
+     * never return {@code null} but may return an empty {@link java.util.List}.
      *
      * @param words
-     *            words
-     * @return list of incides.
+     *            sequence of words
+     * @return list of indices.
      */
     protected final List<Double> wordsToIndexes(final Iterable<String> words) {
 
@@ -174,4 +175,5 @@ public class CorpusProcessor {
         }
         return wordIdxs;
     }
+
 }
