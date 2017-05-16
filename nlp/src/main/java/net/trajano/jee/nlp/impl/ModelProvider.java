@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
@@ -59,7 +60,7 @@ public class ModelProvider {
 
     private static final int EMBEDDING_WIDTH = 128; // one-hot vectors will be embedded to more dense vectors with this width
 
-    private static final long GRAPH_ID = 1L;
+    private static final String GRAPH_ID = "dl4jComputationGraph";
 
     private static final int HIDDEN_LAYER_WIDTH = 512; // this is purely empirical, affects performance and VRAM requirement
 
@@ -147,8 +148,7 @@ public class ModelProvider {
             try {
                 net = ModelSerializer.restoreComputationGraph(dbData, true);
             } catch (final IOException e) {
-                LOG.severe("Unable to restore network, rebuilding");
-                LOG.throwing(this.getClass().getName(), "loadFromDatabase", e);
+                LOG.log(Level.SEVERE, "Unable to restore network, rebuilding", e);
                 lobDAO.remove(GRAPH_ID);
                 loadFromDatabase();
             }

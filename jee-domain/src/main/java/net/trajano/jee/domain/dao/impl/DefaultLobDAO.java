@@ -1,5 +1,8 @@
 package net.trajano.jee.domain.dao.impl;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,7 +14,6 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import javax.sql.DataSource;
 
@@ -30,35 +32,26 @@ public class DefaultLobDAO implements
 
     private DataSource ds;
 
-    /**
-     * Injected entity manager.
-     */
-    private EntityManager em;
-
     @Override
-    public byte[] get(final long id) {
-
-        final LobData entity = em.find(LobData.class, id);
-        if (entity == null) {
-            return null;
-        } else {
-            return entity.getLobData();
-        }
-    }
-
-    @Override
-    public InputStream getInputStream(final long id) {
+    public InputStream getInputStream(final String name) {
 
         try (final Connection c = ds.getConnection()) {
 
-            try (final PreparedStatement stmt = c.prepareStatement("select LOBDATA from LOBDATA where ID = ?")) {
-                stmt.setLong(1, id);
+            try (final PreparedStatement stmt = c.prepareStatement("select CHUNK, LASTCHUNK from LOBDATA where NAME = ? order by CHUNKSEQUENCE")) {
+                stmt.setString(1, name);
                 try (final ResultSet rs = stmt.executeQuery()) {
                     if (!rs.next()) {
                         return null;
-                    } else {
-                        return rs.getBlob(1).getBinaryStream();
                     }
+                    final CompositeInputStream.Builder builder = new CompositeInputStream.Builder();
+                    do {
+                        builder.addStream(rs.getBlob(1).getBinaryStream());
+                        if (rs.getBoolean(2)) {
+                            break;
+                        }
+                    } while (rs.next());
+                    return builder.build();
+
                 }
             }
         } catch (final SQLException e) {
@@ -67,43 +60,16 @@ public class DefaultLobDAO implements
     }
 
     @Override
-    public void remove(final long id) {
+    public void remove(final String name) {
 
         try (final Connection c = ds.getConnection()) {
-            try (final PreparedStatement stmt = c.prepareStatement("delete from LOBDATA where ID = ?")) {
-                stmt.setLong(1, id);
-                if (stmt.executeUpdate() != 1) {
-                    throw new SQLException("delete failed");
-                }
+            try (final PreparedStatement stmt = c.prepareStatement("delete from LOBDATA where NAME = ?")) {
+                stmt.setString(1, name);
+                stmt.executeUpdate();
             }
         } catch (final SQLException e) {
             throw new PersistenceException(e);
         }
-
-    }
-
-    /**
-     * Performs an upsert operation to store the data. If the id is {@code null}
-     * then {@link EntityManager#persist(Object)} is called otherwise a
-     * {@link EntityManager#merge(Object)} is called.
-     *
-     * @param id
-     *            id
-     * @param data
-     *            LOB data
-     */
-    @Override
-    public void set(final long id,
-        final byte[] data) {
-
-        final LobData entity = em.find(LobData.class, id);
-        if (entity == null) {
-            em.persist(new LobData(id, data));
-        } else {
-            entity.setLobData(data);
-            em.merge(entity);
-        }
-
     }
 
     @Inject
@@ -113,41 +79,39 @@ public class DefaultLobDAO implements
 
     }
 
-    /**
-     * Sets/injects the entity manager.
-     *
-     * @param em
-     *            entity manager
-     */
-    @Inject
-    public void setEntityManager(final EntityManager em) {
-
-        this.em = em;
-    }
-
     @Override
-    public void update(final long id,
+    public void update(final String name,
         final InputStream is) {
 
         try (final Connection c = ds.getConnection()) {
-            try (final PreparedStatement stmt = c.prepareStatement("select LOBDATA, LASTUPDATEDON from LOBDATA where ID = ?", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
-                final PreparedStatement insertStmt = c.prepareStatement("insert INTO LOBDATA (ID, LOBDATA, LASTUPDATEDON) values (?,?,?)")) {
-                stmt.setLong(1, id);
-                try (final ResultSet rs = stmt.executeQuery()) {
-                    if (rs.next()) {
-                        rs.updateBinaryStream(1, is);
-                        rs.updateTimestamp(2, new Timestamp(System.currentTimeMillis()));
-                    } else {
-                        insertStmt.setLong(1, id);
-                        insertStmt.setBinaryStream(2, is);
-                        insertStmt.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
-                        if (insertStmt.executeUpdate() != 1) {
-                            throw new SQLException("Insert failed");
+            try (final PreparedStatement deleteStmt = c.prepareStatement("delete from LOBDATA where NAME = ?")) {
+                deleteStmt.setString(1, name);
+                deleteStmt.executeUpdate();
+            }
+            try (final PreparedStatement insertStmt = c.prepareStatement("insert INTO LOBDATA (NAME, CHUNKSEQUENCE, CHUNK, LASTCHUNK, LASTUPDATEDON) values (?,?,?,?,?)")) {
+                final byte[] chunk = new byte[LobData.CHUNK_SIZE];
+                try (final BufferedInputStream stream = new BufferedInputStream(is)) {
+                    int seq = 0;
+                    for (;;) {
+                        final int length = stream.read(chunk);
+
+                        if (length == -1) {
+                            break;
+                        } else {
+                            insertStmt.setString(1, name);
+                            insertStmt.setInt(2, seq);
+                            insertStmt.setBlob(3, new ByteArrayInputStream(chunk, 0, length));
+                            insertStmt.setBoolean(4, false);
+                            insertStmt.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
+                            insertStmt.executeUpdate();
+                            ++seq;
                         }
                     }
+
                 }
             }
-        } catch (final SQLException e) {
+        } catch (final IOException
+            | SQLException e) {
             throw new PersistenceException(e);
         }
     }

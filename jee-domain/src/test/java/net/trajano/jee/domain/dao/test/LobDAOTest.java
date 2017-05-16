@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNull;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.InputStream;
+import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,21 +24,6 @@ public class LobDAOTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testDaoOperations() {
-
-        final byte[] testData = new byte[] {
-            0,
-            1,
-            2,
-            3,
-            4
-        };
-        assertNull(dao.get(256));
-        dao.set(256, testData);
-        assertArrayEquals(testData, dao.get(256));
-    }
-
-    @Test
     public void testDaoStreamOperations() throws Exception {
 
         final byte[] testData = new byte[] {
@@ -48,15 +34,39 @@ public class LobDAOTest extends BaseIntegrationTest {
             4
         };
         final byte[] testDataBuffer = new byte[testData.length];
-        assertNull(dao.getInputStream(257L));
-        dao.update(257L, new ByteArrayInputStream(testData));
-        assertArrayEquals(testData, dao.get(257L));
-        final InputStream inputStream = dao.getInputStream(257L);
+        assertNull(dao.getInputStream("group1"));
+        dao.update("group1", new ByteArrayInputStream(testData));
+
+        final InputStream inputStream = dao.getInputStream("group1");
         new DataInputStream(inputStream).readFully(testDataBuffer);
         assertArrayEquals(testDataBuffer, testData);
 
-        dao.remove(257L);
-        assertNull(dao.getInputStream(257L));
+        dao.remove("group1");
+        assertNull(dao.getInputStream("group1"));
     }
 
+    @Test
+    public void testLargeBlob() throws Exception {
+
+        final byte[] testData = new byte[2 * 1024 * 1024];
+        Arrays.fill(testData, (byte) 64);
+        final byte[] testDataBuffer = new byte[testData.length];
+        assertNull(dao.getInputStream("group1"));
+        dao.update("group1", new ByteArrayInputStream(testData));
+        {
+            final InputStream inputStream = dao.getInputStream("group1");
+            new DataInputStream(inputStream).readFully(testDataBuffer);
+            assertArrayEquals(testDataBuffer, testData);
+        }
+
+        dao.update("group1", new ByteArrayInputStream(testData));
+        {
+            final InputStream inputStream = dao.getInputStream("group1");
+            new DataInputStream(inputStream).readFully(testDataBuffer);
+            assertArrayEquals(testDataBuffer, testData);
+        }
+
+        dao.remove("group1");
+        assertNull(dao.getInputStream("group1"));
+    }
 }

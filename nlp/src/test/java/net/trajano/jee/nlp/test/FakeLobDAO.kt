@@ -11,30 +11,22 @@ import java.io.DataInputStream
  * @author Archimedes Trajano
  */
 class FakeLobDAO : LobDAO {
-	override fun remove(id: Long) {
-		store.remove(id)
+	override fun remove(name: String) {
+		store.remove(name)
 	}
 
-	override fun update(id: Long, input: InputStream) {
-		store.put(id, input.readBytes())
+	override fun update(name: String, input: InputStream) {
+		store.put(name, input.readBytes())
 	}
 
-	override fun getInputStream(id: Long): InputStream? {
-		if (store.contains(id)) {
-			return ByteArrayInputStream(get(id))
+	override fun getInputStream(name: String): InputStream? {
+		if (store.contains(name)) {
+			return ByteArrayInputStream(store.get(name))
 		} else {
 			return null
 		}
 	}
 
-	private val store = mutableMapOf<Long, ByteArray>();
+	private val store = mutableMapOf<String, ByteArray>();
 
-	override fun get(id: Long): ByteArray? {
-		return store.get(id)
-	}
-
-	override fun set(id: Long,
-					 data: ByteArray) {
-		store.put(id, data)
-	}
 }

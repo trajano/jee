@@ -16,6 +16,8 @@ public final class ColumnLengths {
      */
     public static final int PRINCIPAL_LENGTH = 64;
 
+    public static final int TECHNICAL_NAME = 32;
+
     private ColumnLengths() {
     }
 }
