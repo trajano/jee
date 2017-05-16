@@ -174,7 +174,7 @@ public class ModelProvider {
                 lobDAO.update(GRAPH_ID, is);
             }
             if (!tempFile.delete()) {
-                LOG.warning(String.format("Unable to delete temporary file %s", tempFile));
+                LOG.log(Level.WARNING, "Unable to delete temporary file {0}", tempFile);
             }
         } catch (final IOException e) {
             LOG.throwing(this.getClass().getName(), "persistCurrentGraph", e);

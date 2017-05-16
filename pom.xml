@@ -41,8 +41,8 @@
   </distributionManagement>
   <properties>
     <jdk.version>1.7</jdk.version>
-    <repo.id>jee</repo.id>
     <linkcheck.skip>true</linkcheck.skip>
+    <repo.id>jee</repo.id>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -137,6 +137,20 @@
       </plugin>
     </plugins>
   </build>
+  <reporting>
+    <plugins>
+      <plugin>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>report-only</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+    </plugins>
+  </reporting>
   <profiles>
     <profile>
       <id>m2e</id>
