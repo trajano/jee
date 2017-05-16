@@ -76,13 +76,16 @@ public class LobDAOTest extends BaseIntegrationTest {
 
         final byte[] testData = new byte[2 * 1024 * 1024];
         final byte[] testDataPlus1 = new byte[2 * 1024 * 1024 + 1];
+        final byte[] testDataPlusLots = new byte[4 * 1024 * 1024];
         final byte[] testDataMinus1 = new byte[2 * 1024 * 1024 - 1];
         Arrays.fill(testData, (byte) 64);
         Arrays.fill(testDataPlus1, (byte) 65);
+        Arrays.fill(testDataPlusLots, (byte) 120);
         Arrays.fill(testDataMinus1, (byte) 63);
 
         final byte[] testDataBuffer = new byte[testData.length];
         final byte[] testDataBufferPlus1 = new byte[testDataPlus1.length];
+        final byte[] testDataBufferPlusLots = new byte[testDataPlusLots.length];
         final byte[] testDataBufferMinus1 = new byte[testDataMinus1.length];
 
         assertNull(dao.getInputStream("group1"));
@@ -112,6 +115,12 @@ public class LobDAOTest extends BaseIntegrationTest {
             final InputStream inputStream = dao.getInputStream("group1");
             new DataInputStream(inputStream).readFully(testDataBufferPlus1);
             assertArrayEquals(testDataBufferPlus1, testDataBufferPlus1);
+        }
+        dao.update("group1", new ByteArrayInputStream(testDataPlusLots));
+        {
+            final InputStream inputStream = dao.getInputStream("group1");
+            new DataInputStream(inputStream).readFully(testDataBufferPlusLots);
+            assertArrayEquals(testDataBufferPlusLots, testDataPlusLots);
         }
         dao.update("group1", new ByteArrayInputStream(testDataMinus1));
         {

@@ -37,7 +37,7 @@ public class DefaultLobDAO implements
 
         try (final Connection c = ds.getConnection()) {
 
-            try (final PreparedStatement stmt = c.prepareStatement("select CHUNK, LASTCHUNK from LOBDATA where NAME = ? order by CHUNKSEQUENCE")) {
+            try (final PreparedStatement stmt = c.prepareStatement("select CHUNK from LOBDATA where NAME = ? order by CHUNKSEQUENCE")) {
                 stmt.setString(1, name);
                 try (final ResultSet rs = stmt.executeQuery()) {
                     if (!rs.next()) {
@@ -46,9 +46,6 @@ public class DefaultLobDAO implements
                     final CompositeInputStream.Builder builder = new CompositeInputStream.Builder();
                     do {
                         builder.addStream(rs.getBlob(1).getBinaryStream());
-                        if (rs.getBoolean(2)) {
-                            break;
-                        }
                     } while (rs.next());
                     return builder.build();
 
@@ -108,13 +105,11 @@ public class DefaultLobDAO implements
 
         try (final Connection c = ds.getConnection()) {
             try (
-                final PreparedStatement selectStmt = c.prepareStatement("SELECT NAME, CHUNKSEQUENCE, CHUNK, LASTCHUNK, LASTUPDATEDON FROM LOBDATA where NAME = ? order by CHUNKSEQUENCE", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
-                final PreparedStatement insertStmt = c.prepareStatement("insert INTO LOBDATA (NAME, CHUNKSEQUENCE, CHUNK, LASTCHUNK, LASTUPDATEDON) values (?,?,?,?,?)")) {
+                final PreparedStatement selectStmt = c.prepareStatement("SELECT NAME, CHUNKSEQUENCE, CHUNK, LASTUPDATEDON FROM LOBDATA where NAME = ? order by CHUNKSEQUENCE", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+                final PreparedStatement insertStmt = c.prepareStatement("insert INTO LOBDATA (NAME, CHUNKSEQUENCE, CHUNK, LASTUPDATEDON) values (?,?,?,?)")) {
                 final Timestamp ts = new Timestamp(System.currentTimeMillis());
 
                 selectStmt.setString(1, name);
-                insertStmt.setString(1, name);
-                insertStmt.setTimestamp(5, ts);
 
                 try (final ResultSet rs = selectStmt.executeQuery()) {
 
@@ -131,23 +126,26 @@ public class DefaultLobDAO implements
 
                             if (!startInserting && !rs.next()) {
                                 startInserting = true;
+                                insertStmt.setString(1, name);
+                                insertStmt.setTimestamp(4, ts);
                             }
 
                             if (startInserting) {
                                 insertStmt.setInt(2, seq);
                                 insertStmt.setBlob(3, new ByteArrayInputStream(chunk, 0, length));
-                                insertStmt.setBoolean(4, length < LobData.CHUNK_SIZE);
                                 insertStmt.executeUpdate();
                                 ++seq;
                             } else {
                                 seq = rs.getInt(2) + 1;
                                 rs.updateBinaryStream(3, new ByteArrayInputStream(chunk, 0, length));
-                                rs.updateBoolean(4, length < LobData.CHUNK_SIZE);
-                                rs.updateTimestamp(5, ts);
+                                rs.updateTimestamp(4, ts);
                                 rs.updateRow();
                             }
                         }
 
+                    }
+                    while (rs.next()) {
+                        rs.deleteRow();
                     }
                 }
 

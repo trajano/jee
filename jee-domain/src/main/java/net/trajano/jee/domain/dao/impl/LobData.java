@@ -41,10 +41,6 @@ public class LobData {
         updatable = false)
     private int chunkSequence;
 
-    @Column(nullable = false,
-        updatable = true)
-    private boolean lastChunk;
-
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
     private Date lastUpdatedOn;
