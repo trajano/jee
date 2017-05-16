@@ -7,7 +7,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
 import java.util.logging.Logger;
+import java.util.zip.GZIPInputStream;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -21,16 +26,23 @@ import javax.inject.Inject;
 import javax.persistence.PersistenceException;
 
 import org.deeplearning4j.nn.api.OptimizationAlgorithm;
-import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
+import org.deeplearning4j.nn.conf.BackpropType;
+import org.deeplearning4j.nn.conf.ComputationGraphConfiguration.GraphBuilder;
+import org.deeplearning4j.nn.conf.GradientNormalization;
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
 import org.deeplearning4j.nn.conf.Updater;
-import org.deeplearning4j.nn.conf.layers.DenseLayer;
-import org.deeplearning4j.nn.conf.layers.OutputLayer;
-import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
+import org.deeplearning4j.nn.conf.graph.MergeVertex;
+import org.deeplearning4j.nn.conf.graph.rnn.DuplicateToTimeSeriesVertex;
+import org.deeplearning4j.nn.conf.graph.rnn.LastTimeStepVertex;
+import org.deeplearning4j.nn.conf.inputs.InputType;
+import org.deeplearning4j.nn.conf.layers.EmbeddingLayer;
+import org.deeplearning4j.nn.conf.layers.GravesLSTM;
+import org.deeplearning4j.nn.conf.layers.RnnOutputLayer;
+import org.deeplearning4j.nn.graph.ComputationGraph;
 import org.deeplearning4j.nn.weights.WeightInit;
 import org.deeplearning4j.util.ModelSerializer;
 import org.nd4j.linalg.activations.Activation;
-import org.nd4j.linalg.lossfunctions.LossFunctions.LossFunction;
+import org.nd4j.linalg.lossfunctions.LossFunctions;
 
 import net.trajano.jee.domain.dao.LobDAO;
 
@@ -45,13 +57,25 @@ import net.trajano.jee.domain.dao.LobDAO;
 @ApplicationScoped
 public class ModelProvider {
 
+    private static final int EMBEDDING_WIDTH = 128; // one-hot vectors will be embedded to more dense vectors with this width
+
     private static final long GRAPH_ID = 1L;
+
+    private static final int HIDDEN_LAYER_WIDTH = 512; // this is purely empirical, affects performance and VRAM requirement
+
+    private static final double LEARNING_RATE = 1e-1;
 
     private static final Logger LOG = Logger.getLogger("net.trajano.jee.nlp");
 
+    private static final double RMS_DECAY = 0.95;
+
+    private static final int TBPTT_SIZE = 25;
+
+    private final Map<String, Double> dict = new HashMap<>();
+
     private LobDAO lobDAO;
 
-    private MultiLayerNetwork network;
+    private ComputationGraph net;
 
     @Lock(LockType.WRITE)
     @PreDestroy
@@ -71,41 +95,57 @@ public class ModelProvider {
     @PostConstruct
     public void loadFromDatabase() {
 
+        try (final InputStream is = new GZIPInputStream(Thread.currentThread().getContextClassLoader().getResourceAsStream("dict.properties.gz"))) {
+            final Properties p = new Properties();
+            p.load(is);
+            for (final Entry<Object, Object> e : p.entrySet()) {
+                dict.put((String) e.getKey(), Double.valueOf((String) e.getValue()));
+            }
+        } catch (final IOException e1) {
+            throw new PersistenceException(e1);
+        }
+
         final InputStream dbData = lobDAO.getInputStream(GRAPH_ID);
         if (dbData == null) {
-            final int numRows = 28;
-            final int numColumns = 28;
-            final int outputNum = 10; // number of output classes
 
-            final MultiLayerConfiguration conf = new NeuralNetConfiguration.Builder()
-                // use stochastic gradient descent as an optimization algorithm
+            final NeuralNetConfiguration.Builder builder = new NeuralNetConfiguration.Builder()
+                .iterations(1).learningRate(LEARNING_RATE)
+                .rmsDecay(RMS_DECAY)
                 .optimizationAlgo(OptimizationAlgorithm.STOCHASTIC_GRADIENT_DESCENT)
-                .iterations(1)
-                .learningRate(0.006) //specify the learning rate
-                .updater(Updater.NESTEROVS).momentum(0.9) //specify the rate of change of the learning rate.
-                .regularization(true).l2(1e-4)
-                .list()
-                .layer(0, new DenseLayer.Builder() //create the first, input layer with xavier initialization
-                    .nIn(numRows * numColumns)
-                    .nOut(1000)
-                    .activation(Activation.RELU)
-                    .weightInit(WeightInit.XAVIER)
-                    .build())
-                .layer(1, new OutputLayer.Builder(LossFunction.NEGATIVELOGLIKELIHOOD) //create hidden layer
-                    .nIn(1000)
-                    .nOut(outputNum)
-                    .activation(Activation.SOFTMAX)
-                    .weightInit(WeightInit.XAVIER)
-                    .build())
-                .pretrain(false).backprop(true) //use backpropagation to adjust weights
-                .build();
+                .miniBatch(true)
+                .updater(Updater.RMSPROP)
+                .weightInit(WeightInit.XAVIER)
+                .gradientNormalization(GradientNormalization.RenormalizeL2PerLayer);
 
-            network = new MultiLayerNetwork(conf);
-            network.init();
+            final GraphBuilder graphBuilder = builder.graphBuilder()
+                .pretrain(false)
+                .backprop(true).backpropType(BackpropType.Standard)
+                .tBPTTBackwardLength(TBPTT_SIZE)
+                .tBPTTForwardLength(TBPTT_SIZE)
+                .addInputs("inputLine", "decoderInput")
+                .setInputTypes(InputType.recurrent(dict.size()), InputType.recurrent(dict.size()))
+                .addLayer("embeddingEncoder", new EmbeddingLayer.Builder().nIn(dict.size()).nOut(EMBEDDING_WIDTH).build(), "inputLine")
+                .addLayer("encoder",
+                    new GravesLSTM.Builder().nIn(EMBEDDING_WIDTH).nOut(HIDDEN_LAYER_WIDTH).activation(Activation.TANH).build(),
+                    "embeddingEncoder")
+                .addVertex("thoughtVector", new LastTimeStepVertex("inputLine"), "encoder")
+                .addVertex("dup", new DuplicateToTimeSeriesVertex("decoderInput"), "thoughtVector")
+                .addVertex("merge", new MergeVertex(), "decoderInput", "dup")
+                .addLayer("decoder",
+                    new GravesLSTM.Builder().nIn(dict.size() + HIDDEN_LAYER_WIDTH).nOut(HIDDEN_LAYER_WIDTH).activation(Activation.TANH)
+                        .build(),
+                    "merge")
+                .addLayer("output", new RnnOutputLayer.Builder().nIn(HIDDEN_LAYER_WIDTH).nOut(dict.size()).activation(Activation.SOFTMAX)
+                    .lossFunction(LossFunctions.LossFunction.MCXENT).build(), "decoder")
+                .setOutputs("output");
+
+            net = new ComputationGraph(graphBuilder.build());
+            net.init();
+
             persistCurrentGraph();
         } else {
             try {
-                network = ModelSerializer.restoreMultiLayerNetwork(dbData, true);
+                net = ModelSerializer.restoreComputationGraph(dbData, true);
             } catch (final IOException e) {
                 LOG.severe("Unable to restore network, rebuilding");
                 LOG.throwing(this.getClass().getName(), "loadFromDatabase", e);
@@ -124,7 +164,7 @@ public class ModelProvider {
         try {
             final File tempFile = File.createTempFile("model", ".zip");
             try (OutputStream os = new FileOutputStream(tempFile)) {
-                ModelSerializer.writeModel(network, os, true);
+                ModelSerializer.writeModel(net, os, true);
             }
             try (InputStream is = new FileInputStream(tempFile)) {
                 lobDAO.update(GRAPH_ID, is);
