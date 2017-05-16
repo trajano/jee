@@ -13,6 +13,6 @@ class ModelProviderTest {
 
 		// Reloading should not be an issue
 		provider.loadFromDatabase()
-		provider.persistCurrentGraph()
+		provider.persistCurrentNetwork()
 	}
 }

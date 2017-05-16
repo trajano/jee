@@ -48,8 +48,8 @@ import org.nd4j.linalg.lossfunctions.LossFunctions;
 import net.trajano.jee.domain.dao.LobDAO;
 
 /**
- * This is a tensor graph provider. It will periodically save it's data to the
- * database type.
+ * This is a {@link ComputationGraph} provider. It will periodically save it's
+ * data to the database type.
  *
  * @author Archimedes Trajano
  */
@@ -63,6 +63,10 @@ public class ModelProvider {
     private static final String GRAPH_ID = "dl4jComputationGraph";
 
     private static final int HIDDEN_LAYER_WIDTH = 512; // this is purely empirical, affects performance and VRAM requirement
+
+    private static final String INPUT_DECODER = "decoderInput";
+
+    private static final String INPUT_LINE = "inputLine";
 
     private static final double LEARNING_RATE = 1e-1;
 
@@ -80,9 +84,9 @@ public class ModelProvider {
 
     @Lock(LockType.WRITE)
     @PreDestroy
-    public void closeGraph() {
+    public void close() {
 
-        //        graph.close();
+        persistCurrentNetwork();
     }
 
     /**
@@ -123,15 +127,15 @@ public class ModelProvider {
                 .backprop(true).backpropType(BackpropType.Standard)
                 .tBPTTBackwardLength(TBPTT_SIZE)
                 .tBPTTForwardLength(TBPTT_SIZE)
-                .addInputs("inputLine", "decoderInput")
+                .addInputs(INPUT_LINE, INPUT_DECODER)
                 .setInputTypes(InputType.recurrent(dict.size()), InputType.recurrent(dict.size()))
-                .addLayer("embeddingEncoder", new EmbeddingLayer.Builder().nIn(dict.size()).nOut(EMBEDDING_WIDTH).build(), "inputLine")
+                .addLayer("embeddingEncoder", new EmbeddingLayer.Builder().nIn(dict.size()).nOut(EMBEDDING_WIDTH).build(), INPUT_LINE)
                 .addLayer("encoder",
                     new GravesLSTM.Builder().nIn(EMBEDDING_WIDTH).nOut(HIDDEN_LAYER_WIDTH).activation(Activation.TANH).build(),
                     "embeddingEncoder")
-                .addVertex("thoughtVector", new LastTimeStepVertex("inputLine"), "encoder")
-                .addVertex("dup", new DuplicateToTimeSeriesVertex("decoderInput"), "thoughtVector")
-                .addVertex("merge", new MergeVertex(), "decoderInput", "dup")
+                .addVertex("thoughtVector", new LastTimeStepVertex(INPUT_LINE), "encoder")
+                .addVertex("dup", new DuplicateToTimeSeriesVertex(INPUT_DECODER), "thoughtVector")
+                .addVertex("merge", new MergeVertex(), INPUT_DECODER, "dup")
                 .addLayer("decoder",
                     new GravesLSTM.Builder().nIn(dict.size() + HIDDEN_LAYER_WIDTH).nOut(HIDDEN_LAYER_WIDTH).activation(Activation.TANH)
                         .build(),
@@ -143,7 +147,7 @@ public class ModelProvider {
             net = new ComputationGraph(graphBuilder.build());
             net.init();
 
-            persistCurrentGraph();
+            persistCurrentNetwork();
         } else {
             try {
                 net = ModelSerializer.restoreComputationGraph(dbData, true);
@@ -159,7 +163,7 @@ public class ModelProvider {
     @Schedule(minute = "*/10",
         hour = "*")
     @Lock(LockType.READ)
-    public void persistCurrentGraph() {
+    public void persistCurrentNetwork() {
 
         try {
             final File tempFile = File.createTempFile("model", ".zip");
@@ -170,7 +174,7 @@ public class ModelProvider {
                 lobDAO.update(GRAPH_ID, is);
             }
             if (!tempFile.delete()) {
-                LOG.warning("Unable to delete temporary file " + tempFile);
+                LOG.warning(String.format("Unable to delete temporary file %s", tempFile));
             }
         } catch (final IOException e) {
             LOG.throwing(this.getClass().getName(), "persistCurrentGraph", e);
