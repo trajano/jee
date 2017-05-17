@@ -17,6 +17,7 @@ The focus is practicality rather than "artistic elegance" for this project.  So 
 * EJB
     - Stateless Session Bean
     - Singleton with startup
+    - `@Scheduled`
 * JASPIC
     - Used for `X-Forwarded-User` HTTP header authentication.  The concept can be applied to reverse proxy authentication systems such as [Entrust TruePass](https://github.com/trajano/entrust-truepass) or SiteMinder.
 * JPA
@@ -30,9 +31,11 @@ The focus is practicality rather than "artistic elegance" for this project.  So 
 * Bean Validation
     - Canadian Postal Code validation
     - Canadian SIN validation
-* SOAP 
+* JAX-WS (SOAP)
     - WS-Addressing 
     - MTOM
+    - Code first (Java to WSDL)
+    - Contract first (WSDL + Schema -> Java)
 * RESTful API
 * JavaScript project integration
     - Yarn

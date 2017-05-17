@@ -4,6 +4,7 @@ import java.security.Principal;
 
 import javax.ejb.Local;
 import javax.ejb.Stateless;
+import javax.enterprise.context.Dependent;
 import javax.persistence.TypedQuery;
 
 import net.trajano.jee.domain.dao.UserDAO;
@@ -11,6 +12,7 @@ import net.trajano.jee.domain.entity.User;
 
 @Local
 @Stateless
+@Dependent
 public class DefaultUserDAO extends BaseDAO<User> implements
     UserDAO {
 

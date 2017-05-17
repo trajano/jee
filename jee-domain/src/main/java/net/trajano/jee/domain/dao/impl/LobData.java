@@ -57,4 +57,20 @@ public class LobData {
     LobData() {
     }
 
+    /**
+     * Used for testing only.
+     *
+     * @param name
+     *            name
+     * @param chunk
+     *            chunk
+     */
+    public LobData(final String name,
+        final byte[] chunk) {
+        this.name = name;
+        chunkSequence = 1;
+        this.chunk = chunk;
+        lastUpdatedOn = new Date();
+    }
+
 }

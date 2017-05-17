@@ -23,4 +23,10 @@ public class User extends BaseEntity {
         nullable = false)
     private String username;
 
+    User() {
+    }
+
+    public User(final String username) {
+        this.username = username;
+    }
 }
