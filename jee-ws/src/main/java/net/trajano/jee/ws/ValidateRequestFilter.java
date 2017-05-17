@@ -84,6 +84,7 @@ public class ValidateRequestFilter implements
         }
         final String path = req.getRequestURI().substring(req.getContextPath().length());
         switch (path) {
+        case "/LobManagerService":
         case "/ParticipantManagerService":
         case "/ParticipantCodeFirstService":
             return true;

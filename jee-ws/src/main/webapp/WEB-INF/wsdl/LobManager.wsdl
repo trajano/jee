@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.jee.trajano.net/"
+  xmlns:schema="urn:trajano.net:jee:schema" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata"
+  xmlns:wsp="http://www.w3.org/ns/ws-policy"
+  xmlns:mtom="http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="ParticipantManager"
+  targetNamespace="http://ws.jee.trajano.net/">
+  <wsdl:types>
+    <xsd:schema>
+      <xsd:import schemaLocation="Participant.xsd" namespace="urn:trajano.net:jee:schema" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="saveLobDataRequest">
+    <wsdl:part name="parameters" element="schema:saveLobData" />
+  </wsdl:message>
+  <wsdl:portType name="LobManager">
+    <wsdl:operation name="saveLobData">
+      <wsdl:input message="tns:saveLobDataRequest" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="LobManagerBinding" type="tns:LobManager">
+    <soap:binding style="document"
+      transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="saveLobData">
+      <soap:operation
+        soapAction="http://ws.jee.trajano.net/saveLobData" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+    </wsdl:operation>
+  </wsdl:binding>
+
+  <wsdl:service name="LobManagerService">
+    <wsdl:port binding="tns:LobManagerBinding" name="LobManagerPort">
+      <soap:address location="https://example.com/LobManagerService" />
+    </wsdl:port>
+  </wsdl:service>
+  <wsp:Policy>
+    <mtom:OptimizedMimeSerialization />
+    <wsam:Addressing>
+      <wsp:Policy />
+    </wsam:Addressing>
+  </wsp:Policy>
+</wsdl:definitions>

@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:trajano.net:jee:schema" elementFormDefault="unqualified" targetNamespace="urn:trajano.net:jee:schema" version="1.0">
-  <xs:element name="getAll" type="tns:Void"/>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:tns="urn:trajano.net:jee:schema" elementFormDefault="unqualified"
+  targetNamespace="urn:trajano.net:jee:schema" version="1.0">
+  <xs:element name="getAll" type="tns:Void" />
   <xs:element name="getAllResponse">
     <xs:complexType>
       <xs:annotation>
         <xs:documentation>Response</xs:documentation>
       </xs:annotation>
       <xs:sequence>
-        <xs:element maxOccurs="unbounded" minOccurs="0" name="participant" type="tns:Participant"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0"
+          name="participant" type="tns:Participant" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="getBySin">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="sin" type="tns:CanadianSin"/>
+        <xs:element name="sin" type="tns:CanadianSin" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -24,7 +27,14 @@
         <xs:documentation>Response</xs:documentation>
       </xs:annotation>
       <xs:sequence>
-        <xs:element minOccurs="0" name="participant" type="tns:Participant"/>
+        <xs:element minOccurs="0" name="participant" type="tns:Participant" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="saveLobData">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="lob-data" type="tns:LobData"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -34,27 +44,49 @@
         parameters.
       </xs:documentation>
     </xs:annotation>
-    <xs:sequence/>
+    <xs:sequence />
   </xs:complexType>
+  <xs:complexType name="LobData">
+    <xs:annotation>
+      <xs:documentation>This contains the name and the contents of a LOB
+        data stored in the system.  Elements will use the name `lob-data`.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element minOccurs="1" name="name" type="tns:TechnicalName" />
+      <xs:element minOccurs="1" name="data" type="xs:base64Binary" />
+    </xs:all>
+  </xs:complexType>
+  <xs:simpleType name="TechnicalName">
+    <xs:annotation>
+      <xs:documentation>Technical names are used for keys but are of a
+        technical nature rather than business nature.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+      <xs:maxLength value="32"></xs:maxLength>
+    </xs:restriction>
+  </xs:simpleType>
   <xs:complexType name="Participant">
     <xs:all>
-      <xs:element name="email" type="xs:string"/>
-      <xs:element name="genderAtBirth" type="tns:Gender"/>
-      <xs:element name="name" type="xs:string"/>
-      <xs:element name="sin" type="tns:CanadianSin"/>
-      <xs:element name="photo" type="xs:base64Binary" minOccurs="0"/>
+      <xs:element name="email" type="xs:string" />
+      <xs:element name="genderAtBirth" type="tns:Gender" />
+      <xs:element name="name" type="xs:string" />
+      <xs:element name="sin" type="tns:CanadianSin" />
+      <xs:element name="photo" type="xs:base64Binary"
+        minOccurs="0" />
     </xs:all>
   </xs:complexType>
   <xs:simpleType name="CanadianSin">
     <xs:restriction base="xs:string">
-      <xs:pattern value="[012345679]\d{8}"/>
+      <xs:pattern value="[012345679]\d{8}" />
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="Gender">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="female"/>
-      <xs:enumeration value="male"/>
-      <xs:enumeration value="not disclosed"/>
+      <xs:enumeration value="female" />
+      <xs:enumeration value="male" />
+      <xs:enumeration value="not disclosed" />
     </xs:restriction>
   </xs:simpleType>
 </xs:schema>

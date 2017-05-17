@@ -58,6 +58,7 @@ This decouple the services plumbing code from a full web UI code.  However, they
             <configuration>
               <wsdlDirectory>${basedir}/src/main/webapp/WEB-INF/wsdl</wsdlDirectory>
               <wsdlFiles>
+                <wsdlFile>LobManager.wsdl</wsdlFile>
                 <wsdlFile>ParticipantManager.wsdl</wsdlFile>
               </wsdlFiles>
               <wsdlLocation>classpath:WEB-INF/wsdl/*</wsdlLocation>
