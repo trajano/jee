@@ -92,6 +92,7 @@
             </jarModule>
           </modules>
           <skinnyWars>true</skinnyWars>
+          <fileNameMapping>full</fileNameMapping>
           <security>
             <security-role>
               <role-name>users</role-name>
