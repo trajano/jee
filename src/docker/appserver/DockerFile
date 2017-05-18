@@ -1,0 +1,3 @@
+FROM trajano/jee-appserver:base
+#COPY server.xml /config/
+COPY jee.ear /config/dropins

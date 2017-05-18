@@ -1,0 +1,28 @@
+version: "3"
+services:
+  controller:
+    image: trajano/jee-controller:base
+  appserver:
+    image: trajano/jee-appserver:withapp
+    deploy:
+      replicas: 2
+    depends_on: 
+    - database
+    - controller
+    ports: 
+    - "80:9080"
+    - "443:9443"
+  database:
+    image: mariadb:latest
+    volumes:
+      - 'mariadb_data:/var/lib/mysql'
+    environment:
+      MYSQL_DATABASE: "jeesample"
+      MYSQL_USER: "jeeuser"
+      MYSQL_PASSWORD: "password"
+      MYSQL_RANDOM_ROOT_PASSWORD: "true"
+    ports: 
+    - "33060:3306"
+volumes:
+  mariadb_data:
+    driver: local

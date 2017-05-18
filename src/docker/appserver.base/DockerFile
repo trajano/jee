@@ -1,0 +1,7 @@
+FROM websphere-liberty:javaee7
+COPY . /config/
+RUN apt-get update
+RUN apt-get install -y expect
+RUN rm -rf /var/lib/apt/lists/*
+RUN installUtility install --acceptLicense defaultServer
+CMD ["/bin/sh", "/config/startServer.sh"]

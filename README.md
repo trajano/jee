@@ -85,4 +85,5 @@ This project **intentionally** tries to reduce the number of modules and only in
 
 * API and implementation separation otherwise there may be duplicate implementations loaded by class loaders.
 * Technology differences.  For example use of Kotlin and JDK8 is in a different module.  Different web contexts for different types of API (JAX-RS, JAX-WS, JSF).
+
 * Packaging differences (EAR, WAR, JAR)

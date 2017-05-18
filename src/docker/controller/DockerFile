@@ -1,0 +1,4 @@
+FROM websphere-liberty:kernel
+COPY . /config/
+RUN installUtility install --acceptLicense defaultServer
+RUN collective create defaultServer --keystorePassword=controllerKSPassword --createConfigFile=/config/collective-create-include.xml

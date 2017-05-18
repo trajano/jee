@@ -3,6 +3,7 @@ deploy-keys.tar.enc binary export-ignore
 
 * text=auto
 
+*.sh eol=lf
 *.java diff=java
 
 *.ico binary
@@ -10,3 +11,5 @@ deploy-keys.tar.enc binary export-ignore
 *.png binary
 *.zip binary
 *.gz binary
+*.jar binary
+*.ear binary
