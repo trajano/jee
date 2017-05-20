@@ -1,7 +1,7 @@
 #!/usr/bin/expect
 
 set timeout 600
-spawn -noecho collective join defaultServer --host=controller --port=9443 --keystorePassword=memberPassword --user=adminUser --password=adminPassword
+spawn -noecho collective join defaultServer --host=controller --port=9443 --keystorePassword=memberPassword --user=adminUser --password=adminPassword --createConfigFile=/config/collective-join-include.xml
 
 expect {
   (y/n) {

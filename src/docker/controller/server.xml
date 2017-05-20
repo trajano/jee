@@ -1,17 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <server description="Collective Controller">
+  <include location="${server.config.dir}/collective-create-include.xml" />
   <quickStartSecurity userName="adminUser" userPassword="adminPassword"/>
   <variable name="defaultHostName" value="controller"/>
   <httpEndpoint id="defaultHttpEndpoint" host="*" httpPort="9080" httpsPort="9443"/>
-  <featureManager>
-    <feature>collectiveController-1.0</feature>
-  </featureManager>
-  <applicationManager autoExpand="true"/>
-  <variable name="defaultHostName" value="controller"/>
-  <httpEndpoint host="*" httpPort="9080" httpsPort="9443" id="defaultHttpEndpoint"/>
-  <ssl id="defaultSSLConfig" keyStoreRef="defaultKeyStore" trustStoreRef="defaultTrustStore" clientAuthenticationSupported="true"/>
-  <keyStore id="defaultTrustStore" password="controllerKSPassword" location="${server.config.dir}/resources/security/trust.jks"/>
-  <keyStore id="serverIdentity" password="controllerKSPassword" location="${server.config.dir}/resources/collective/serverIdentity.jks"/>
-  <keyStore id="collectiveTrust" password="controllerKSPassword" location="${server.config.dir}/resources/collective/collectiveTrust.jks"/>
-  <keyStore id="collectiveRootKeys" password="controllerKSPassword" location="${server.config.dir}/resources/collective/rootKeys.jks"/>
+  <ssl id="defaultSSLConfig" keyStoreRef="serverIdentity" trustStoreRef="collectiveTrust" clientAuthenticationSupported="true"/>
 </server>

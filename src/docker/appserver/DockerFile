@@ -1,3 +1,7 @@
 FROM trajano/jee-appserver:base
-#COPY server.xml /config/
-COPY jee.ear /config/dropins
+COPY jee.ear /config/apps
+#COPY jvm.options /config/
+COPY server.xml /config/
+#COPY configDropins/keystore.xml /config/configDropins/keystore.xml
+# keytool -genkeypair -keyalg RSA -keystore clusterKeystore.jks -storepass password -keypass password -validity 3600 -keysize 2048 -dname CN=noriko
+COPY clusterKeystore.jks /config/

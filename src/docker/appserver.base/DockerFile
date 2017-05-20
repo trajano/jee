@@ -1,7 +1,5 @@
 FROM websphere-liberty:javaee7
+RUN apt-get update && apt-get install -y expect && rm -rf /var/lib/apt/lists/*
+RUN installUtility install --acceptLicense clusterMember-1.0
 COPY . /config/
-RUN apt-get update
-RUN apt-get install -y expect
-RUN rm -rf /var/lib/apt/lists/*
-RUN installUtility install --acceptLicense defaultServer
 CMD ["/bin/sh", "/config/startServer.sh"]

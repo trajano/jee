@@ -2,16 +2,22 @@ version: "3"
 services:
   controller:
     image: trajano/jee-controller:base
+  webserver:
+    image: trajano/jee-webserver:base
+    deploy:
+      replicas: 2
+    depends_on: 
+    - appserver
+    ports: 
+    - "80:80"
+    - "443:443"
   appserver:
-    image: trajano/jee-appserver:withapp
+    image: trajano/jee-appserver:base
     deploy:
       replicas: 2
     depends_on: 
     - database
     - controller
-    ports: 
-    - "80:9080"
-    - "443:9443"
   database:
     image: mariadb:latest
     volumes:
