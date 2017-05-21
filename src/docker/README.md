@@ -8,7 +8,14 @@ pluginUtility generate  --server=adminUser:adminPassword@controller:9443  --clus
 
 cat /defaultCluster-plugin-cfg.xml
 
+collective unregisterHost 08dc7d8b78fc --user=adminUser --password=adminPassword --port=9443 --host=controller --autoAcceptCertificates
+
 # Notes
 
 * May need to change the appserver.base to just have SSH and WLP only do not start and then use autoscale to provision the server.
 * There should be no need for installables it should be expected that WLP and JRE are already present in the target node.
+
+D:\WLIB\bin\server package deployable --include=usr 
+move D:\WLIB\usr\servers\deployable\deployable.zip D:\p\jee\src\docker
+
+docker cp deployable.zip 98eac34a77af:/opt/ibm/wlp/usr/shared/stackGroups/defaultStackGroup/packages

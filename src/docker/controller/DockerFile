@@ -2,5 +2,7 @@
 FROM websphere-liberty:javaee7
 RUN installUtility install --acceptLicense collectiveController-1.0 adminCenter-1.0 scalingController-1.0
 COPY . /config/
+RUN mkdir -p /opt/ibm/wlp/usr/shared/stackGroups/defaultStackGroup/installables
+RUN server package --include=wlp --archive=/opt/ibm/wlp/usr/shared/stackGroups/defaultStackGroup/installables/wlp.default.zip
 # RUN collective create defaultServer --keystorePassword=controllerKSPassword --createConfigFile=/config/collective-create-include.xml
 CMD ["/bin/sh", "/config/startController.sh"]
