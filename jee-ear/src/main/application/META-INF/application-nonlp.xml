@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/application_7.xsd" version="7">
+  <display-name>jee-ear</display-name>
+  <module>
+    <web>
+      <web-uri>jee-web.war</web-uri>
+      <context-root>/jee</context-root>
+    </web>
+  </module>
+  <module>
+    <web>
+      <web-uri>jee-ws.war</web-uri>
+      <context-root>/jee-ws</context-root>
+    </web>
+  </module>
+  <module>
+    <web>
+      <web-uri>web-api.war</web-uri>
+      <context-root>/api</context-root>
+    </web>
+  </module>
+  <module>
+    <ejb>jee-domain.jar</ejb>
+  </module>
+  <security-role>
+    <role-name>users</role-name>
+  </security-role>
+  <library-directory>lib</library-directory>
+  <resource-ref>
+    <res-ref-name>java:app/ds</res-ref-name>
+    <res-type>javax.sql.DataSource</res-type>
+    <res-auth>Container</res-auth>
+    <lookup-name>java:app/ds</lookup-name>
+  </resource-ref>
+</application>

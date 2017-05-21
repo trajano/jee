@@ -134,5 +134,60 @@
         </plugins>
       </build>
     </profile>
+    <profile>
+      <id>no-nlp</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>${project.groupId}</groupId>
+          <artifactId>nlp</artifactId>
+          <version>${project.version}</version>
+          <type>ejb</type>
+          <scope>provided</scope>
+        </dependency>
+      </dependencies>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-ear-plugin</artifactId>
+            <configuration>
+              <modules>
+                <webModule>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>web-api</artifactId>
+                  <contextRoot>/api</contextRoot>
+                  <uri>web-api.war</uri>
+                </webModule>
+                <webModule>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>jee-web</artifactId>
+                  <contextRoot>/jee</contextRoot>
+                  <uri>jee-web.war</uri>
+                </webModule>
+                <webModule>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>jee-ws</artifactId>
+                  <contextRoot>/jee-ws</contextRoot>
+                  <uri>jee-ws.war</uri>
+                </webModule>
+                <ejbModule>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>jee-domain</artifactId>
+                  <uri>jee-domain.jar</uri>
+                </ejbModule>
+                <jarModule>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>jee-domain-api</artifactId>
+                  <uri>lib/jee-domain-api.jar</uri>
+                </jarModule>
+              </modules>
+              <applicationXml>${basedir}/src/main/application/META-INF/application-nonlp.xml</applicationXml>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 </project>

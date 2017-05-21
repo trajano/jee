@@ -3,7 +3,6 @@ package net.trajano.jee.bean;
 import java.io.Serializable;
 
 import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 
 import net.trajano.jee.nlp.AnalysisResult;
@@ -50,7 +49,7 @@ public class NlpBean implements
         this.input = input;
     }
 
-    @Inject
+    //    @Inject
     public void setNlp(final Nlp nlp) {
 
         this.nlp = nlp;
