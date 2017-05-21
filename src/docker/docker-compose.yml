@@ -4,8 +4,9 @@ services:
     image: trajano/jee-controller:base
     ports: 
     - "9443:9443"
-#    volumes:
-#      - 'collective_keys:/config/resources/collective'
+    - "6022:22"
+    volumes:
+    - 'collective_keys:/config/resources/collective'
   webserver:
     image: trajano/jee-webserver:base
     deploy:

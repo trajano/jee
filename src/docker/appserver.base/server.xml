@@ -4,8 +4,11 @@
     <feature>clusterMember-1.0</feature>
     <feature>scalingMember-1.0</feature>
   </featureManager>
+  <remoteFileAccess>
+    <writeDir>${server.config.dir}</writeDir>
+  </remoteFileAccess>
   <httpEndpoint id="defaultHttpEndpoint" httpPort="9080" httpsPort="9443" host="*"/>
   <applicationManager autoExpand="true"/>
-  <include location="/config/collective-join-include.xml"/>
+  <include location="${server.config.dir}/collective-join-include.xml"/>
   <quickStartSecurity userName="adminUser" userPassword="adminPassword"/>
 </server>
