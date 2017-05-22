@@ -8,7 +8,7 @@ pluginUtility generate  --server=adminUser:adminPassword@controller:9443  --clus
 
 cat /defaultCluster-plugin-cfg.xml
 
-collective unregisterHost 08dc7d8b78fc --user=adminUser --password=adminPassword --port=9443 --host=controller --autoAcceptCertificates
+docker exec 82246b134e6b collective unregisterHost 3643a3abdfdf --user=adminUser --password=adminPassword --port=9443 --host=controller --autoAcceptCertificates
 
 # Notes
 
@@ -19,3 +19,7 @@ D:\WLIB\bin\server package deployable --include=usr
 move D:\WLIB\usr\servers\deployable\deployable.zip D:\p\jee\src\docker
 
 docker cp deployable.zip 98eac34a77af:/opt/ibm/wlp/usr/shared/stackGroups/defaultStackGroup/packages
+
+# TODO 
+
+* Replica Sets for the controller

@@ -1,14 +1,13 @@
 # FROM websphere-liberty:kernel
 FROM websphere-liberty:javaee7
-RUN installUtility install --acceptLicense collectiveController-1.0 adminCenter-1.0 scalingController-1.0
+RUN installUtility install --acceptLicense collectiveController-1.0 adminCenter-1.0 scalingController-1.0 dynamicRouting-1.0
 RUN apt-get update && apt-get install -y openssh-server zip && rm -rf /var/lib/apt/lists/*
 RUN mkdir -p /opt/ibm/wlp/usr/shared/stackGroups/defaultStackGroup/installables && \
-  server package --include=wlp --archive=/opt/ibm/wlp/usr/shared/stackGroups/defaultStackGroup/installables/wlp.default.zip && \
-  cd /opt/ibm/java && \
+  server package --include=wlp --archive=/opt/ibm/wlp/usr/shared/stackGroups/defaultStackGroup/installables/wlp.default.zip
+RUN cd /opt/ibm/java && \
   zip -r /opt/ibm/wlp/usr/shared/stackGroups/defaultStackGroup/installables/jre.default.zip .
 
 COPY . /config/
-RUN mkdir -p /config/resources/collective
 # RUN collective create defaultServer --keystorePassword=controllerKSPassword --createConfigFile=/config/collective-create-include.xml
 
 RUN mkdir /var/run/sshd && chmod 0755 /var/run/sshd

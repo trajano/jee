@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 # wait for controller to be up
-while ! curl --insecure -s https://controller:9443/; do
+while ! curl --insecure -s https://controller:9443/ --output /dev/null; do
   sleep 0.1 # wait for 1/10 of the second before check again
 done
 
@@ -20,8 +20,17 @@ ssh-keygen -t rsa -f $HOME/.ssh/id_rsa -N ""
     --hostJavaHome=$JAVA_HOME \
     --createConfigFile=/config/collective-join-include.xml
 
-# Unregister host when SIGTERM (i.e. docker shuts down the container)
-trap "/opt/ibm/wlp/bin/collective unregisterHost $(hostname) --host=controller --port=9443 --user=adminUser --password=adminPassword --autoAcceptCertificates;" SIGTERM
+# Unregister host when the script will terminate
+unregisterHost() {
+    /opt/ibm/wlp/bin/collective unregisterHost $(hostname) \
+        --host=controller \
+        --port=9443 \
+        --user=adminUser \
+        --password=adminPassword \
+        --autoAcceptCertificates
+    exit
+}
+trap unregisterHost 0
 
 #[ -d  /config/resources/collective ] || /opt/ibm/wlp/bin/collective registerHost $(hostname) \
 #    --host=controller \
@@ -39,4 +48,5 @@ trap "/opt/ibm/wlp/bin/collective unregisterHost $(hostname) --host=controller -
 /opt/ibm/wlp/bin/server run defaultServer &
 
 # Use sshd as the "daemon" process
-exec /usr/sbin/sshd -D
+/usr/sbin/sshd -D &
+wait

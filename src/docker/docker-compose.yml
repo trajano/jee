@@ -4,9 +4,8 @@ services:
     image: trajano/jee-controller:base
     ports: 
     - "9443:9443"
-    - "6022:22"
     volumes:
-    - 'collective_keys:/config/resources/collective'
+    - 'collective_resources:/config/resources'
   webserver:
     image: trajano/jee-webserver:base
     deploy:
@@ -16,12 +15,13 @@ services:
     ports: 
     - "80:80"
     - "443:443"
+    - "6022:22"
     volumes:
     - 'ihs_share:/share'
   appserver:
     image: trajano/jee-appserver:base
     deploy:
-      replicas: 2
+      replicas: 4
     depends_on: 
     - database
     - controller
@@ -39,7 +39,7 @@ services:
 volumes:
   mariadb_data:
     driver: local
-  collective_keys:
+  collective_resources:
     driver: local
   ihs_share:
     driver: local

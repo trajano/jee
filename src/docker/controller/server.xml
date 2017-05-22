@@ -5,6 +5,7 @@
   <featureManager>
     <feature>scalingController-1.0</feature>
     <feature>adminCenter-1.0</feature>
+    <feature>dynamicRouting-1.0</feature>
   </featureManager>
   <remoteFileAccess>
     <writeDir>${server.config.dir}</writeDir>
@@ -12,6 +13,6 @@
   <scalingDefinitions>
     <defaultScalingPolicy enabled="true" min="2" max="2"/>
   </scalingDefinitions>
-  <include location="${server.config.dir}/collective-create-include.xml"/>
+  <include location="${server.config.dir}/resources/collective/collective-create-include.xml"/>
   <stackManager controllerUser="adminUser" controllerUserPassword="adminPassword"/>
 </server>

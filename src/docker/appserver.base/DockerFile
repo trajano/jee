@@ -1,6 +1,7 @@
 FROM websphere-liberty:javaee7
 RUN apt-get update && apt-get install -y openssh-server curl && rm -rf /var/lib/apt/lists/*
 RUN installUtility install --acceptLicense clusterMember-1.0 scalingMember-1.0
+
 COPY . /config/
 
 RUN mkdir /var/run/sshd
@@ -13,4 +14,4 @@ RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so
 EXPOSE 22
 EXPOSE 9080
 EXPOSE 9443
-CMD ["/bin/sh", "/config/startServer.sh"]
+CMD ["/config/startServer.sh"]
