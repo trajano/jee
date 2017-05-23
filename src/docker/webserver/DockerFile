@@ -1,7 +1,7 @@
 FROM ibmcom/ibm-http-server:latest
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends unzip wget ca-certificates netcat openssh-server \
+    && apt-get install -y --no-install-recommends unzip wget ca-certificates openssl \
     && rm -rf /var/lib/apt/lists/*
 
 ENV JAVA_VERSION 1.8.0_sr4fp5
@@ -38,7 +38,7 @@ ENV JVM_ARGS=-Dcom.ibm.webserver.plugin.utility.autoAcceptCertificates=true
 RUN /opt/ibm/wlp/bin/installUtility install --acceptLicense restConnector-2.0 restConnector-1.0 dynamicRouting-1.0
 
 # Cleanup
-#RUN apt-get purge -y unzip wget && apt-get -y autoremove
+RUN apt-get purge -y unzip wget && apt-get -y autoremove && rm -rf /var/lib/apt/lists/*
 
 # Add include to the configuration file
 RUN mkdir /share
@@ -47,15 +47,6 @@ COPY defaultClusterPlugin.conf /opt/IBM/HTTPServer/conf/
 COPY plugin-cfg.xml /opt/IBM/HTTPServer/conf/
 RUN echo "Include /opt/IBM/HTTPServer/conf/defaultClusterPlugin.conf" >> /opt/IBM/HTTPServer/conf/httpd.conf
 
-#RUN mkdir /var/run/sshd
-#RUN chmod 0755 /var/run/sshd
-#RUN echo 'root:screencast' | chpasswd
-#RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-#RUN sed -i "s/#PasswordAuthentication yes/PasswordAuthentication yes/" /etc/ssh/sshd_config
-#RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
-
-EXPOSE 22
 EXPOSE 80
 EXPOSE 443
 CMD ["/work/startHttpServer.sh"]
-#CMD ["/usr/sbin/sshd", "-D"]
