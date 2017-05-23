@@ -6,6 +6,12 @@ services:
     - "9443:9443"
     volumes:
     - 'collective_resources:/config/resources'
+  # controller-replica:
+  #   image: trajano/jee-controller:replica
+  #   deploy:
+  #     replicas: 2
+  #   volumes:
+  #   - 'collective_resources:/controllerResources'
   webserver:
     image: trajano/jee-webserver:base
     deploy:

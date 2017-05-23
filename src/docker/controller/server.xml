@@ -14,5 +14,4 @@
     <defaultScalingPolicy enabled="true" min="2" max="2"/>
   </scalingDefinitions>
   <include location="${server.config.dir}/resources/collective/collective-create-include.xml"/>
-  <stackManager controllerUser="adminUser" controllerUserPassword="adminPassword"/>
 </server>

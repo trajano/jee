@@ -1,11 +1,4 @@
 #!/bin/bash
-# wait for controller to be up
-while ! curl --insecure -s https://controller:9443/ --output /dev/null; do
-  sleep 0.1 # wait for 1/10 of the second before check again
-done
-
-# Joining the collective needs to be done at runtime as the controller needs to be up.
-
 PASSWORD=$(openssl rand -base64 32)
 #ssh-keygen -t rsa -f $HOME/.ssh/id_rsa -N ""
 ssh-keygen -t rsa -N ""
@@ -21,7 +14,7 @@ ssh-keygen -t rsa -N ""
 #    --sshPrivateKey=$HOME/.ssh/id_rsa \
 #    --hostWritePath=/
 
-/opt/ibm/wlp/bin/collective join defaultServer \
+while ! collective join defaultServer \
     --host=controller \
     --port=9443 \
     --user=adminUser \
@@ -30,12 +23,13 @@ ssh-keygen -t rsa -N ""
     --keystorePassword=$PASSWORD \
     --hostJavaHome=$JAVA_HOME \
     --createConfigFile=/config/collective-join-include.xml
-
-#    --sshPrivateKey=$HOME/.ssh/id_rsa \
+do
+  sleep 1 # wait for 1/10 of the second before check again
+done
 
 # Unregister host when the script will terminate
 unregisterHost() {
-    /opt/ibm/wlp/bin/collective unregisterHost $(hostname) \
+    collective unregisterHost $(hostname) \
         --host=controller \
         --port=9443 \
         --user=adminUser \

@@ -1,5 +1,5 @@
 FROM websphere-liberty:javaee7
-RUN apt-get update && apt-get install -y openssh-server curl && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y openssh-server && rm -rf /var/lib/apt/lists/*
 RUN installUtility install --acceptLicense clusterMember-1.0 scalingMember-1.0
 
 COPY . /config/

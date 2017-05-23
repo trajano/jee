@@ -6,14 +6,14 @@
     <Property Name="ESIInvalidationMonitor" Value="false"/>
     <Property Name="ESIEnableToPassCookies" Value="false"/>
     <Property Name="PluginInstallRoot" Value="/opt/IBM/WebSphere/Plugins/"/>
-    <Property Name="Keyfile" Value="/opt/IBM/WebSphere/Plugins/config/webserver1/plugin-key.kdb"/>
-    <Property Name="Stashfile" Value="/opt/IBM/WebSphere/Plugins/config/webserver1/plugin-key.sth"/>
+    <Property Name="Keyfile" Value="/plugin-key.kdb"/>
+    <Property Name="Stashfile" Value="/plugin-key.sth"/>
     <IntelligentManagement>
         <Property name="webserverName" value="webserver1"/>
         <ConnectorCluster enabled="true" maxRetries="-1" name="defaultCollective" retryInterval="60">
             <Property name="uri" value="/ibm/api/dynamicRouting"/>
             <Connector host="controller" port="9443" protocol="https">
-                <Property name="keyring" value="/opt/IBM/WebSphere/Plugins/config/webserver1/plugin-key.kdb"/>
+                <Property name="keyring" value="/plugin-key.kdb"/>
             </Connector>
         </ConnectorCluster>
         <Property name="RoutingRulesConnectorClusterName" value="defaultCollective"/>

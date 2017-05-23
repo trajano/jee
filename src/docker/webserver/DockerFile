@@ -1,28 +1,10 @@
 FROM ibmcom/ibm-http-server:latest
+#FROM ibm-http-server:9.0.0.3
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends unzip wget ca-certificates openssl \
     && rm -rf /var/lib/apt/lists/*
 
-ENV JAVA_VERSION 1.8.0_sr4fp5
-
-RUN ESUM="187f67fa0fa23416811aa76df70d9e43ce75bb18bba0e7be080eb83f0c21fb20" \
-    && BASE_URL="https://public.dhe.ibm.com/ibmdl/export/pub/systems/cloud/runtimes/java/meta/" \
-    && YML_FILE="jre/linux/x86_64/index.yml" \
-    && wget -q -U UA_IBM_JAVA_Docker -O /tmp/index.yml $BASE_URL/$YML_FILE \
-    && JAVA_URL=$(cat /tmp/index.yml | sed -n '/'$JAVA_VERSION'/{n;p}' | sed -n 's/\s*uri:\s//p' | tr -d '\r') \
-    && wget -q -U UA_IBM_JAVA_Docker -O /tmp/ibm-java.bin $JAVA_URL \
-    && echo "$ESUM  /tmp/ibm-java.bin" | sha256sum -c - \
-    && echo "INSTALLER_UI=silent" > /tmp/response.properties \
-    && echo "USER_INSTALL_DIR=/opt/ibm/java" >> /tmp/response.properties \
-    && echo "LICENSE_ACCEPTED=TRUE" >> /tmp/response.properties \
-    && mkdir -p /opt/ibm \
-    && chmod +x /tmp/ibm-java.bin \
-    && /tmp/ibm-java.bin -i silent -f /tmp/response.properties \
-    && rm -f /tmp/response.properties \
-    && rm -f /tmp/index.yml \
-    && rm -f /tmp/ibm-java.bin
-    
 # Install WebSphere Liberty
 ENV LIBERTY_VERSION 17.0.0_01
 ARG LIBERTY_URL
@@ -31,10 +13,8 @@ RUN LIBERTY_URL=${LIBERTY_URL:-$(wget -q -O - https://public.dhe.ibm.com/ibmdl/e
     && wget $DOWNLOAD_OPTIONS $LIBERTY_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/wlp.zip \
     && unzip -q /tmp/wlp.zip -d /opt/ibm \
     && rm /tmp/wlp.zip
-#ENV JAVA_HOME=/opt/ibm/java/jre \
-#    PATH=/opt/ibm/java/jre/bin:$PATH \
-ENV JAVA_HOME=//opt/IBM/WebSphere/Plugins/java/8.0
-ENV JVM_ARGS=-Dcom.ibm.webserver.plugin.utility.autoAcceptCertificates=true
+ENV JAVA_HOME=/opt/IBM/WebSphere/Plugins/java/8.0 \
+    JVM_ARGS=-Dcom.ibm.webserver.plugin.utility.autoAcceptCertificates=true
 RUN /opt/ibm/wlp/bin/installUtility install --acceptLicense restConnector-2.0 restConnector-1.0 dynamicRouting-1.0
 
 # Cleanup
@@ -43,8 +23,7 @@ RUN apt-get purge -y unzip wget && apt-get -y autoremove && rm -rf /var/lib/apt/
 # Add include to the configuration file
 RUN mkdir /share
 COPY startHttpServer.sh /work/
-COPY defaultClusterPlugin.conf /opt/IBM/HTTPServer/conf/
-COPY plugin-cfg.xml /opt/IBM/HTTPServer/conf/
+COPY defaultClusterPlugin.conf plugin-cfg.xml /opt/IBM/HTTPServer/conf/
 RUN echo "Include /opt/IBM/HTTPServer/conf/defaultClusterPlugin.conf" >> /opt/IBM/HTTPServer/conf/httpd.conf
 
 EXPOSE 80

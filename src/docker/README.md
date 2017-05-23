@@ -4,12 +4,6 @@ docker stack  deploy --compose-file docker-compose.yml jeesample
 The controller replica may need to have a separate server so there's one "primary" which has the `volume` and the rest will pull from the core one.
 
 
-pluginUtility generate  --server=adminUser:adminPassword@controller:9443  --cluster=defaultCluster
-
-cat /defaultCluster-plugin-cfg.xml
-
-docker exec 82246b134e6b collective unregisterHost 3643a3abdfdf --user=adminUser --password=adminPassword --port=9443 --host=controller --autoAcceptCertificates
-
 # Notes
 
 * May need to change the appserver.base to just have SSH and WLP only do not start and then use autoscale to provision the server.
@@ -22,4 +16,5 @@ docker cp deployable.zip 98eac34a77af:/opt/ibm/wlp/usr/shared/stackGroups/defaul
 
 # TODO 
 
-* Replica Sets for the controller
+* Replica Sets for the controller (does not work correctly at the moent)
+* Dyanmic Routing (needs updated WebSphere Plugin with IHS)
