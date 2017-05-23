@@ -43,8 +43,7 @@ RUN /opt/ibm/wlp/bin/installUtility install --acceptLicense restConnector-2.0 re
 # Add include to the configuration file
 RUN mkdir /share
 COPY startHttpServer.sh /work/
-COPY defaultClusterPlugin.conf /opt/IBM/HTTPServer/conf/
-COPY plugin-cfg.xml /opt/IBM/HTTPServer/conf/
+COPY defaultClusterPlugin.conf plugin-cfg.xml /opt/IBM/HTTPServer/conf/
 RUN echo "Include /opt/IBM/HTTPServer/conf/defaultClusterPlugin.conf" >> /opt/IBM/HTTPServer/conf/httpd.conf
 
 #RUN mkdir /var/run/sshd
