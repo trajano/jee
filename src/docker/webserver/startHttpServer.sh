@@ -73,4 +73,7 @@ done
 # Make directory used for the plugin logs
 mkdir -p /opt/IBM/WebSphere/Plugins/logs/webserver1
 
-exec /work/ihsstart.sh
+#exec /work/ihsstart.sh
+. /opt/IBM/HTTPServer/bin/envvars
+exec /opt/IBM/HTTPServer/bin/httpd -d /opt/IBM/HTTPServer -DFOREGROUND
+
