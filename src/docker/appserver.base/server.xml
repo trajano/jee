@@ -9,6 +9,7 @@
     <writeDir>${server.config.dir}</writeDir>
   </remoteFileAccess>
   <httpEndpoint id="defaultHttpEndpoint" httpPort="9080" httpsPort="9443" host="*"/>
+  <hostSingleton name="ScalingMemberSingletonService" port="5164" />
   <applicationManager autoExpand="true"/>
   <include location="${server.config.dir}/collective-join-include.xml"/>
   <dataSource id="myds" jndiName="jdbc/sample" type="javax.sql.XADataSource">

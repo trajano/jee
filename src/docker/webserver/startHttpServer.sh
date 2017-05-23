@@ -21,13 +21,40 @@ fi
 # Generate key stores for Dynamic Routing use shorter password because of format issues.
 PASSWORD=$(openssl rand -hex 16)
 echo $PASSWORD
-/opt/ibm/wlp/bin/dynamicRouting genKeystore \
-  --host=controller \
-  --user=adminUser \
-  --password=adminPassword \
-  --port=9443 \
-  --keystorePassword="$PASSWORD" \
-  --autoAcceptCertificates
+
+mkdir -p /opt/IBM/WebSphere/Plugins/config/webserver1
+gskcapicmd -keydb -create -db /opt/IBM/WebSphere/Plugins/config/webserver1/plugin-key.kdb -pw $PASSWORD -stash
+# Keep on trying until the configuration file is generated
+while [ ! -e /defaultCluster-plugin-cfg.xml ]
+do
+  sleep 0.1 # wait for 1/10 of the second before check again
+  /opt/ibm/wlp/bin/pluginUtility generate \
+    --server=adminUser:adminPassword@controller:9443 \
+    --cluster=defaultCluster
+done
+
+# Manipulate text to extract the host names of the cluster
+for memberHost in $( grep "9443" /defaultCluster-plugin-cfg.xml | sed -n 's/^.*Hostname="\([0-9a-f]*\)".*/\1/p' )
+do
+  echo QUIT | openssl s_client -showcerts -connect $memberHost:9443 > $memberHost.pem
+  gskcapicmd -cert -import \
+    -type p12 \
+    -file $memberHost.pem \
+    -target /opt/IBM/WebSphere/Plugins/config/webserver1/plugin-key.kdb \
+    -target-pw $PASSWORD
+done
+
+# Remove the administrative URIs from the configuration
+sed -i 's#<Uri AffinityCookie="JSESSIONID" AffinityURLIdentifier="jsessionid" Name="/IBMJMXConnectorREST/\*"/>##' /defaultCluster-plugin-cfg.xml
+sed -i 's#<Uri AffinityCookie="JSESSIONID" AffinityURLIdentifier="jsessionid" Name="/ibm/api/\*"/>##' /defaultCluster-plugin-cfg.xml
+
+# /opt/ibm/wlp/bin/dynamicRouting genKeystore \
+#   --host=controller \
+#   --user=adminUser \
+#   --password=adminPassword \
+#   --port=9443 \
+#   --keystorePassword="$PASSWORD" \
+#   --autoAcceptCertificates
 
 # /opt/ibm/wlp/bin/dynamicRouting genKeystore   --host=controller   --user=adminUser   --password=adminPassword   --port=9443   --keystorePassword=foofoo   --autoAcceptCertificates
 
@@ -49,17 +76,17 @@ mkdir -p /opt/IBM/WebSphere/Plugins/config/webserver1
 #   -db /opt/IBM/WebSphere/Plugins/config/webserver1/plugin-key.kdb \
 #   -label default
 
-cat /opt/IBM/HTTPServer/conf/java.security.append >> /opt/IBM/HTTPServer/java/8.0/jre/lib/security/java.security
-gskcmd -keydb -convert \
-  -pw "$PASSWORD" \
-  -db /plugin-key.jks \
-  -target /opt/IBM/WebSphere/Plugins/config/webserver1/plugin-key.kdb \
-  -new_format cms \
-  -stash && \
-gskcmd -cert -setdefault \
-  -stashed \
-  -db /opt/IBM/WebSphere/Plugins/config/webserver1/plugin-key.kdb \
-  -label default
+# cat /opt/IBM/HTTPServer/conf/java.security.append >> /opt/IBM/HTTPServer/java/8.0/jre/lib/security/java.security
+# gskcmd -keydb -convert \
+#   -pw "$PASSWORD" \
+#   -db /plugin-key.jks \
+#   -target /opt/IBM/WebSphere/Plugins/config/webserver1/plugin-key.kdb \
+#   -new_format cms \
+#   -stash && \
+# gskcmd -cert -setdefault \
+#   -stashed \
+#   -db /opt/IBM/WebSphere/Plugins/config/webserver1/plugin-key.kdb \
+#   -label default
 
 
 mkdir -p /opt/IBM/WebSphere/Plugins/logs/webserver1

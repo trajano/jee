@@ -7,7 +7,19 @@ done
 # Joining the collective needs to be done at runtime as the controller needs to be up.
 
 PASSWORD=$(openssl rand -base64 32)
-ssh-keygen -t rsa -f $HOME/.ssh/id_rsa -N ""
+#ssh-keygen -t rsa -f $HOME/.ssh/id_rsa -N ""
+ssh-keygen -t rsa -N ""
+
+# We can provision others this way later, but at least one node needs to be configured for JVM Elasticity.
+
+#/opt/ibm/wlp/bin/collective registerHost $(hostname) \
+#    --host=controller \
+#    --port=9443 \
+#    --user=adminUser \
+#    --password=adminPassword \
+#    --autoAcceptCertificates \
+#    --sshPrivateKey=$HOME/.ssh/id_rsa \
+#    --hostWritePath=/
 
 /opt/ibm/wlp/bin/collective join defaultServer \
     --host=controller \
@@ -16,9 +28,10 @@ ssh-keygen -t rsa -f $HOME/.ssh/id_rsa -N ""
     --password=adminPassword \
     --autoAcceptCertificates \
     --keystorePassword=$PASSWORD \
-    --sshPrivateKey=$HOME/.ssh/id_rsa \
     --hostJavaHome=$JAVA_HOME \
     --createConfigFile=/config/collective-join-include.xml
+
+#    --sshPrivateKey=$HOME/.ssh/id_rsa \
 
 # Unregister host when the script will terminate
 unregisterHost() {
@@ -31,18 +44,6 @@ unregisterHost() {
     exit
 }
 trap unregisterHost 0
-
-#[ -d  /config/resources/collective ] || /opt/ibm/wlp/bin/collective registerHost $(hostname) \
-#    --host=controller \
-#    --port=9443 \
-#    --user=adminUser \
-#    --password=adminPassword \
-#    --autoAcceptCertificates \
-#    --sshPrivateKey=$HOME/.ssh/id_rsa
-#    --hostReadPath=/opt/ibm/wlp \
-#    --hostWritePath=/opt/ibm/wlp
-
-# [ -d  /config/resources/collective ] || /usr/bin/expect /config/join-collective.expect
 
 # start the defaultServer in the background needs to connect to properly register itself to the controller.
 /opt/ibm/wlp/bin/server run defaultServer &

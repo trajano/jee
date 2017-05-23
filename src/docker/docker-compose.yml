@@ -15,7 +15,6 @@ services:
     ports: 
     - "80:80"
     - "443:443"
-    - "6022:22"
     volumes:
     - 'ihs_share:/share'
   appserver:
