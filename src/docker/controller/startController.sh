@@ -6,6 +6,8 @@ createCollective() {
         --createConfigFile=/config/resources/collective/collective-create-include.xml
     sed -i 's#<variable .*/>#<variable name="defaultHostName" value="controller" />#' /config/resources/collective/collective-create-include.xml
     sed -i 's#<quickStartSecurity .*/>#<quickStartSecurity userName="adminUser" userPassword="adminPassword"/>#' /config/resources/collective/collective-create-include.xml
+    ssh-keygen -t rsa -f $HOME/.ssh/id_rsa -N ""
+    cp $HOME/.ssh/id_rsa.pub /config/resources/collective
 }
 [ -e  /config/resources/collective/collective-create-include.xml ] || createCollective
 # Use sshd as the "daemon" process

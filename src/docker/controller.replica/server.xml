@@ -3,16 +3,14 @@
   <variable name="defaultHostName" value="controller"/>
   <httpEndpoint id="defaultHttpEndpoint" host="*" httpPort="9080" httpsPort="9443"/>
   <featureManager>
-    <!--<feature>scalingController-1.0</feature>-->
-    <feature>adminCenter-1.0</feature>
+    <feature>scalingController-1.0</feature>
     <feature>dynamicRouting-1.0</feature>
   </featureManager>
   <remoteFileAccess>
     <writeDir>${server.config.dir}</writeDir>
   </remoteFileAccess>
-  <!--<scalingDefinitions>
+  <scalingDefinitions>
     <defaultScalingPolicy enabled="true" min="2" max="2"/>
-  </scalingDefinitions>-->
-  <include location="${server.config.dir}/resources/collective/collective-create-include.xml"/>
-  <collectiveController user="adminUser" password="adminPassword"/>
+  </scalingDefinitions>
+  <include location="${server.config.dir}/collective-replicate-include.xml"/>
 </server>

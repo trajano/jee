@@ -1,0 +1,7 @@
+FROM websphere-liberty:javaee7
+RUN apt-get update && apt-get install -y openssh-server && rm -rf /var/lib/apt/lists/*
+RUN installUtility install --acceptLicense collectiveController-1.0 adminCenter-1.0 scalingController-1.0 dynamicRouting-1.0
+COPY . /config/
+EXPOSE 9080
+EXPOSE 9443
+CMD ["/config/startController.sh"]

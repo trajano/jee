@@ -3,14 +3,15 @@
   <featureManager>
     <feature>javaee-7.0</feature>
     <feature>clusterMember-1.0</feature>
-    <feature>scalingMember-1.0</feature>
+    <!--<feature>scalingMember-1.0</feature>-->
   </featureManager>
   <remoteFileAccess>
     <writeDir>${server.config.dir}</writeDir>
   </remoteFileAccess>
   <httpEndpoint id="defaultHttpEndpoint" httpPort="9080" httpsPort="9443" host="*"/>
-  <hostSingleton name="ScalingMemberSingletonService" port="5164" />
+  <!--<hostSingleton name="ScalingMemberSingletonService" port="5164" />-->
   <applicationManager autoExpand="true"/>
+  <!--<hostAuthInfo rpcUser="root" sshPublicKeyPath="/root/.ssh/id_rsa.pub" sshPrivateKeyPath="/root/.ssh/id_rsa"/>-->
   <include location="${server.config.dir}/collective-join-include.xml"/>
   <dataSource id="myds" jndiName="jdbc/sample" type="javax.sql.XADataSource">
     <jdbcDriver javax.sql.ConnectionPoolDataSource="org.mariadb.jdbc.MariaDbDataSource" javax.sql.DataSource="org.mariadb.jdbc.MariaDbDataSource" javax.sql.XADataSource="org.mariadb.jdbc.MariaDbDataSource">

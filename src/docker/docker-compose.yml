@@ -32,6 +32,15 @@ services:
     depends_on: 
     - database
     - controller
+    # volumes:
+    # - 'collective_resources:/controllerResources'
+  # liberty-host:
+  #   image: trajano/liberty-host:base
+  #   deploy:
+  #     replicas: 0
+  #   depends_on: 
+  #   - database
+  #   - controller
   database:
     image: mariadb:latest
     volumes:

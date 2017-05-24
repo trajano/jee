@@ -4,14 +4,10 @@ RUN installUtility install --acceptLicense clusterMember-1.0 scalingMember-1.0
 
 RUN mkdir /var/run/sshd
 RUN chmod 0755 /var/run/sshd
-RUN echo 'root:screencast' | chpasswd
-RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 RUN sed -i "s/#PasswordAuthentication yes/PasswordAuthentication yes/" /etc/ssh/sshd_config
-RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
-
-COPY . /config/
 
 EXPOSE 22
 EXPOSE 9080
 EXPOSE 9443
-CMD ["/config/startServer.sh"]
+COPY startHost.sh /
+CMD ["/startHost.sh"]

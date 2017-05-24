@@ -1,0 +1,4 @@
+<deploy>
+    <useRule id="jee rule_ID" />
+    <variable name="aName" value="aValue" />
+</deploy>
