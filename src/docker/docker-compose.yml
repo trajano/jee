@@ -10,6 +10,8 @@ services:
   #   image: trajano/jee-controller:replica
   #   deploy:
   #     replicas: 2
+  #   depends_on: 
+  #   - controller
   #   volumes:
   #   - 'collective_resources:/controllerResources'
   webserver:

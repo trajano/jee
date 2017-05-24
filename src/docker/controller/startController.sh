@@ -8,4 +8,6 @@ createCollective() {
     sed -i 's#<quickStartSecurity .*/>#<quickStartSecurity userName="adminUser" userPassword="adminPassword"/>#' /config/resources/collective/collective-create-include.xml
 }
 [ -e  /config/resources/collective/collective-create-include.xml ] || createCollective
+# Use sshd as the "daemon" process
+/usr/sbin/sshd -D &
 exec /opt/ibm/wlp/bin/server run defaultServer
