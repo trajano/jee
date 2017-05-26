@@ -4,4 +4,4 @@ docker build -t trajano/jee-appserver:base appserver.base && docker tag trajano/
 
 rem docker build -t trajano/liberty-host:base host && docker tag trajano/liberty-host:base trajano/liberty-host:base && docker push trajano/liberty-host:base
 
-rem docker build -t trajano/jee-webserver:base webserver && docker tag trajano/jee-appserver:base trajano/jee-appserver:base && docker push trajano/jee-webserver:base
+docker build -t trajano/jee-webserver:base webserver && docker tag trajano/jee-appserver:base trajano/jee-appserver:base && docker push trajano/jee-webserver:base

@@ -1,5 +1,4 @@
-FROM ibmcom/ibm-http-server:latest
-#FROM ibm-http-server:9.0.0.3
+FROM ibmcom/ibm-http-server:9.0.0.3
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends unzip wget ca-certificates openssl \
@@ -13,7 +12,7 @@ RUN LIBERTY_URL=${LIBERTY_URL:-$(wget -q -O - https://public.dhe.ibm.com/ibmdl/e
     && wget $DOWNLOAD_OPTIONS $LIBERTY_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/wlp.zip \
     && unzip -q /tmp/wlp.zip -d /opt/ibm \
     && rm /tmp/wlp.zip
-ENV JAVA_HOME=/opt/IBM/WebSphere/Plugins/java/8.0 \
+ENV JAVA_HOME=/opt/IBM/HTTPServer/java/8.0/jre \
     JVM_ARGS=-Dcom.ibm.webserver.plugin.utility.autoAcceptCertificates=true
 RUN /opt/ibm/wlp/bin/installUtility install --acceptLicense restConnector-2.0 restConnector-1.0 dynamicRouting-1.0
 
@@ -21,7 +20,7 @@ RUN /opt/ibm/wlp/bin/installUtility install --acceptLicense restConnector-2.0 re
 RUN apt-get purge -y unzip wget && apt-get -y autoremove && rm -rf /var/lib/apt/lists/*
 
 # Add include to the configuration file
-RUN mkdir /share
+RUN mkdir -p /share /opt/IBM/WebSphere/Plugins/logs/webserver1
 COPY startHttpServer.sh /work/
 COPY defaultClusterPlugin.conf plugin-cfg.xml /opt/IBM/HTTPServer/conf/
 RUN echo "Include /opt/IBM/HTTPServer/conf/defaultClusterPlugin.conf" >> /opt/IBM/HTTPServer/conf/httpd.conf
